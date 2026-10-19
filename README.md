@@ -1,6 +1,6 @@
-# 🕯️ CAVERNA — Organizador de Hábitos e Rotina
+# 🕯️ A CAVERNA — Organizador de Hábitos e Rotina
 
-O **CAVERNA** é uma aplicação web para organização de hábitos e compromissos pessoais. Seu objetivo é ajudar o usuário a construir uma rotina consistente, acompanhar suas atividades diárias e receber lembretes nos horários programados.
+A **CAVERNA** é uma aplicação web para organização de hábitos e compromissos pessoais. Seu objetivo é ajudar o usuário a construir uma rotina consistente, acompanhar suas atividades diárias e receber lembretes nos horários programados.
 
 🌐 **Acesse:** https://acaverna.github.io
 
@@ -10,7 +10,7 @@ O **CAVERNA** é uma aplicação web para organização de hábitos e compromiss
 
 ### 1. Cadastro e organização de hábitos
 
-O CAVERNA permite organizar hábitos pessoais por categoria, frequência e horário.
+A CAVERNA permite organizar hábitos pessoais por categoria, frequência e horário.
 
 Cada hábito pode conter:
 
@@ -66,7 +66,7 @@ O progresso é calculado com base nos hábitos programados para aquele dia.
 
 ### 4. Salvamento dos dados
 
-O CAVERNA utiliza o armazenamento local do navegador (`localStorage`) para manter os dados disponíveis no dispositivo.
+A CAVERNA utiliza o armazenamento local do navegador (`localStorage`) para manter os dados disponíveis no dispositivo.
 
 Quando há um usuário autenticado, o aplicativo também envia os dados para o Supabase, permitindo que as informações sejam armazenadas na conta.
 
@@ -137,7 +137,7 @@ O projeto utiliza as seguintes tabelas do Supabase:
 
 ## 📱 Compatibilidade
 
-O CAVERNA é uma aplicação web e pode ser acessado por navegadores compatíveis.
+A CAVERNA é uma aplicação web e pode ser acessado por navegadores compatíveis.
 
 As notificações push foram testadas no PC com Edge e no iPhone.
 
@@ -157,6 +157,6 @@ O suporte a notificações no Android ainda precisa ser validado.
 
 ## 📌 Status do projeto
 
-O CAVERNA possui cadastro de hábitos, acompanhamento diário, armazenamento de dados e lembretes automáticos configurados.
+A CAVERNA possui cadastro de hábitos, acompanhamento diário, armazenamento de dados e lembretes automáticos configurados.
 
 O sistema de notificações foi validado no PC e no iPhone, com execução automática pelo Supabase Cron.
