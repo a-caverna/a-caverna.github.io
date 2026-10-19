@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#0b0b0d">
+<link rel="manifest" href="./manifest.webmanifest">
 <title>CAVERNA — Disciplina e evolução</title>
 <style>
 :root{--bg:#0b0b0d;--panel:#151518;--panel2:#1d1d21;--line:#2b2b30;--text:#e8e8eb;--muted:#92929b;--accent:#b8b8c2;--danger:#b86b6b;--ok:#9aa99a}
@@ -108,7 +109,7 @@ footer{margin:30px 0 5px;color:#66666f;font-size:11px;text-align:center;letter-s
 
 <section id="page-settings" class="hidden">
 <h2>Configurações</h2><p class="sub">Ajuste seus lembretes e exporte seus dados para manter uma cópia.</p>
-<div class="grid"><div class="card span6"><h3>Lembretes locais</h3><p class="meta">Nesta versão, os lembretes usam notificações do navegador enquanto a página estiver aberta. Push confiável no iPhone exige backend e configuração adicional.</p><button id="notifyPermission">Permitir notificações</button><p id="notifyStatus" class="meta"></p></div><div class="card span6"><h3>Dados</h3><p class="meta">Os registros desta versão ficam salvos neste navegador e dispositivo.</p><button id="clearData" class="danger">Apagar todos os dados</button></div></div>
+<div class="grid"><div class="card span6"><h3>Lembretes</h3><p class="meta">Ative as notificações push para receber lembretes no dispositivo. O envio no horário dos hábitos depende também da configuração do backend no Supabase.</p><button id="notifyPermission">Permitir notificações</button> <button id="pushSubscribe" class="primary">Ativar lembretes push</button><p id="notifyStatus" class="meta" role="status"></p></div><div class="card span6"><h3>Dados</h3><p class="meta">Os registros desta versão ficam salvos neste navegador e dispositivo.</p><button id="clearData" class="danger">Apagar todos os dados</button></div></div>
 </section>
 </main>
 <footer>DESENVOLVIDO POR DIEGO NICOLATO</footer>
@@ -119,10 +120,35 @@ const $=id=>document.getElementById(id);
 
 const SUPABASE_URL = "https://vxqufrxtkeszqvhggbgh.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_Bii_xKIKGoyyBt7U73uRmg_cBAs_CLB";
+// Configure com a chave pública VAPID gerada para o backend antes de ativar push.
+const VAPID_PUBLIC_KEY = "COLE_AQUI_SUA_CHAVE_PUBLICA_VAPID";
+let cavernaSWRegistration = null;
 const supabaseConfigured = SUPABASE_URL.startsWith("https://") && !SUPABASE_URL.includes("COLE_AQUI") && !SUPABASE_ANON_KEY.includes("COLE_AQUI");
 const sb = supabaseConfigured ? window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY) : null;
 let currentUser=null, saveTimer=null;
 function authMsg(m){$("authMessage").textContent=m||""}
+async function registerCavernaSW(){
+ if(!("serviceWorker" in navigator))return null;
+ try{cavernaSWRegistration=await navigator.serviceWorker.register("./service-worker.js");return cavernaSWRegistration}
+ catch(e){console.warn("Service worker não registrado",e);return null}
+}
+function urlBase64ToUint8Array(base64String){const padding="=".repeat((4-base64String.length%4)%4);const base64=(base64String+padding).replace(/-/g,"+").replace(/_/g,"/");const raw=atob(base64);return Uint8Array.from([...raw].map(c=>c.charCodeAt(0)))}
+async function enablePushReminders(){
+ const status=$("notifyStatus");
+ if(!currentUser){status.textContent="Entre na sua conta antes de ativar.";return}
+ if(!("serviceWorker" in navigator)||!("PushManager" in window)){status.textContent="Este navegador não oferece suporte a push.";return}
+ if(!VAPID_PUBLIC_KEY||VAPID_PUBLIC_KEY.startsWith("COLE_AQUI")){status.textContent="Falta configurar a chave pública VAPID no index.html e o backend no Supabase.";return}
+ try{
+  const permission=await Notification.requestPermission();if(permission!=="granted"){status.textContent="Permissão de notificações não concedida.";return}
+  const reg=cavernaSWRegistration||await registerCavernaSW();if(!reg){status.textContent="Não foi possível registrar o service worker.";return}
+  let sub=await reg.pushManager.getSubscription();
+  if(!sub)sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:urlBase64ToUint8Array(VAPID_PUBLIC_KEY)});
+  const {error}=await sb.from("caverna_push_subscriptions").upsert({user_id:currentUser.id,endpoint:sub.endpoint,subscription:sub.toJSON(),updated_at:new Date().toISOString()},{onConflict:"endpoint"});
+  if(error)throw error;
+  status.textContent="Push ativado neste dispositivo. O envio programado exige concluir a função de backend no Supabase.";
+ }catch(e){console.error(e);status.textContent="Não foi possível ativar: "+(e.message||"verifique as configurações do Supabase")}
+}
+$("pushSubscribe").onclick=enablePushReminders;
 function showAuth(mode="login"){
  $("authScreen").style.display="grid";$("appShell").style.display="none";
  $("authTitle").textContent=mode==="signup"?"CRIAR ACESSO.":mode==="reset"?"RECUPERAR ACESSO.":"ENTRE NA SUA CAVERNA.";
@@ -244,6 +270,7 @@ $("importFile").onchange=async e=>{let f=e.target.files[0];if(!f)return;try{let 
 $("notifyPermission").onclick=async()=>{if(!("Notification"in window)){$("notifyStatus").textContent="Este navegador não oferece notificações.";return}let p=await Notification.requestPermission();$("notifyStatus").textContent="Permissão: "+p};
 $("clearData").onclick=()=>{if(confirm("Apagar todos os registros? Exporte um backup antes, se quiser guardá-los.")){localStorage.removeItem("cavernaData");data=freshData();save()}};
 renderAll();
+registerCavernaSW();
 bootAuth();
 </script>
 </body></html>

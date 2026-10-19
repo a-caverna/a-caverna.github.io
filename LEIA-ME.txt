@@ -1,0 +1,24 @@
+CAVERNA — preparação inicial de Web Push
+
+Arquivos:
+- index.html: versão da página com registro do service worker e botão para cadastrar a inscrição push.
+- service-worker.js: recebe push e mostra notificação.
+- manifest.webmanifest: metadados para instalação como app.
+- SQL_subscriptions.sql: tabela protegida para inscrições por usuário.
+
+IMPORTANTE: isto é uma etapa de frontend/registro, ainda NÃO envia lembretes automaticamente.
+O envio no horário dos hábitos precisa de backend (por exemplo, Supabase Edge Function + agendamento/cron),
+chaves VAPID e configuração de segredos no Supabase. Não publique chave privada VAPID nem service_role
+no HTML ou no GitHub.
+
+Antes de substituir seu index.html publicado:
+1. Faça backup do index.html atual e dos dados (Exportar dados dentro da CAVERNA).
+2. Copie o index.html deste pacote para o repositório.
+3. Copie service-worker.js e manifest.webmanifest para a mesma pasta do index.html.
+4. Execute SQL_subscriptions.sql no SQL Editor do Supabase.
+5. Gere/configure a chave pública VAPID e substitua COLE_AQUI_SUA_CHAVE_PUBLICA_VAPID no index.html.
+6. Publique e teste em HTTPS. No iPhone, abra pelo Safari, adicione à Tela de Início e ative push dentro do app instalado.
+
+Não considere os lembretes programados prontos até adicionar e testar a função backend que lê caverna_data.payload,
+identifica hábitos vencendo (timezone America/Sao_Paulo) e envia push com controle contra duplicidade.
+por usuário/hábito/data/horário.
