@@ -152,7 +152,7 @@ async function enablePushReminders(){
   if(!sub)sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:urlBase64ToUint8Array(VAPID_PUBLIC_KEY)});
   const {error}=await sb.from("caverna_push_subscriptions").upsert({user_id:currentUser.id,endpoint:sub.endpoint,subscription:sub.toJSON(),updated_at:new Date().toISOString()},{onConflict:"endpoint"});
   if(error)throw error;
-  status.textContent="Push ativado neste dispositivo. O envio programado exige concluir a função de backend no Supabase.";
+  status.textContent="Push ativado neste dispositivo.";
  }catch(e){console.error(e);status.textContent="Não foi possível ativar: "+(e.message||"verifique as configurações do Supabase")}
 }
 $("pushSubscribe").onclick=enablePushReminders;
