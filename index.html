@@ -121,7 +121,7 @@ const $=id=>document.getElementById(id);
 const SUPABASE_URL = "https://vxqufrxtkeszqvhggbgh.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_Bii_xKIKGoyyBt7U73uRmg_cBAs_CLB";
 // Configure com a chave pública VAPID gerada para o backend antes de ativar push.
-const VAPID_PUBLIC_KEY = "COLE_AQUI_SUA_CHAVE_PUBLICA_VAPID";
+const VAPID_PUBLIC_KEY = "BCbJHEibHvI5VWVO40TPQguGmUF6eDrnL7lpgTJ-B0RZqX8-jGTvGX2hjfPBIHGsKLKoSAT364PC0fEtTdLci3M";
 let cavernaSWRegistration = null;
 const supabaseConfigured = SUPABASE_URL.startsWith("https://") && !SUPABASE_URL.includes("COLE_AQUI") && !SUPABASE_ANON_KEY.includes("COLE_AQUI");
 const sb = supabaseConfigured ? window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY) : null;
