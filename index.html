@@ -58,6 +58,7 @@ footer{margin:30px 0 5px;color:#66666f;font-size:11px;text-align:center;letter-s
 <button data-page="gratitude">Gratidão</button>
 <button data-page="failures">Falhas</button>
 <button data-page="settings">Configurações</button>
+<button data-page="admin" id="adminNavBtn" class="hidden">Administração</button>
 </nav>
 <main>
 <section id="page-today">
@@ -111,6 +112,12 @@ footer{margin:30px 0 5px;color:#66666f;font-size:11px;text-align:center;letter-s
 <h2>Configurações</h2><p class="sub">Ajuste seus lembretes e exporte seus dados para manter uma cópia.</p>
 <div class="grid"><div class="card span6"><h3>Lembretes</h3><p class="meta">Ative as notificações push para receber lembretes no dispositivo. O envio no horário dos hábitos depende também da configuração do backend no Supabase.</p><button id="notifyPermission">Permitir notificações</button> <button id="pushSubscribe" class="primary">Ativar lembretes push</button><p id="notifyStatus" class="meta" role="status"></p></div><div class="card span6"><h3>Dados</h3><p class="meta">Os registros desta versão ficam salvos neste navegador e dispositivo.</p><button id="clearData" class="danger">Apagar todos os dados</button></div></div>
 </section>
+<section id="page-admin" class="hidden">
+<h2>Administração de contas</h2><p class="sub">Gerencie contas de acesso. Esta área não exibe hábitos nem registros pessoais.</p>
+<div class="grid"><div class="card span12">
+<div class="row" style="flex-wrap:wrap"><div style="flex:1;min-width:220px"><label for="adminSearch">Pesquisar por e-mail</label><input id="adminSearch" type="search" placeholder="Digite um e-mail..."></div><button id="adminRefresh" class="small" type="button" style="align-self:end">Atualizar lista</button></div>
+<p id="adminStatus" class="meta" role="status"></p><div id="adminUsers"></div>
+</div></div></section>
 </main>
 <footer>DESENVOLVIDO POR DIEGO NICOLATO</footer>
 </div>
@@ -158,7 +165,7 @@ function showAuth(mode="login"){
  $("authSignup").classList.toggle("hidden",mode==="signup");$("authReset").classList.toggle("hidden",mode==="reset");
  $("authForm").dataset.mode=mode;authMsg("");
 }
-function showApp(user){currentUser=user;$("authScreen").style.display="none";$("appShell").style.display="block";$("userEmail").textContent=user.email||"Conta conectada"}
+function showApp(user){currentUser=user;$("authScreen").style.display="none";$("appShell").style.display="block";$("userEmail").textContent=user.email||"Conta conectada";checkAdminAccess(user)}
 function freshData(){return {habits:defaultHabits.map(h=>({...h,id:uid(),active:true})),checks:{},body:[],workouts:[],books:[],readings:[],gratitude:[],failures:[]}}
 function normalizeData(d){let b=freshData();return {...b,...(d||{}),habits:Array.isArray(d?.habits)?d.habits:b.habits,checks:d?.checks||{},body:d?.body||[],workouts:d?.workouts||[],books:d?.books||[],readings:d?.readings||[],gratitude:d?.gratitude||[],failures:d?.failures||[]}}
 async function loadUserData(user){
@@ -262,6 +269,15 @@ window.resolveFailure=id=>{let f=data.failures.find(x=>x.id===id);f.status="Reso
 window.deleteFailure=id=>{if(confirm("Excluir registro de falha?")){data.failures=data.failures.filter(x=>x.id!==id);save()}};
 $("failureDate").value=today();
 $("failureForm").onsubmit=e=>{e.preventDefault();data.failures.push({id:uid(),date:$("failureDate").value,what:$("failureWhat").value,area:$("failureArea").value,why:$("failureWhy").value,fix:$("failureFix").value,status:"Pendente"});e.target.reset();$("failureDate").value=today();save()};
+let adminAuthorized=false, adminUsersCache=[];
+async function checkAdminAccess(user){adminAuthorized=false;$("adminNavBtn").classList.add("hidden");try{const {data,error}=await sb.from("caverna_admins").select("user_id").eq("user_id",user.id).maybeSingle();if(error)throw error;adminAuthorized=!!data;$("adminNavBtn").classList.toggle("hidden",!adminAuthorized);if(!adminAuthorized&&!$("page-admin").classList.contains("hidden"))showPage("today");}catch(e){console.warn("Falha ao verificar admin",e);}}
+function adminStatus(m){$("adminStatus").textContent=m||"";}
+function renderAdminUsers(){const term=($("adminSearch").value||"").trim().toLowerCase();const users=adminUsersCache.filter(u=>(u.email||"").toLowerCase().includes(term));if(!users.length){$("adminUsers").innerHTML='<div class="empty">Nenhuma conta encontrada.</div>';return;}$("adminUsers").innerHTML=users.map(u=>{const banned=!!u.banned_until&&new Date(u.banned_until)>new Date();const created=u.created_at?new Date(u.created_at).toLocaleDateString("pt-BR"):"—";const last=u.last_sign_in_at?new Date(u.last_sign_in_at).toLocaleString("pt-BR"):"Nunca";const self=currentUser&&u.id===currentUser.id;return `<div class="listitem"><div class="row" style="align-items:flex-start;flex-wrap:wrap"><div style="flex:1;min-width:220px"><strong>${esc(u.email||"E-mail não informado")}</strong><div class="meta">Criada: ${esc(created)} · Último acesso: ${esc(last)}</div><div class="meta">Status: ${banned?"Bloqueada":"Ativa"}</div></div><div class="actions">${self?'<span class="pill">Sua conta</span>':`<button class="small" data-admin-action="${banned?"unban":"ban"}" data-user-id="${esc(u.id)}">${banned?"Desbloquear":"Bloquear"}</button><button class="small danger" data-admin-action="delete" data-user-id="${esc(u.id)}">Excluir</button>`}</div></div></div>`;}).join("");}
+async function adminRequest(action,user_id){if(!adminAuthorized||!currentUser)throw new Error("Acesso administrativo não autorizado.");const {data,error}=await sb.functions.invoke("caverna_admins",{body:{action,...(user_id?{user_id}:{})}});if(error)throw error;if(data?.error)throw new Error(data.error);return data;}
+async function loadAdminUsers(){if(!adminAuthorized){adminStatus("Acesso negado.");return;}$("adminRefresh").disabled=true;adminStatus("Carregando contas...");try{const result=await adminRequest("list");adminUsersCache=result.users||[];renderAdminUsers();adminStatus(`${adminUsersCache.length} conta(s) carregada(s).`);}catch(e){console.error(e);adminStatus("Não foi possível carregar: "+(e.message||"erro desconhecido"));}finally{$("adminRefresh").disabled=false;}}
+$("adminRefresh").addEventListener("click",loadAdminUsers);$("adminSearch").addEventListener("input",renderAdminUsers);
+$("adminUsers").addEventListener("click",async event=>{const button=event.target.closest("button[data-admin-action]");if(!button)return;const action=button.dataset.adminAction,userId=button.dataset.userId,user=adminUsersCache.find(u=>u.id===userId);if(!user)return;const promptText=action==="delete"?`Excluir permanentemente a conta ${user.email||""}? Essa ação não pode ser desfeita.`:action==="ban"?`Bloquear a conta ${user.email||""}?`:`Desbloquear a conta ${user.email||""}?`;if(!confirm(promptText))return;button.disabled=true;adminStatus("Aplicando alteração...");try{await adminRequest(action,userId);adminStatus("Alteração concluída.");await loadAdminUsers();}catch(e){console.error(e);adminStatus("Falha: "+(e.message||"erro desconhecido"));button.disabled=false;}});
+
 function renderAll(){renderToday();renderHabits();renderPhysical();renderBooks();renderGratitude();renderFailures()}
 $("exportBtn").onclick=()=>{let blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="caverna-backup-"+today()+".json";a.click();URL.revokeObjectURL(a.href)};
 $("importBtn").onclick=()=>$("importFile").click();
