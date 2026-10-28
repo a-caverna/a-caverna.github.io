@@ -33,6 +33,34 @@ footer{margin:30px 0 5px;color:#66666f;font-size:11px;text-align:center;letter-s
 .auth-card h2{letter-spacing:.12em}.auth-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.auth-actions button{flex:1}
 .auth-note{font-size:12px;color:var(--muted);margin-top:12px}#authMessage{min-height:20px;color:var(--muted);font-size:13px;margin-top:10px}
 #appShell{display:none}
+
+/* Identidade visual exclusiva do Mentor; o restante da Caverna permanece intacto. */
+:root{--mentor-violet:#9b5de5;--mentor-violet-soft:#6f3db8;--mentor-violet-glow:#b879ff}
+nav button[data-page="mentor"]{display:inline-flex;align-items:center;gap:8px;border-color:#49345f;color:#d8b8ff;background:linear-gradient(135deg,#1a1422,#111014)}
+nav button[data-page="mentor"]::before{content:"☠";display:grid;place-items:center;width:23px;height:23px;border-radius:50%;border:1px solid #8051a8;color:#d7b0ff;font-size:15px;box-shadow:0 0 12px #8b45c955}
+nav button[data-page="mentor"].active{background:linear-gradient(135deg,#38204e,#1b1425);border-color:var(--mentor-violet-glow);color:#f0dcff;box-shadow:0 0 16px #8b45c922}
+.mentor-chat-shell{height:min(760px,calc(100vh - 230px));min-height:500px;display:flex;flex-direction:column;overflow:hidden;border:1px solid #33283e;border-radius:18px;background:#0d0c10;box-shadow:0 14px 45px #0005}
+.mentor-chat-header{display:flex;align-items:center;gap:12px;padding:14px 18px;background:linear-gradient(110deg,#17131d,#100f13);border-bottom:1px solid #302637}
+.mentor-avatar{width:48px;height:48px;flex:0 0 48px;border-radius:50%;display:grid;place-items:center;overflow:hidden;border:1px solid #8d5ab5;background:radial-gradient(circle at 50% 45%,#3a2848,#100d14 72%);box-shadow:0 0 18px #8b45c933}
+.mentor-avatar svg{width:42px;height:42px}
+.mentor-header-title{font-size:17px;font-weight:700;line-height:1.25}.mentor-header-sub{font-size:12px;color:#b29ac5;margin-top:3px}.mentor-header-sub::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:#9b5de5;margin-right:6px}
+.mentor-chat-card{display:flex;flex:1;min-height:0;flex-direction:column}
+.mentor-messages{flex:1;min-height:0;overflow:auto;padding:20px 16px;display:flex;flex-direction:column;gap:13px;background:radial-gradient(ellipse at 100% 0%,#21152d55,transparent 45%),radial-gradient(ellipse at 0% 100%,#24152f33,transparent 50%),#0d0c10}
+.mentor-msg-row{display:flex;align-items:flex-end;gap:8px;max-width:88%}.mentor-msg-row.user{align-self:flex-end;justify-content:flex-end}.mentor-msg-row.assistant{align-self:flex-start}
+.mentor-msg{max-width:100%;padding:11px 14px;border:1px solid #302b35;border-radius:16px;white-space:pre-wrap;overflow-wrap:anywhere;box-shadow:0 3px 10px #0002}
+.mentor-msg.user{background:linear-gradient(135deg,#59347a,#3b2453);border-color:#79509a;color:#fff;border-bottom-right-radius:5px}
+.mentor-msg.assistant{background:#1a191f;border-color:#302d36;color:#eeeaf2;border-bottom-left-radius:5px}
+.mentor-msg .meta{margin-bottom:5px;display:block;font-size:10px;letter-spacing:.07em;color:#b7a4c7}
+.mentor-mini-avatar{width:28px;height:28px;flex:0 0 28px;border-radius:50%;display:grid;place-items:center;background:#21182b;border:1px solid #65427c;color:#d8b5ff;font-size:16px}
+.mentor-compose-wrap{padding:12px 14px 8px;border-top:1px solid #302637;background:#121015}
+.mentor-compose{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:9px;align-items:end;padding:0}
+.mentor-compose textarea{min-height:48px;max-height:140px;resize:none;border-radius:15px;background:#1b191f;border-color:#38303f;padding:12px 14px}
+.mentor-compose button{height:48px;min-width:48px;border-radius:15px;background:linear-gradient(135deg,#a45be0,#63369b);border-color:#bd82f0;color:white;font-size:19px;padding:8px 15px;box-shadow:0 0 16px #8b45c922}
+.mentor-compose button:hover{border-color:#e0b8ff;filter:brightness(1.08)}
+.mentor-status{min-height:18px;color:#9c8da9;font-size:11px;margin:6px 4px 0}
+.mentor-welcome{margin:auto;max-width:420px;text-align:center;color:#b9afc3;padding:22px}.mentor-welcome strong{display:block;color:#e7d8f3;font-size:16px;margin-bottom:6px}
+@media(max-width:760px){.mentor-chat-shell{height:calc(100dvh - 210px);min-height:460px;border-radius:14px}.mentor-messages{padding:14px 10px}.mentor-msg-row{max-width:96%}.mentor-chat-header{padding:11px 13px}.mentor-compose-wrap{padding:9px}.mentor-compose button{min-width:45px}.mentor-mini-avatar{width:24px;height:24px;flex-basis:24px}}
+
 </style>
 </head>
 <body>
@@ -55,6 +83,7 @@ footer{margin:30px 0 5px;color:#66666f;font-size:11px;text-align:center;letter-s
 <button data-page="habits">Hábitos</button>
 <button data-page="physical">Evolução física</button>
  <button data-page="training">Treinos</button>
+<button data-page="mentor" aria-label="Abrir Mentor">Mentor</button>
 <button data-page="books">Biblioteca</button>
 <button data-page="gratitude">Gratidão</button>
 <button data-page="failures">Falhas</button>
@@ -121,6 +150,35 @@ footer{margin:30px 0 5px;color:#66666f;font-size:11px;text-align:center;letter-s
   <div id="activeTrainingPanel" class="card" style="margin-top:14px"><div class="row"><h3>Treino em andamento</h3><button id="finishTrainingBtn" class="primary hidden" type="button">Finalizar treino</button></div><div id="activeTraining"><div class="empty">Toque em “Iniciar este treino” quando estiver pronto.</div></div><div id="trainingTimer" class="timer-panel hidden"><div class="row"><div><div class="meta" id="timerCaption">Descanso</div><div class="timer-number" id="timerNumber">01:30</div></div><div class="actions"><button type="button" id="timerPauseBtn">Pausar</button><button type="button" id="timerSkipBtn">Pular descanso</button></div></div><div class="meta" id="timerMessage">Prepare-se para a próxima série.</div></div></div>
  </div>
 </section>
+<section id="page-mentor" class="hidden">
+ <h2>Mentor</h2><p class="sub">O tempo não espera. Entre na conversa e encare o que precisa mudar.</p>
+ <div class="mentor-chat-shell">
+  <header class="mentor-chat-header">
+   <div class="mentor-avatar" aria-label="Avatar da Morte">
+    <svg viewBox="0 0 64 64" role="img" aria-label="Morte encapuzada com foice">
+     <path d="M5 56 Q10 21 28 8 Q43 0 57 16 Q63 25 61 56 L52 62 L12 62 Z" fill="#17111f" stroke="#775091" stroke-width="1.4"/>
+     <path d="M15 57 Q17 27 31 17 Q45 20 49 57Z" fill="#08070b"/>
+     <path d="M22 30 Q22 19 32 18 Q43 20 43 31 L40 44 L32 51 L24 44Z" fill="#c8c0d0"/>
+     <path d="M24 31 L30 29 L29 35 L23 35Z M35 29 L41 31 L41 35 L35 35Z" fill="#8c4bc6"/>
+     <path d="M29 38 L35 38 L32 43Z" fill="#30253a"/>
+     <path d="M25 45 L39 45 M28 45 L28 49 M32 45 L32 50 M36 45 L36 49" stroke="#51465a" stroke-width="1.5"/>
+     <path d="M47 10 Q57 5 60 14 Q57 21 49 22" fill="none" stroke="#b9a2cc" stroke-width="2.5" stroke-linecap="round"/>
+     <path d="M50 21 L60 4" stroke="#9b5de5" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+   </div>
+   <div style="flex:1;min-width:0"><div class="mentor-header-title">A Morte <span style="font-size:11px;color:#b879ff;font-weight:500">· MENTOR</span></div><div class="mentor-header-sub">Lembre-se: seu tempo é limitado</div></div>
+   <button type="button" class="small" id="mentorRefresh" title="Atualizar conversa" aria-label="Atualizar conversa">↻</button>
+  </header>
+  <div class="mentor-chat-card">
+   <div id="mentorMessages" class="mentor-messages" aria-live="polite"><div class="mentor-welcome"><strong>Você não tem tempo infinito.</strong>Eu não estou aqui para assustar você. Estou aqui para lembrar que cada dia é uma escolha. O que precisa enfrentar hoje?</div></div>
+   <div class="mentor-compose-wrap">
+    <form id="mentorForm" class="mentor-compose"><textarea id="mentorInput" maxlength="6000" required aria-label="Sua mensagem" placeholder="Escreva sua mensagem..."></textarea><button id="mentorSend" type="submit" title="Enviar mensagem" aria-label="Enviar mensagem">➤</button></form>
+    <div id="mentorStatus" class="mentor-status" role="status">Sua conversa é pessoal. A chave da IA permanece protegida no backend.</div>
+   </div>
+  </div>
+ </div>
+</section>
+
 <section id="page-books" class="hidden">
 <h2>Biblioteca</h2><p class="sub">Acompanhe a leitura atual, sessões e livros concluídos.</p>
 <div class="grid"><div class="card span4"><h3>Adicionar livro</h3><form id="bookForm"><input type="hidden" id="bookId"><label>Título</label><input id="bookTitle" required><label>Autor</label><input id="bookAuthor"><div class="formgrid"><div><label>Total de páginas</label><input id="bookTotal" type="number" min="1"></div><div><label>Página atual</label><input id="bookCurrent" type="number" min="0" value="0"></div></div><label>Status</label><select id="bookStatus"><option value="reading">Lendo agora</option><option value="queue">Na fila</option><option value="finished">Concluído</option></select><button class="primary" style="margin-top:12px">Salvar livro</button></form></div>
@@ -244,7 +302,7 @@ const defaultHabits=[
 let data=JSON.parse(localStorage.getItem("cavernaData")||"null")||freshData();
 function save(){localStorage.setItem("cavernaData",JSON.stringify(data));renderAll();if(currentUser){clearTimeout(saveTimer);saveTimer=setTimeout(()=>persistUserData(),500)}}
 function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
-function showPage(p){document.querySelectorAll("main section").forEach(s=>s.classList.add("hidden"));$("page-"+p).classList.remove("hidden");document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===p));renderAll()}
+function showPage(p){document.querySelectorAll("main section").forEach(s=>s.classList.add("hidden"));$("page-"+p).classList.remove("hidden");document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===p));renderAll();if(p==="mentor")loadMentorHistory()}
 window.showPage=showPage;
 $("nav").addEventListener("click",e=>{let b=e.target.closest("button[data-page]");if(b)showPage(b.dataset.page)});
 $("todayDate").textContent=new Date().toLocaleDateString("pt-BR",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
@@ -380,6 +438,12 @@ $("timerPauseBtn").onclick=()=>{if(!restInterval)return;restPaused=!restPaused;$
 $("timerSkipBtn").onclick=()=>{stopRestTimer();restRemaining=0;$("timerMessage").textContent="Descanso pulado. Pode continuar.";$("trainingTimer").classList.add("hidden");playRestBeep(1100)};
 $("finishTrainingBtn").onclick=()=>{if(!activeTraining)return;const total=activeTraining.exercises.reduce((n,x)=>n+(Number(x.sets)||0),0),done=activeTraining.exercises.reduce((n,x)=>n+x.doneSets.length,0);if(done===0&&!confirm("Você ainda não concluiu nenhuma série. Finalizar mesmo assim?"))return;const session={id:uid(),programId:activeTraining.programId,programName:activeTraining.programName,day:activeTraining.day,dayLabel:activeTraining.dayLabel||"",date:today(),completedSets:done,totalSets:total,duration:Math.max(1,Math.round((Date.now()-activeTraining.startedAt)/60000)),exercises:activeTraining.exercises.map(x=>({...x,doneSets:[...x.doneSets]}))};data.workoutSessions=data.workoutSessions||[];data.workoutSessions.push(session);activeTraining=null;stopRestTimer();restRemaining=0;save();renderActiveTraining();alert(`Treino registrado: ${done} de ${total} séries concluídas.`)};
 trainingDayKeys.forEach(ensureDraftDay);renderDayTabs();selectDraftDay("A");
+let mentorBusy=false;
+function mentorStatus(message){const el=$("mentorStatus");if(el)el.textContent=message||""}
+function renderMentorMessages(messages){const box=$("mentorMessages");if(!box)return;box.innerHTML=messages.length?messages.map(m=>m.role==="user"?`<div class="mentor-msg-row user"><div class="mentor-msg user"><span class="meta">VOCÊ · ${m.created_at?esc(new Date(m.created_at).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})):"agora"}</span>${esc(m.content||"")}</div></div>`:`<div class="mentor-msg-row assistant"><div class="mentor-mini-avatar" aria-hidden="true">☠</div><div class="mentor-msg assistant"><span class="meta">A MORTE · ${m.created_at?esc(new Date(m.created_at).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})):"agora"}</span>${esc(m.content||"")}</div></div>`).join(""):'<div class="mentor-welcome"><strong>Você não tem tempo infinito.</strong>Eu não estou aqui para assustar você. Estou aqui para lembrar que cada dia é uma escolha. O que precisa enfrentar hoje?</div>';box.scrollTop=box.scrollHeight}
+async function loadMentorHistory(){if(!currentUser||!sb){mentorStatus("Entre na sua conta para usar o Mentor.");return}try{const {data:rows,error}=await sb.from("mentor_messages").select("id,role,content,created_at").eq("user_id",currentUser.id).order("created_at",{ascending:false}).limit(60);if(error)throw error;renderMentorMessages((rows||[]).reverse());mentorStatus("Histórico carregado.")}catch(e){console.warn("Histórico do Mentor indisponível",e);mentorStatus("O histórico será habilitado após aplicar o SQL de configuração do Mentor no Supabase.")}}
+$("mentorRefresh").onclick=loadMentorHistory;
+$("mentorForm").onsubmit=async e=>{e.preventDefault();if(mentorBusy)return;const field=$("mentorInput"),message=field.value.trim();if(!message)return;if(!currentUser||!sb){mentorStatus("Entre na sua conta antes de conversar com o Mentor.");return}mentorBusy=true;$("mentorSend").disabled=true;mentorStatus("O Mentor está pensando...");const box=$("mentorMessages");const temp=document.createElement("div");temp.className="mentor-msg-row user";const tempBubble=document.createElement("div");tempBubble.className="mentor-msg user";tempBubble.innerHTML='<span class="meta">VOCÊ · agora</span>';tempBubble.appendChild(document.createTextNode(message));temp.appendChild(tempBubble);box.appendChild(temp);box.scrollTop=box.scrollHeight;field.value="";try{const {data:result,error}=await sb.functions.invoke("caverna-mentor",{body:{message}});if(error)throw error;if(result?.error)throw new Error(result.error);await loadMentorHistory();mentorStatus("Resposta recebida.")}catch(err){console.error("Erro no Mentor",err);field.value=message;mentorStatus("Não foi possível obter resposta. Verifique se a função caverna-mentor foi publicada e se a chave da IA está configurada nos segredos do Supabase. Detalhe: "+(err.message||"erro desconhecido"));}finally{mentorBusy=false;$("mentorSend").disabled=false;field.focus()}};
 function renderAll(){renderToday();renderHabits();renderPhysical();renderBooks();renderGratitude();renderFailures();renderTraining()}
 $("exportBtn").onclick=()=>{let blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="caverna-backup-"+today()+".json";a.click();URL.revokeObjectURL(a.href)};
 $("importBtn").onclick=()=>$("importFile").click();
