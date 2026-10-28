@@ -14,7 +14,298 @@ button:hover{border-color:#62626b}button.primary{background:#d7d7dd;color:#111;b
 button.danger{color:#e6a0a0;border-color:#593737;background:#261919}
 input,textarea,select{width:100%;background:#101013;border:1px solid var(--line);border-radius:10px;color:var(--text);padding:11px}
 textarea{min-height:95px;resize:vertical}label{display:block;color:var(--muted);font-size:13px;margin:10px 0 5px}
+.shell{max-width:1180px;margin:auto;padding:20px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margi<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b0b0d">
+<link rel="manifest" href="./manifest.webmanifest">
+<title>CAVERNA — Disciplina e evolução</title>
+<style>
+:root{--bg:#0b0b0d;--panel:#151518;--panel2:#1d1d21;--line:#2b2b30;--text:#e8e8eb;--muted:#92929b;--accent:#b8b8c2;--danger:#b86b6b;--ok:#9aa99a}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input,textarea,select{font:inherit}button{cursor:pointer;border:1px solid var(--line);background:#222226;color:var(--text);padding:10px 13px;border-radius:10px}
+button:hover{border-color:#62626b}button.primary{background:#d7d7dd;color:#111;border-color:#d7d7dd;font-weight:650}
+button.danger{color:#e6a0a0;border-color:#593737;background:#261919}
+input,textarea,select{width:100%;background:#101013;border:1px solid var(--line);border-radius:10px;color:var(--text);padding:11px}
+textarea{min-height:95px;resize:vertical}label{display:block;color:var(--muted);font-size:13px;margin:10px 0 5px}
 .shell{max-width:1180px;margin:auto;padding:20px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:24px}
+.brand{display:flex;align-items:center;gap:12px}.mark{width:42px;height:42px;border:1px solid #55555e;border-radius:12px;display:grid;place-items:center;color:#ddd;font-size:20px}
+.brand h1{font-size:19px;letter-spacing:.18em;margin:0}.brand p{font-size:11px;color:var(--muted);margin:2px 0 0;letter-spacing:.13em}
+nav{display:flex;gap:7px;flex-wrap:wrap;margin:0 0 22px}nav button{background:transparent;color:var(--muted)}nav button.active{background:#242428;color:var(--text);border-color:#55555d}
+h2{font-size:25px;margin:0 0 5px}h3{font-size:17px;margin:0 0 12px}.sub{color:var(--muted);margin:0 0 20px}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:17px;min-width:0}.span8{grid-column:span 8}.span4{grid-column:span 4}.span6{grid-column:span 6}.span12{grid-column:span 12}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}.stat{background:var(--panel2);padding:13px;border-radius:12px}.stat strong{font-size:25px;display:block}.stat span{color:var(--muted);font-size:12px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:12px}.habit{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}.habit:last-child{border:0}.habit input[type=checkbox]{width:20px;height:20px;accent-color:#c4c4cc}.habit .name{flex:1}.habit.done .name{color:#77777f;text-decoration:line-through}.meta{font-size:12px;color:var(--muted)}
+.actions{display:flex;gap:7px;flex-wrap:wrap}.small{padding:6px 9px;font-size:12px}.empty{color:var(--muted);padding:18px 0}.hidden{display:none!important}.formgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.formgrid .full{grid-column:1/-1}.listitem{padding:12px 0;border-bottom:1px solid var(--line)}.listitem:last-child{border:0}
+.exercise-entry{border:1px solid var(--line);border-radius:12px;padding:12px;margin-top:10px}.exercise-fields{display:grid;grid-template-columns:2fr repeat(3,1fr);gap:8px}.exercise-fields label{margin-top:4px}.exercise-entry .remove-exercise{margin-top:8px}@media(max-width:520px){.exercise-fields{grid-template-columns:1fr 1fr}.exercise-fields .exercise-name-field{grid-column:1/-1}}
+.pill{font-size:11px;border:1px solid var(--line);padding:3px 8px;border-radius:99px;color:var(--muted)}.progress{height:6px;background:#303036;border-radius:9px;overflow:hidden;margin:8px 0}.progress i{height:100%;display:block;background:#aaaab4}
+footer{margin:30px 0 5px;color:#66666f;font-size:11px;text-align:center;letter-spacing:.08em}
+@media(max-width:760px){.shell{padding:14px}.span8,.span4,.span6{grid-column:span 12}.stats{grid-template-columns:repeat(3,1fr)}.top{align-items:flex-start}.brand h1{font-size:16px}}
+
+.auth-wrap{min-height:100vh;display:grid;place-items:center;padding:20px}
+.auth-card{width:min(100%,440px);background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:24px}
+.auth-card h2{letter-spacing:.12em}.auth-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.auth-actions button{flex:1}
+.auth-note{font-size:12px;color:var(--muted);margin-top:12px}#authMessage{min-height:20px;color:var(--muted);font-size:13px;margin-top:10px}
+#appShell{display:none}
+</style>
+</head>
+<body>
+<section id="authScreen" class="auth-wrap"><div class="auth-card">
+<div class="brand" style="margin-bottom:24px"><div class="mark">⌁</div><div><h1>CAVERNA</h1><p>DISCIPLINA · EVOLUÇÃO</p></div></div>
+<h2 id="authTitle">ENTRE NA SUA CAVERNA.</h2><p class="sub" id="authSubtitle">Acesse seus registros. Honre seus compromissos.</p>
+<form id="authForm"><label for="authEmail">E-mail</label><input id="authEmail" type="email" autocomplete="email" required>
+<label for="authPassword">Senha</label><input id="authPassword" type="password" autocomplete="current-password" minlength="6" required>
+<div class="auth-actions"><button class="primary" id="authSubmit" type="submit">Entrar</button><button id="authSignup" type="button">Criar conta</button></div>
+<div class="auth-actions"><button id="authReset" type="button">Recuperar senha</button></div></form>
+<p id="authMessage" role="status"></p><p class="auth-note">Entre ou crie sua conta para acessar seus registros.</p>
+</div></section>
+<div id="appShell"><div class="shell">
+<header class="top">
+  <div class="brand"><div class="mark">⌁</div><div><h1>CAVERNA</h1><p>DISCIPLINA · EVOLUÇÃO</p></div></div>
+  <div class="actions"><span id="userEmail" class="meta"></span><button id="logoutBtn" class="small">Sair</button><button id="exportBtn" class="small">Exportar dados</button><button id="importBtn" class="small">Importar</button><input id="importFile" type="file" accept="application/json" class="hidden"></div>
+</header>
+<nav id="nav">
+<button class="active" data-page="today">Ritual diário</button>
+<button data-page="habits">Hábitos</button>
+<button data-page="physical">Evolução física</button>
+<button data-page="books">Biblioteca</button>
+<button data-page="gratitude">Gratidão</button>
+<button data-page="failures">Falhas</button>
+<button data-page="settings">Configurações</button>
+<button data-page="admin" id="adminNavBtn" class="hidden">Administração</button>
+</nav>
+<main>
+<section id="page-today">
+  <h2>Entre na sua caverna.</h2><p class="sub" id="todayDate"></p>
+  <div class="stats"><div class="stat"><strong id="doneCount">0</strong><span>Rituais cumpridos</span></div><div class="stat"><strong id="totalCount">0</strong><span>Rituais programados</span></div><div class="stat"><strong id="percentCount">0%</strong><span>Execução do dia</span></div></div>
+  <div class="grid"><div class="card span8"><div class="row"><h3>Compromissos de hoje</h3><button class="small" onclick="showPage('habits')">Gerenciar hábitos</button></div><div id="todayHabits"></div></div>
+  <div class="card span4"><h3>Registro rápido</h3><p class="meta">Uma coisa pela qual sou grato hoje</p><textarea id="quickGratitude" placeholder="Escreva aqui..."></textarea><button class="primary" id="saveQuickGratitude">Registrar gratidão</button><p class="meta" id="gratitudeStatus"></p></div>
+  <div class="card span12"><h3>Palavra de ordem</h3><p>Não espere vontade. Honre o compromisso.</p></div></div>
+</section>
+
+<section id="page-habits" class="hidden">
+<h2>Hábitos</h2><p class="sub">Crie, ajuste e acompanhe seus compromissos.</p>
+<div class="grid"><div class="card span4"><h3 id="habitFormTitle">Novo hábito</h3><form id="habitForm">
+<input type="hidden" id="habitId"><label>Nome do hábito</label><input id="habitName" required placeholder="Ex.: Ler 10 páginas">
+<label>Categoria</label><select id="habitCategory"><option>Rotina</option><option>Saúde</option><option>Leitura</option><option>Espiritualidade</option><option>Casa</option><option>Trabalho</option><option>Outro</option></select>
+<label>Frequência</label><select id="habitFrequency"><option value="daily">Todos os dias</option><option value="weekly">Dias específicos</option></select>
+<div id="weekdayBox" class="hidden"><label>Dias da semana</label><div id="weekdays" class="actions"></div></div>
+<label>Horário (opcional)</label><input id="habitTime" type="time">
+<label>Meta/descrição (opcional)</label><input id="habitTarget" placeholder="Ex.: 10 páginas, 1 registro">
+<div class="actions" style="margin-top:14px"><button class="primary" type="submit">Salvar hábito</button><button type="button" id="cancelHabit" class="hidden">Cancelar edição</button></div></form></div>
+<div class="card span8"><div class="row"><h3>Seus hábitos</h3><span class="pill" id="habitCount"></span></div><div id="habitList"></div></div></div>
+</section>
+
+<section id="page-physical" class="hidden">
+<h2>Evolução física</h2><p class="sub">Registre medidas e desempenho. Observe a tendência, não um dia isolado.</p>
+<div class="grid"><div class="card span6"><h3>Registro corporal</h3><form id="bodyForm"><div class="formgrid"><div><label>Data</label><input id="bodyDate" type="date" required></div><div><label>Peso (kg)</label><input id="bodyWeight" type="number" step=".1" placeholder="Opcional"></div><div><label>Cintura (cm)</label><input id="bodyWaist" type="number" step=".1" placeholder="Opcional"></div><div><label>Observação</label><input id="bodyNote" placeholder="Como está se sentindo?"></div></div><button class="primary" style="margin-top:12px">Salvar registro</button></form><div id="bodyHistory"></div></div>
+<div class="card span6"><h3>Registrar treino</h3><form id="workoutForm">
+<div class="formgrid"><div><label>Data</label><input id="workoutDate" type="date" required></div><div><label>Treino / grupo</label><input id="workoutName" required placeholder="Ex.: Peito e tríceps"></div></div>
+<div style="margin-top:16px"><div class="row"><h3 style="margin:0">Exercícios</h3><button type="button" class="small" id="addExerciseBtn">+ Adicionar exercício</button></div><div id="workoutExercises"></div></div>
+<button class="primary" style="margin-top:12px">Salvar treino</button></form><div id="workoutHistory"></div></div></div>
+</section>
+
+<section id="page-books" class="hidden">
+<h2>Biblioteca</h2><p class="sub">Acompanhe a leitura atual, sessões e livros concluídos.</p>
+<div class="grid"><div class="card span4"><h3>Adicionar livro</h3><form id="bookForm"><input type="hidden" id="bookId"><label>Título</label><input id="bookTitle" required><label>Autor</label><input id="bookAuthor"><div class="formgrid"><div><label>Total de páginas</label><input id="bookTotal" type="number" min="1"></div><div><label>Página atual</label><input id="bookCurrent" type="number" min="0" value="0"></div></div><label>Status</label><select id="bookStatus"><option value="reading">Lendo agora</option><option value="queue">Na fila</option><option value="finished">Concluído</option></select><button class="primary" style="margin-top:12px">Salvar livro</button></form></div>
+<div class="card span8"><h3>Seus livros</h3><div id="bookList"></div></div>
+<div class="card span12"><h3>Registrar sessão de leitura</h3><form id="readingForm"><div class="formgrid"><div><label>Livro</label><select id="readingBook" required></select></div><div><label>Data</label><input id="readingDate" type="date" required></div><div><label>Páginas lidas</label><input id="readingPages" type="number" min="1" required></div><div><label>Nota (opcional)</label><input id="readingNote" placeholder="Ideia ou trecho para lembrar"></div></div><button class="primary" style="margin-top:12px">Registrar leitura</button></form><div id="readingHistory"></div></div></div>
+</section>
+
+<section id="page-gratitude" class="hidden">
+<h2>Caderno de gratidão</h2><p class="sub">Uma coisa por dia. Sem obrigação de ser grandiosa.</p>
+<div class="grid"><div class="card span4"><h3>Novo registro</h3><form id="gratitudeForm"><label>Data</label><input id="gratitudeDate" type="date" required><label>Hoje sou grato por...</label><textarea id="gratitudeText" required></textarea><button class="primary" style="margin-top:12px">Guardar registro</button></form></div><div class="card span8"><h3>Seu caderno</h3><div id="gratitudeHistory"></div></div></div>
+</section>
+
+<section id="page-failures" class="hidden">
+<h2>Registro de falhas</h2><p class="sub">Encare o ocorrido. Identifique a causa. Defina a correção.</p>
+<div class="grid"><div class="card span6"><h3>Registrar falha</h3><form id="failureForm"><label>Data</label><input id="failureDate" type="date" required><label>O que aconteceu?</label><textarea id="failureWhat" required></textarea><label>Área relacionada</label><select id="failureArea"><option>Treino</option><option>Alimentação</option><option>Rotina</option><option>Leitura</option><option>Casa</option><option>Trabalho</option><option>Outro</option></select><label>Por que aconteceu?</label><textarea id="failureWhy"></textarea><label>Qual será a correção?</label><textarea id="failureFix"></textarea><button class="primary" style="margin-top:12px">Registrar falha</button></form></div><div class="card span6"><h3>Histórico</h3><div id="failureHistory"></div></div></div>
+</section>
+
+<section id="page-settings" class="hidden">
+<h2>Configurações</h2><p class="sub">Ajuste seus lembretes e exporte seus dados para manter uma cópia.</p>
+<div class="grid"><div class="card span6"><h3>Lembretes</h3><p class="meta">Ative as notificações push para receber lembretes no dispositivo.</p><button id="notifyPermission">Permitir notificações</button> <button id="pushSubscribe" class="primary">Ativar lembretes push</button><p id="notifyStatus" class="meta" role="status"></p></div><div class="card span6"><h3>Dados</h3><p class="meta">Os registros desta versão ficam salvos neste navegador e dispositivo.</p><button id="clearData" class="danger">Apagar todos os dados</button></div></div>
+</section>
+<section id="page-admin" class="hidden">
+<h2>Administração de contas</h2><p class="sub">Gerencie contas de acesso. Esta área não exibe hábitos nem registros pessoais.</p>
+<div class="grid"><div class="card span12">
+<div class="row" style="flex-wrap:wrap"><div style="flex:1;min-width:220px"><label for="adminSearch">Pesquisar por e-mail</label><input id="adminSearch" type="search" placeholder="Digite um e-mail..."></div><button id="adminRefresh" class="small" type="button" style="align-self:end">Atualizar lista</button></div>
+<p id="adminStatus" class="meta" role="status"></p><div id="adminUsers"></div>
+</div></div></section>
+</main>
+<footer>DESENVOLVIDO POR DIEGO NICOLATO</footer>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const $=id=>document.getElementById(id);
+
+const SUPABASE_URL = "https://vxqufrxtkeszqvhggbgh.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_Bii_xKIKGoyyBt7U73uRmg_cBAs_CLB";
+// Configure com a chave pública VAPID gerada para o backend antes de ativar push.
+const VAPID_PUBLIC_KEY = "BCbJHEibHvI5VWVO40TPQguGmUF6eDrnL7lpgTJ-B0RZqX8-jGTvGX2hjfPBIHGsKLKoSAT364PC0fEtTdLci3M";
+let cavernaSWRegistration = null;
+const supabaseConfigured = SUPABASE_URL.startsWith("https://") && !SUPABASE_URL.includes("COLE_AQUI") && !SUPABASE_ANON_KEY.includes("COLE_AQUI");
+const sb = supabaseConfigured ? window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY) : null;
+let currentUser=null, saveTimer=null;
+function authMsg(m){$("authMessage").textContent=m||""}
+async function registerCavernaSW(){
+ if(!("serviceWorker" in navigator))return null;
+ try{cavernaSWRegistration=await navigator.serviceWorker.register("./service-worker.js");return cavernaSWRegistration}
+ catch(e){console.warn("Service worker não registrado",e);return null}
+}
+function urlBase64ToUint8Array(base64String){const padding="=".repeat((4-base64String.length%4)%4);const base64=(base64String+padding).replace(/-/g,"+").replace(/_/g,"/");const raw=atob(base64);return Uint8Array.from([...raw].map(c=>c.charCodeAt(0)))}
+async function enablePushReminders(){
+ const status=$("notifyStatus");
+ if(!currentUser){status.textContent="Entre na sua conta antes de ativar.";return}
+ if(!("serviceWorker" in navigator)||!("PushManager" in window)){status.textContent="Este navegador não oferece suporte a push.";return}
+ if(!VAPID_PUBLIC_KEY||VAPID_PUBLIC_KEY.startsWith("COLE_AQUI")){status.textContent="Falta configurar a chave pública VAPID no index.html e o backend no Supabase.";return}
+ try{
+  const permission=await Notification.requestPermission();if(permission!=="granted"){status.textContent="Permissão de notificações não concedida.";return}
+  const reg=cavernaSWRegistration||await registerCavernaSW();if(!reg){status.textContent="Não foi possível registrar o service worker.";return}
+  let sub=await reg.pushManager.getSubscription();
+  if(!sub)sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:urlBase64ToUint8Array(VAPID_PUBLIC_KEY)});
+  const {error}=await sb.from("caverna_push_subscriptions").upsert({user_id:currentUser.id,endpoint:sub.endpoint,subscription:sub.toJSON(),updated_at:new Date().toISOString()},{onConflict:"endpoint"});
+  if(error)throw error;
+  status.textContent="Push ativado neste dispositivo.";
+ }catch(e){console.error(e);status.textContent="Não foi possível ativar: "+(e.message||"verifique as configurações do Supabase")}
+}
+$("pushSubscribe").onclick=enablePushReminders;
+function showAuth(mode="login"){
+ $("authScreen").style.display="grid";$("appShell").style.display="none";
+ $("authTitle").textContent=mode==="signup"?"CRIAR ACESSO.":mode==="reset"?"RECUPERAR ACESSO.":"ENTRE NA SUA CAVERNA.";
+ $("authSubtitle").textContent=mode==="signup"?"Crie sua conta para guardar sua evolução.":mode==="reset"?"Enviaremos um link para redefinir sua senha.":"Acesse seus registros. Honre seus compromissos.";
+ $("authPassword").classList.toggle("hidden",mode==="reset");$("authPassword").required=mode!=="reset";
+ $("authSubmit").textContent=mode==="signup"?"Criar conta":mode==="reset"?"Enviar link":"Entrar";
+ $("authSignup").classList.toggle("hidden",mode==="signup");$("authReset").classList.toggle("hidden",mode==="reset");
+ $("authForm").dataset.mode=mode;authMsg("");
+}
+function showApp(user){currentUser=user;$("authScreen").style.display="none";$("appShell").style.display="block";$("userEmail").textContent=user.email||"Conta conectada";checkAdminAccess(user)}
+function freshData(){return {habits:defaultHabits.map(h=>({...h,id:uid(),active:true})),checks:{},body:[],workouts:[],books:[],readings:[],gratitude:[],failures:[]}}
+function normalizeData(d){let b=freshData();return {...b,...(d||{}),habits:Array.isArray(d?.habits)?d.habits:b.habits,checks:d?.checks||{},body:d?.body||[],workouts:d?.workouts||[],books:d?.books||[],readings:d?.readings||[],gratitude:d?.gratitude||[],failures:d?.failures||[]}}
+async function loadUserData(user){
+ const {data:row,error}=await sb.from("caverna_data").select("payload").eq("user_id",user.id).maybeSingle();if(error)throw error;
+ if(row?.payload){data=normalizeData(row.payload);localStorage.setItem("cavernaData",JSON.stringify(data))}
+ else{data=normalizeData(JSON.parse(localStorage.getItem("cavernaData")||"null")||freshData());const {error:e}=await sb.from("caverna_data").upsert({user_id:user.id,payload:data,updated_at:new Date().toISOString()});if(e)throw e}
+ renderAll()
+}
+async function persistUserData(){if(!currentUser||!sb)return;const {error}=await sb.from("caverna_data").upsert({user_id:currentUser.id,payload:JSON.parse(JSON.stringify(data)),updated_at:new Date().toISOString()});if(error)console.error("Erro ao sincronizar:",error)}
+async function bootAuth(){
+ if(!supabaseConfigured){showAuth();authMsg("Configuração pendente: preencha SUPABASE_URL e SUPABASE_ANON_KEY no index.html.");$("authSubmit").disabled=true;$("authSignup").disabled=true;$("authReset").disabled=true;return}
+ showAuth();const {data:{session}}=await sb.auth.getSession();
+ if(session?.user){try{await loadUserData(session.user);showApp(session.user)}catch(e){authMsg("Erro ao carregar dados. Confira a tabela e as políticas RLS.");console.error(e)}}
+ sb.auth.onAuthStateChange((event)=>{if(event==="SIGNED_OUT"){currentUser=null;localStorage.removeItem("cavernaData");showAuth()}})
+}
+$("authSignup").onclick=()=>showAuth("signup");$("authReset").onclick=()=>showAuth("reset");
+$("authForm").onsubmit=async e=>{
+ e.preventDefault();if(!sb){authMsg("Configure o Supabase primeiro.");return}
+ let mode=e.target.dataset.mode,email=$("authEmail").value.trim(),password=$("authPassword").value;
+ $("authSubmit").disabled=true;authMsg("Processando...");
+ try{
+  if(mode==="signup"){let {data,error}=await sb.auth.signUp({email,password});if(error)throw error;
+   if(data.session&&data.user){await loadUserData(data.user);showApp(data.user)}else{showAuth("login");authMsg("Conta criada. Confira seu e-mail para confirmar o cadastro e depois entre.")}
+  }else if(mode==="reset"){let {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:location.href});if(error)throw error;authMsg("Se esse e-mail estiver cadastrado, você receberá um link para redefinir a senha.")
+  }else{let {data,error}=await sb.auth.signInWithPassword({email,password});if(error)throw error;await loadUserData(data.user);showApp(data.user)}
+ }catch(err){authMsg(err.message||"Não foi possível concluir. Tente novamente.")}finally{$("authSubmit").disabled=false}
+};
+$("logoutBtn").onclick=async()=>{await persistUserData();let {error}=await sb.auth.signOut();if(error)alert(error.message)};
+
+const today=()=>new Date().toLocaleDateString('en-CA');
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const defaultHabits=[
+{name:"Arrumar a cama",category:"Casa",frequency:"daily",days:[],time:"",target:""},
+{name:"Higiene pessoal",category:"Rotina",frequency:"daily",days:[],time:"",target:""},
+{name:"Treinar",category:"Saúde",frequency:"weekly",days:[1,3,5],time:"",target:""},
+{name:"Alimentação planejada",category:"Saúde",frequency:"daily",days:[],time:"",target:""},
+{name:"Ler 10 páginas",category:"Leitura",frequency:"daily",days:[],time:"",target:"10 páginas"},
+{name:"Orar",category:"Espiritualidade",frequency:"daily",days:[],time:"",target:""},
+{name:"Caderno de gratidão",category:"Espiritualidade",frequency:"daily",days:[],time:"",target:"1 registro"}
+];
+let data=JSON.parse(localStorage.getItem("cavernaData")||"null")||freshData();
+function save(){localStorage.setItem("cavernaData",JSON.stringify(data));renderAll();if(currentUser){clearTimeout(saveTimer);saveTimer=setTimeout(()=>persistUserData(),500)}}
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function showPage(p){document.querySelectorAll("main section").forEach(s=>s.classList.add("hidden"));$("page-"+p).classList.remove("hidden");document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===p));renderAll()}
+window.showPage=showPage;
+$("nav").addEventListener("click",e=>{let b=e.target.closest("button[data-page]");if(b)showPage(b.dataset.page)});
+$("todayDate").textContent=new Date().toLocaleDateString("pt-BR",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+function scheduled(h){let d=new Date().getDay();return h.active!==false&&(h.frequency!=="weekly"||(h.days||[]).includes(d))}
+function checkKey(id,date=today()){return date+"_"+id}
+function renderToday(){
+let hs=data.habits.filter(scheduled),done=hs.filter(h=>data.checks[checkKey(h.id)]).length;
+$("doneCount").textContent=done;$("totalCount").textContent=hs.length;$("percentCount").textContent=hs.length?Math.round(done/hs.length*100)+"%":"—";
+$("todayHabits").innerHTML=hs.length?hs.map(h=>`<div class="habit ${data.checks[checkKey(h.id)]?'done':''}"><input type="checkbox" ${data.checks[checkKey(h.id)]?'checked':''} onchange="toggleHabit('${h.id}',this.checked)"><div class="name"><div>${esc(h.name)}</div><div class="meta">${esc(h.target||h.category)} ${h.time?'· '+esc(h.time):''}</div></div><span class="pill">${esc(h.category)}</span></div>`).join(""):'<div class="empty">Nenhum hábito programado para hoje.</div>';
+}
+window.toggleHabit=(id,v)=>{data.checks[checkKey(id)]=v;save()};
+function renderHabits(){
+$("habitCount").textContent=data.habits.length+" hábitos";
+$("habitList").innerHTML=data.habits.length?data.habits.map(h=>`<div class="listitem"><div class="row"><div><strong>${esc(h.name)}</strong><div class="meta">${esc(h.category)} · ${h.frequency==="daily"?"Diário":(h.days||[]).map(d=>["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"][d]).join(", ")} ${h.time?'· '+esc(h.time):''}</div></div><div class="actions"><button class="small" onclick="editHabit('${h.id}')">Editar</button><button class="small" onclick="toggleActive('${h.id}')">${h.active===false?"Ativar":"Pausar"}</button><button class="small danger" onclick="deleteHabit('${h.id}')">Excluir</button></div></div></div>`).join(""):'<div class="empty">Nenhum hábito cadastrado.</div>';
+}
+window.editHabit=id=>{let h=data.habits.find(x=>x.id===id);if(!h)return;$("habitId").value=h.id;$("habitName").value=h.name;$("habitCategory").value=h.category;$("habitFrequency").value=h.frequency;$("habitTime").value=h.time||"";$("habitTarget").value=h.target||"";document.querySelectorAll("#weekdays input").forEach(i=>i.checked=(h.days||[]).includes(+i.value));$("weekdayBox").classList.toggle("hidden",h.frequency!=="weekly");$("habitFormTitle").textContent="Editar hábito";$("cancelHabit").classList.remove("hidden");showPage("habits");};
+window.toggleActive=id=>{let h=data.habits.find(x=>x.id===id);h.active=h.active===false;save()};
+window.deleteHabit=id=>{if(confirm("Excluir este hábito e seus registros?")){data.habits=data.habits.filter(h=>h.id!==id);save()}};
+const dayNames=["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
+$("weekdays").innerHTML=dayNames.map((d,i)=>`<label style="display:flex;align-items:center;gap:5px;color:var(--text)"><input type="checkbox" value="${i}" style="width:auto">${d}</label>`).join("");
+$("habitFrequency").onchange=()=> $("weekdayBox").classList.toggle("hidden",$("habitFrequency").value!=="weekly");
+$("habitForm").onsubmit=e=>{e.preventDefault();let id=$("habitId").value,old=data.habits.find(h=>h.id===id);let h={id:id||uid(),name:$("habitName").value.trim(),category:$("habitCategory").value,frequency:$("habitFrequency").value,days:[...document.querySelectorAll("#weekdays input:checked")].map(i=>+i.value),time:$("habitTime").value,target:$("habitTarget").value.trim(),active:old?old.active:true};if(h.frequency==="weekly"&&!h.days.length){alert("Selecione pelo menos um dia da semana.");return}if(old)Object.assign(old,h);else data.habits.push(h);resetHabitForm();save()};
+function resetHabitForm(){$("habitForm").reset();$("habitId").value="";$("weekdayBox").classList.add("hidden");$("habitFormTitle").textContent="Novo hábito";$("cancelHabit").classList.add("hidden")}
+$("cancelHabit").onclick=resetHabitForm;
+function renderPhysical(){
+$("bodyHistory").innerHTML=data.body.slice().reverse().map(x=>`<div class="listitem"><div class="row"><strong>${esc(x.date)}</strong><span>${x.weight?esc(x.weight)+" kg":""} ${x.waist? "· "+esc(x.waist)+" cm":""}</span></div><div class="meta">${esc(x.note)}</div></div>`).join("")||'<div class="empty">Sem registros corporais.</div>';
+$("workoutHistory").innerHTML=data.workouts.slice().reverse().map(x=>{let exercises=Array.isArray(x.exercises)?x.exercises:(x.exercise?[{name:x.exercise,load:x.load,sets:x.sets,reps:x.reps}]:[]);return `<div class="listitem"><strong>${esc(x.date)} · ${esc(x.name)}</strong>${exercises.map((ex,i)=>`<div class="meta" style="margin-top:6px">${i+1}. ${esc(ex.name||"Exercício")}${ex.load!==""&&ex.load!=null?" · "+esc(ex.load)+" kg":""}${ex.sets?" · "+esc(ex.sets)+" séries":""}${ex.reps?" × "+esc(ex.reps)+" reps":""}</div>`).join("")}${x.duration?`<div class="meta">${esc(x.duration)} min</div>`:""}</div>`}).join("")||'<div class="empty">Sem treinos registrados.</div>';
+}
+$("bodyDate").value=today();$("workoutDate").value=today();
+$("bodyForm").onsubmit=e=>{e.preventDefault();data.body.push({id:uid(),date:$("bodyDate").value,weight:$("bodyWeight").value,waist:$("bodyWaist").value,note:$("bodyNote").value});e.target.reset();$("bodyDate").value=today();save()};
+function addWorkoutExercise(values={}){let wrap=document.createElement("div");wrap.className="exercise-entry";wrap.innerHTML=`<div class="exercise-fields"><div class="exercise-name-field"><label>Exercício</label><input class="ex-name" required placeholder="Ex.: Supino reto"></div><div><label>Carga (kg)</label><input class="ex-load" type="number" step=".5" min="0" placeholder="40"></div><div><label>Séries</label><input class="ex-sets" type="number" min="1" step="1" placeholder="3"></div><div><label>Repetições</label><input class="ex-reps" type="number" min="1" step="1" placeholder="12"></div></div><button type="button" class="small danger remove-exercise">Remover exercício</button>`;wrap.querySelector(".ex-name").value=values.name||"";wrap.querySelector(".ex-load").value=values.load??"";wrap.querySelector(".ex-sets").value=values.sets??"";wrap.querySelector(".ex-reps").value=values.reps??"";wrap.querySelector(".remove-exercise").onclick=()=>{wrap.remove();if(!$("workoutExercises").children.length)addWorkoutExercise()};$("workoutExercises").appendChild(wrap)}
+$("addExerciseBtn").onclick=()=>addWorkoutExercise();
+addWorkoutExercise();
+$("workoutForm").onsubmit=e=>{e.preventDefault();let exercises=[...$("workoutExercises").querySelectorAll(".exercise-entry")].map(w=>({name:w.querySelector(".ex-name").value.trim(),load:w.querySelector(".ex-load").value,sets:w.querySelector(".ex-sets").value,reps:w.querySelector(".ex-reps").value})).filter(x=>x.name);if(!exercises.length){alert("Adicione pelo menos um exercício.");return}data.workouts.push({id:uid(),date:$("workoutDate").value,name:$("workoutName").value.trim(),exercises});e.target.reset();$("workoutExercises").innerHTML="";addWorkoutExercise();$("workoutDate").value=today();save()};
+function renderBooks(){
+$("bookList").innerHTML=data.books.map(b=>{let pct=b.total?Math.min(100,Math.round((b.current||0)/b.total*100)):0;return `<div class="listitem"><div class="row"><div><strong>${esc(b.title)}</strong><div class="meta">${esc(b.author||"Autor não informado")} · ${b.status==="reading"?"Lendo agora":b.status==="queue"?"Na fila":"Concluído"}</div></div><div class="actions"><button class="small" onclick="editBook('${b.id}')">Editar</button><button class="small danger" onclick="deleteBook('${b.id}')">Excluir</button></div>${b.total?`<div class="progress"><i style="width:${pct}%"></i></div><div class="meta">${b.current||0}/${b.total} páginas · ${pct}%</div>`:""}</div>`}).join("")||'<div class="empty">Sua biblioteca está vazia.</div>';
+$("readingBook").innerHTML='<option value="">Selecione um livro</option>'+data.books.filter(b=>b.status!=="finished").map(b=>`<option value="${b.id}">${esc(b.title)}</option>`).join("");
+$("readingHistory").innerHTML=data.readings.slice().reverse().map(r=>{let b=data.books.find(x=>x.id===r.bookId);return `<div class="listitem"><div class="row"><strong>${esc(r.date)} · ${esc(b?.title||"Livro removido")}</strong><span>${r.pages} páginas</span></div><div class="meta">${esc(r.note||"")}</div></div>`}).join("")||'<div class="empty">Nenhuma sessão registrada.</div>';
+}
+$("bookForm").onsubmit=e=>{e.preventDefault();let id=$("bookId").value;let b={id:id||uid(),title:$("bookTitle").value.trim(),author:$("bookAuthor").value.trim(),total:+$("bookTotal").value||0,current:+$("bookCurrent").value||0,status:$("bookStatus").value};if(b.total&&b.current>b.total){alert("A página atual não pode superar o total.");return}if(id){let old=data.books.find(x=>x.id===id);Object.assign(old,b)}else data.books.push(b);e.target.reset();$("bookId").value="";save()};
+window.editBook=id=>{let b=data.books.find(x=>x.id===id);$("bookId").value=b.id;$("bookTitle").value=b.title;$("bookAuthor").value=b.author;$("bookTotal").value=b.total;$("bookCurrent").value=b.current;$("bookStatus").value=b.status;showPage("books")};
+window.deleteBook=id=>{if(confirm("Excluir livro?")){data.books=data.books.filter(b=>b.id!==id);save()}};
+$("readingDate").value=today();
+$("readingForm").onsubmit=e=>{e.preventDefault();let book=data.books.find(b=>b.id===$("readingBook").value),pages=+$("readingPages").value;if(!book||pages<1)return;data.readings.push({id:uid(),bookId:book.id,date:$("readingDate").value,pages,note:$("readingNote").value});if(book.total)book.current=Math.min(book.total,(book.current||0)+pages);if(book.total&&book.current>=book.total)book.status="finished";e.target.reset();$("readingDate").value=today();save()};
+function renderGratitude(){
+$("gratitudeHistory").innerHTML=data.gratitude.slice().reverse().map(g=>`<div class="listitem"><div class="meta">${esc(g.date)}</div><div>${esc(g.text)}</div><div class="actions" style="margin-top:8px"><button class="small danger" onclick="deleteGratitude('${g.id}')">Excluir</button></div>`).join("")||'<div class="empty">Nenhum registro ainda.</div>';
+}
+window.deleteGratitude=id=>{data.gratitude=data.gratitude.filter(g=>g.id!==id);save()};
+function addGratitude(date,text){if(data.gratitude.some(g=>g.date===date)){alert("Já existe uma gratidão registrada para essa data. Edite ou exclua o registro no caderno.");return false}data.gratitude.push({id:uid(),date,text});return true}
+$("gratitudeDate").value=today();
+$("gratitudeForm").onsubmit=e=>{e.preventDefault();if(addGratitude($("gratitudeDate").value,$("gratitudeText").value.trim())){e.target.reset();$("gratitudeDate").value=today();save()}};
+$("saveQuickGratitude").onclick=()=>{let t=$("quickGratitude").value.trim();if(!t)return;if(addGratitude(today(),t)){$("quickGratitude").value="";$("gratitudeStatus").textContent="Gratidão registrada.";save()}};
+function renderFailures(){
+$("failureHistory").innerHTML=data.failures.slice().reverse().map(f=>`<div class="listitem"><div class="row"><strong>${esc(f.date)} · ${esc(f.area)}</strong><span class="pill">${esc(f.status||"Pendente")}</span></div><p>${esc(f.what)}</p><div class="meta"><strong>Causa:</strong> ${esc(f.why||"Não registrada")}</div><div class="meta"><strong>Correção:</strong> ${esc(f.fix||"Não definida")}</div><div class="actions" style="margin-top:8px"><button class="small" onclick="resolveFailure('${f.id}')">Marcar resolvida</button><button class="small danger" onclick="deleteFailure('${f.id}')">Excluir</button></div></div>`).join("")||'<div class="empty">Nenhuma falha registrada.</div>';
+}
+window.resolveFailure=id=>{let f=data.failures.find(x=>x.id===id);f.status="Resolvida";save()};
+window.deleteFailure=id=>{if(confirm("Excluir registro de falha?")){data.failures=data.failures.filter(x=>x.id!==id);save()}};
+$("failureDate").value=today();
+$("failureForm").onsubmit=e=>{e.preventDefault();data.failures.push({id:uid(),date:$("failureDate").value,what:$("failureWhat").value,area:$("failureArea").value,why:$("failureWhy").value,fix:$("failureFix").value,status:"Pendente"});e.target.reset();$("failureDate").value=today();save()};
+let adminAuthorized=false, adminUsersCache=[];
+async function checkAdminAccess(user){adminAuthorized=false;$("adminNavBtn").classList.add("hidden");try{const {data,error}=await sb.from("caverna_admins").select("user_id").eq("user_id",user.id).maybeSingle();if(error)throw error;adminAuthorized=!!data;$("adminNavBtn").classList.toggle("hidden",!adminAuthorized);if(!adminAuthorized&&!$("page-admin").classList.contains("hidden"))showPage("today");}catch(e){console.warn("Falha ao verificar admin",e);}}
+function adminStatus(m){$("adminStatus").textContent=m||"";}
+function renderAdminUsers(){const term=($("adminSearch").value||"").trim().toLowerCase();const users=adminUsersCache.filter(u=>(u.email||"").toLowerCase().includes(term));if(!users.length){$("adminUsers").innerHTML='<div class="empty">Nenhuma conta encontrada.</div>';return;}$("adminUsers").innerHTML=users.map(u=>{const banned=!!u.banned_until&&new Date(u.banned_until)>new Date();const created=u.created_at?new Date(u.created_at).toLocaleDateString("pt-BR"):"—";const last=u.last_sign_in_at?new Date(u.last_sign_in_at).toLocaleString("pt-BR"):"Nunca";const self=currentUser&&u.id===currentUser.id;return `<div class="listitem"><div class="row" style="align-items:flex-start;flex-wrap:wrap"><div style="flex:1;min-width:220px"><strong>${esc(u.email||"E-mail não informado")}</strong><div class="meta">Criada: ${esc(created)} · Último acesso: ${esc(last)}</div><div class="meta">Status: ${banned?"Bloqueada":"Ativa"}</div></div><div class="actions">${self?'<span class="pill">Sua conta</span>':`<button class="small" data-admin-action="${banned?"unban":"ban"}" data-user-id="${esc(u.id)}">${banned?"Desbloquear":"Bloquear"}</button><button class="small danger" data-admin-action="delete" data-user-id="${esc(u.id)}">Excluir</button>`}</div></div></div>`;}).join("");}
+async function adminRequest(action,user_id){if(!adminAuthorized||!currentUser)throw new Error("Acesso administrativo não autorizado.");const {data,error}=await sb.functions.invoke("caverna_admins",{body:{action,...(user_id?{user_id}:{})}});if(error)throw error;if(data?.error)throw new Error(data.error);return data;}
+async function loadAdminUsers(){if(!adminAuthorized){adminStatus("Acesso negado.");return;}$("adminRefresh").disabled=true;adminStatus("Carregando contas...");try{const result=await adminRequest("list");adminUsersCache=result.users||[];renderAdminUsers();adminStatus(`${adminUsersCache.length} conta(s) carregada(s).`);}catch(e){console.error(e);adminStatus("Não foi possível carregar: "+(e.message||"erro desconhecido"));}finally{$("adminRefresh").disabled=false;}}
+$("adminRefresh").addEventListener("click",loadAdminUsers);$("adminSearch").addEventListener("input",renderAdminUsers);
+$("adminUsers").addEventListener("click",async event=>{const button=event.target.closest("button[data-admin-action]");if(!button)return;const action=button.dataset.adminAction,userId=button.dataset.userId,user=adminUsersCache.find(u=>u.id===userId);if(!user)return;const promptText=action==="delete"?`Excluir permanentemente a conta ${user.email||""}? Essa ação não pode ser desfeita.`:action==="ban"?`Bloquear a conta ${user.email||""}?`:`Desbloquear a conta ${user.email||""}?`;if(!confirm(promptText))return;button.disabled=true;adminStatus("Aplicando alteração...");try{await adminRequest(action,userId);adminStatus("Alteração concluída.");await loadAdminUsers();}catch(e){console.error(e);adminStatus("Falha: "+(e.message||"erro desconhecido"));button.disabled=false;}});
+
+function renderAll(){renderToday();renderHabits();renderPhysical();renderBooks();renderGratitude();renderFailures()}
+$("exportBtn").onclick=()=>{let blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="caverna-backup-"+today()+".json";a.click();URL.revokeObjectURL(a.href)};
+$("importBtn").onclick=()=>$("importFile").click();
+$("importFile").onchange=async e=>{let f=e.target.files[0];if(!f)return;try{let d=JSON.parse(await f.text());if(!d.habits||!d.checks)throw 0;if(confirm("Substituir os dados atuais pelos dados do arquivo?")){data=d;save()}}catch{alert("Arquivo inválido.")}e.target.value=""};
+$("notifyPermission").onclick=async()=>{if(!("Notification"in window)){$("notifyStatus").textContent="Este navegador não oferece notificações.";return}let p=await Notification.requestPermission();$("notifyStatus").textContent="Permissão: "+p};
+$("clearData").onclick=()=>{if(confirm("Apagar todos os registros? Exporte um backup antes, se quiser guardá-los.")){localStorage.removeItem("cavernaData");data=freshData();save()}};
+renderAll();
+registerCavernaSW();
+bootAuth();
+</script>
+</body></html>
+n-bottom:24px}
 .brand{display:flex;align-items:center;gap:12px}.mark{width:42px;height:42px;border:1px solid #55555e;border-radius:12px;display:grid;place-items:center;color:#ddd;font-size:20px}
 .brand h1{font-size:19px;letter-spacing:.18em;margin:0}.brand p{font-size:11px;color:var(--muted);margin:2px 0 0;letter-spacing:.13em}
 nav{display:flex;gap:7px;flex-wrap:wrap;margin:0 0 22px}nav button{background:transparent;color:var(--muted)}nav button.active{background:#242428;color:var(--text);border-color:#55555d}
