@@ -314,7 +314,21 @@ let hs=data.habits.filter(scheduled),done=hs.filter(h=>data.checks[checkKey(h.id
 $("doneCount").textContent=done;$("totalCount").textContent=hs.length;$("percentCount").textContent=hs.length?Math.round(done/hs.length*100)+"%":"—";
 $("todayHabits").innerHTML=hs.length?hs.map(h=>`<div class="habit ${data.checks[checkKey(h.id)]?'done':''}"><input type="checkbox" ${data.checks[checkKey(h.id)]?'checked':''} onchange="toggleHabit('${h.id}',this.checked)"><div class="name"><div>${esc(h.name)}</div><div class="meta">${esc(h.target||h.category)} ${h.time?'· '+esc(h.time):''}</div></div><span class="pill">${esc(h.category)}</span></div>`).join(""):'<div class="empty">Nenhum hábito programado para hoje.</div>';
 }
-window.toggleHabit=(id,v)=>{data.checks[checkKey(id)]=v;save()};
+window.toggleHabit=async(id,v)=>{
+ const key=checkKey(id);
+ data.checks[key]=v;
+ save();
+ // Ao concluir, sincroniza primeiro o estado e depois solicita o parabéns via push.
+ if(v && currentUser && sb){
+  try{
+   await persistUserData();
+   const {error}=await sb.functions.invoke("caverna-push-reminders",{
+    body:{action:"habit_completed",habit_id:String(id),date:today()}
+   });
+   if(error)console.warn("Não foi possível enviar o parabéns por push:",error);
+  }catch(e){console.warn("Falha ao solicitar parabéns por push:",e)}
+ }
+};
 function renderHabits(){
 $("habitCount").textContent=data.habits.length+" hábitos";
 $("habitList").innerHTML=data.habits.length?data.habits.map(h=>`<div class="listitem"><div class="row"><div><strong>${esc(h.name)}</strong><div class="meta">${esc(h.category)} · ${h.frequency==="daily"?"Diário":(h.days||[]).map(d=>["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"][d]).join(", ")} ${h.time?'· '+esc(h.time):''}</div></div><div class="actions"><button class="small" onclick="editHabit('${h.id}')">Editar</button><button class="small" onclick="toggleActive('${h.id}')">${h.active===false?"Ativar":"Pausar"}</button><button class="small danger" onclick="deleteHabit('${h.id}')">Excluir</button></div></div></div>`).join(""):'<div class="empty">Nenhum hábito cadastrado.</div>';
