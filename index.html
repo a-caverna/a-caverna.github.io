@@ -412,6 +412,58 @@ footer{margin:38px 0 8px;color:#665d72}
 .program-day-detail{display:flex;flex-direction:column}
 .program-exercises-preview[open]{padding-top:5px;border-top:1px solid #302a3a}
 
+
+/* Progressão sempre visível como resumo compacto dentro do exercício */
+.exercise-progression{display:block;margin:11px 0 5px;border:1px solid #463654;border-radius:11px;background:#17131e;overflow:hidden}
+.exercise-progression summary{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 12px;color:#d7baf7;font-size:11px;font-weight:650;cursor:pointer;list-style:none}
+.exercise-progression summary::-webkit-details-marker{display:none}
+.exercise-progression summary::after{content:"＋";color:#b58be5;font-size:15px;flex:0 0 auto}
+.exercise-progression[open] summary::after{content:"−"}
+.exercise-progression-label{display:flex;flex-direction:column;gap:3px;min-width:0}
+.exercise-progression-label>span{font-weight:750;color:#d8baf6}
+.exercise-progression-label small{font-size:10px;font-weight:400;color:#a99ab8}
+.exercise-progress-current{margin-left:auto;color:#ead9ff;font-size:12px;white-space:nowrap}
+.exercise-progression-empty{padding:10px 12px}
+.exercise-progression-empty .exercise-progression-label small{color:#aaa0b1}
+.exercise-progression-empty p{margin:7px 0 0;font-size:10px;color:#93899c}
+.exercise-progress-content{padding:2px 11px 11px;border-top:1px solid #30283a}
+.exercise-progress-stats{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:9px 0 2px}
+.exercise-progress-stats strong{font-size:19px;color:#e0c6ff}
+.exercise-progress-stats small{font-size:10px;color:#92899c}
+.exercise-progress-content .progression-chart{width:100%;max-height:105px;margin:5px 0}
+.exercise-progress-history{display:grid;gap:5px}
+.exercise-progress-history>div{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-top:1px solid #292330;font-size:10px;color:#9f96a9}
+.exercise-progress-history b{color:#d8c8e8;text-align:right}
+
+
+/* Card de hidratação — registro rápido e meta diária */
+.water-card{background:linear-gradient(145deg,#171d2a,#11141d);border-color:#34445a}
+.water-card-heading{display:flex;justify-content:space-between;align-items:center}
+.water-card-heading h3{margin:4px 0 0}
+.water-eyebrow{font-size:9px;letter-spacing:.18em;font-weight:800;color:#8fc9f3}
+.water-glass{width:39px;height:39px;display:grid;place-items:center;border:1px solid #3e6381;border-radius:13px;background:#1b2b3b;font-size:20px}
+.water-total{display:flex;align-items:baseline;gap:7px;margin:18px 0 10px}
+.water-total strong{font-size:29px;letter-spacing:-.04em;color:#d8efff}
+.water-total span{font-size:11px;color:#9aadc0}
+.water-track{height:9px;border-radius:99px;background:#283747;overflow:hidden}
+.water-track i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,#4d9dd1,#8bd4f4);transition:width .25s ease}
+.water-progress-meta{display:flex;justify-content:space-between;gap:8px;margin-top:7px;font-size:10px;color:#a5b7c8}
+.water-quick-add{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:16px}
+.water-quick-add button{padding:9px 5px;border-color:#38536a;background:#1b2a39;color:#c8eaff;font-size:11px;font-weight:700}
+.water-quick-add button:hover{border-color:#75bce8;background:#243b50}
+.water-custom-form{display:flex;gap:7px;margin-top:9px}
+.water-custom-form input{min-width:0;flex:1;font-size:11px}
+.water-custom-form button{white-space:nowrap;font-size:11px;padding:8px 11px}
+.water-goal-settings{margin-top:13px;border-top:1px solid #2e3d4d;padding-top:10px}
+.water-goal-settings summary{font-size:10px;color:#9fc9e6;cursor:pointer}
+.water-goal-settings form{margin-top:9px}
+.water-goal-settings label{font-size:10px}
+.water-goal-edit{display:flex;gap:7px}
+.water-goal-edit input{flex:1;min-width:0}
+.water-goal-edit button{font-size:10px;padding:7px 10px}
+#waterStatus{margin:10px 0 0;font-size:10px;color:#9aadc0}
+@media(max-width:760px){.water-total strong{font-size:27px}.water-quick-add button{font-size:10px}}
+
 </style>
 </head>
 <body>
@@ -447,6 +499,7 @@ footer{margin:38px 0 8px;color:#665d72}
   <div class="stats"><div class="stat"><strong id="doneCount">0</strong><span>Rituais cumpridos</span></div><div class="stat"><strong id="totalCount">0</strong><span>Rituais programados</span></div><div class="stat"><strong id="percentCount">0%</strong><span>Execução do dia</span></div></div>
   <div class="grid"><div class="card span8"><div class="row"><h3>Compromissos de hoje</h3><button class="small" onclick="showPage('habits')">Gerenciar hábitos</button></div><div id="todayHabits"></div></div>
   <div class="card span4"><h3>Registro rápido</h3><p class="meta">Uma coisa pela qual sou grato hoje</p><textarea id="quickGratitude" placeholder="Escreva aqui..."></textarea><button class="primary" id="saveQuickGratitude">Registrar gratidão</button><p class="meta" id="gratitudeStatus"></p></div>
+  <div class="card span4 water-card"><div class="water-card-heading"><div><span class="water-eyebrow">HIDRATAÇÃO</span><h3>Água de hoje</h3></div><span class="water-glass" aria-hidden="true">💧</span></div><div class="water-total"><strong id="waterConsumed">0 ml</strong><span id="waterGoalLabel">de 3.000 ml</span></div><div class="water-track"><i id="waterProgressBar"></i></div><div class="water-progress-meta"><span id="waterPercent">0% da meta</span><span id="waterRemaining">Faltam 3.000 ml</span></div><div class="water-quick-add"><button type="button" onclick="addWater(250)">+250 ml</button><button type="button" onclick="addWater(500)">+500 ml</button><button type="button" onclick="addWater(1000)">+1 litro</button></div><form id="waterCustomForm" class="water-custom-form"><input id="waterCustomAmount" type="number" min="1" max="5000" step="50" inputmode="numeric" placeholder="Outra quantidade (ml)"><button type="submit" class="primary">Adicionar</button></form><details class="water-goal-settings"><summary>Alterar minha meta diária</summary><form id="waterGoalForm"><label for="waterGoalInput">Meta diária (litros)</label><div class="water-goal-edit"><input id="waterGoalInput" type="number" min="0.25" max="10" step="0.25" value="3"><button type="submit">Salvar meta</button></div></form></details><p class="meta" id="waterStatus" aria-live="polite">Cada copo conta. Bora hidratar!</p></div>
   <div class="card span12"><h3>Palavra de ordem</h3><p>Não espere vontade. Honre o compromisso.</p></div></div>
 </section>
 
@@ -605,13 +658,13 @@ function showAuth(mode="login"){
  $("authForm").dataset.mode=mode;authMsg("");
 }
 function showApp(user){currentUser=user;$("authScreen").style.display="none";$("appShell").style.display="block";$("userEmail").textContent=user.email||"Conta conectada";checkAdminAccess(user)}
-function freshData(){return {habits:defaultHabits.map(h=>({...h,id:uid(),active:true})),checks:{},body:[],workouts:[],workoutPrograms:[],workoutSessions:[],books:[],readings:[],gratitude:[],failures:[]}}
+function freshData(){return {water:{goalMl:3000,daily:{}},habits:defaultHabits.map(h=>({...h,id:uid(),active:true})),checks:{},body:[],workouts:[],workoutPrograms:[],workoutSessions:[],books:[],readings:[],gratitude:[],failures:[]}}
 function migrateWorkoutPrograms(list){
  const items=Array.isArray(list)?list:[], modern=items.filter(p=>Array.isArray(p.days)), legacy=items.filter(p=>!Array.isArray(p.days));
  const grouped=new Map();for(const p of legacy){const name=(p.name||"Treino").trim();if(!grouped.has(name))grouped.set(name,{id:p.id||uid(),name,createdAt:p.createdAt,days:[]});const group=grouped.get(name);const key=p.day||"A";let day=group.days.find(d=>d.key===key);if(!day){day={key,label:p.dayLabel||"",exercises:[]};group.days.push(day)}day.exercises.push(...(Array.isArray(p.exercises)?p.exercises:[]))}
  return [...modern,...grouped.values()];
 }
-function normalizeData(d){let b=freshData();return {...b,...(d||{}),habits:Array.isArray(d?.habits)?d.habits:b.habits,checks:d?.checks||{},body:d?.body||[],workouts:d?.workouts||[],workoutPrograms:migrateWorkoutPrograms(d?.workoutPrograms),workoutSessions:Array.isArray(d?.workoutSessions)?d.workoutSessions:[],books:d?.books||[],readings:d?.readings||[],gratitude:d?.gratitude||[],failures:d?.failures||[]}}
+function normalizeData(d){let b=freshData();return {...b,...(d||{}),water:{goalMl:Number(d?.water?.goalMl)||3000,daily:d?.water?.daily&&typeof d.water.daily==="object"?d.water.daily:{}},habits:Array.isArray(d?.habits)?d.habits:b.habits,checks:d?.checks||{},body:d?.body||[],workouts:d?.workouts||[],workoutPrograms:migrateWorkoutPrograms(d?.workoutPrograms),workoutSessions:Array.isArray(d?.workoutSessions)?d.workoutSessions:[],books:d?.books||[],readings:d?.readings||[],gratitude:d?.gratitude||[],failures:d?.failures||[]}}
 async function loadUserData(user){
  const {data:row,error}=await sb.from("caverna_data").select("payload").eq("user_id",user.id).maybeSingle();if(error)throw error;
  if(row?.payload){data=normalizeData(row.payload);localStorage.setItem("cavernaData",JSON.stringify(data))}
@@ -659,10 +712,32 @@ $("nav").addEventListener("click",e=>{let b=e.target.closest("button[data-page]"
 $("todayDate").textContent=new Date().toLocaleDateString("pt-BR",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
 function scheduled(h){let d=new Date().getDay();return h.active!==false&&(h.frequency!=="weekly"||(h.days||[]).includes(d))}
 function checkKey(id,date=today()){return date+"_"+id}
+function waterTodayTotal(){return Math.max(0,Number(data.water?.daily?.[today()])||0)}
+function formatWaterMl(value){const n=Math.max(0,Math.round(Number(value)||0));return n>=1000?(n%1000===0?(n/1000).toLocaleString("pt-BR")+" L":(n/1000).toLocaleString("pt-BR",{maximumFractionDigits:2})+" L"):n.toLocaleString("pt-BR")+" ml"}
+function renderWaterCard(){
+ const consumed=waterTodayTotal(),goal=Math.max(250,Number(data.water?.goalMl)||3000),remaining=Math.max(0,goal-consumed),percent=Math.round(consumed/goal*100);
+ const total=$("waterConsumed");if(!total)return;
+ total.textContent=formatWaterMl(consumed);$("waterGoalLabel").textContent="de "+formatWaterMl(goal);
+ $("waterProgressBar").style.width=Math.min(100,percent)+"%";
+ $("waterPercent").textContent=percent+"% da meta";
+ $("waterRemaining").textContent=remaining? "Faltam "+formatWaterMl(remaining):"Meta diária alcançada! 🎉";
+ $("waterGoalInput").value=(goal/1000).toLocaleString("pt-BR",{maximumFractionDigits:2});
+ $("waterStatus").textContent=consumed>=goal?"Meta de hidratação concluída. Excelente!":consumed===0?"Cada copo conta. Bora hidratar!":"Mais "+formatWaterMl(remaining)+" para alcançar sua meta.";
+}
+window.addWater=(amount)=>{
+ const ml=Math.round(Number(amount)||0);if(!Number.isFinite(ml)||ml<=0||ml>5000){alert("Informe uma quantidade entre 1 e 5.000 ml.");return}
+ data.water=data.water||{goalMl:3000,daily:{}};
+ data.water.daily=data.water.daily||{};
+ data.water.daily[today()]=(Number(data.water.daily[today()])||0)+ml;
+ save();
+};
+$("waterCustomForm").onsubmit=e=>{e.preventDefault();const input=$("waterCustomAmount"),amount=Number(input.value);if(!amount){alert("Informe a quantidade de água em ml.");return}addWater(amount);input.value=""};
+$("waterGoalForm").onsubmit=e=>{e.preventDefault();const liters=Number($("waterGoalInput").value.replace(",","."));if(!Number.isFinite(liters)||liters<.25||liters>10){alert("A meta deve ficar entre 0,25 e 10 litros.");return}data.water=data.water||{daily:{}};data.water.goalMl=Math.round(liters*1000);save();$("waterGoalForm").closest("details").open=false};
 function renderToday(){
 let hs=data.habits.filter(scheduled),done=hs.filter(h=>data.checks[checkKey(h.id)]).length;
 $("doneCount").textContent=done;$("totalCount").textContent=hs.length;$("percentCount").textContent=hs.length?Math.round(done/hs.length*100)+"%":"—";
 $("todayHabits").innerHTML=hs.length?hs.map(h=>`<div class="habit ${data.checks[checkKey(h.id)]?'done':''}"><input type="checkbox" ${data.checks[checkKey(h.id)]?'checked':''} onchange="toggleHabit('${h.id}',this.checked)"><div class="name"><div>${esc(h.name)}</div><div class="meta">${esc(h.target||h.category)} ${h.time?'· '+esc(h.time):''}</div></div><span class="pill">${esc(h.category)}</span></div>`).join(""):'<div class="empty">Nenhum hábito programado para hoje.</div>';
+renderWaterCard();
 }
 window.toggleHabit=async(id,v)=>{
  const key=checkKey(id);
@@ -786,27 +861,29 @@ $("resetProgramForm").onclick=()=>{if(confirm("Limpar a ficha que está sendo mo
 $("trainingProgramForm").onsubmit=e=>{e.preventDefault();programDraftDays[currentDraftDay].label=$("programDayName").value.trim();const name=$("programName").value.trim();const days=trainingDayKeys.map(key=>{const d=ensureDraftDay(key);return {key,label:(d.label||"").trim(),exercises:d.exercises.map(x=>({...x}))}}).filter(d=>d.exercises.length>0);if(!days.length){alert("Adicione pelo menos um exercício em algum dia antes de salvar.");return}const record={id:editingProgramId||uid(),name,days,createdAt:new Date().toISOString()};data.workoutPrograms=data.workoutPrograms||[];if(editingProgramId){const idx=data.workoutPrograms.findIndex(p=>p.id===editingProgramId);if(idx>=0)data.workoutPrograms[idx]=record;else data.workoutPrograms.push(record)}else data.workoutPrograms.push(record);resetProgramForm();save();showTrainingHome()};
 function normalizeProgram(p){if(Array.isArray(p.days))return {...p,days:p.days.map((d,i)=>({key:d.key||d.day||trainingDayKeys[i]||"A",label:d.label||d.dayName||"",exercises:Array.isArray(d.exercises)?d.exercises:[]}))};return {id:p.id,name:p.name||"Treino",createdAt:p.createdAt,days:[{key:p.day||"A",label:p.dayName||"",exercises:Array.isArray(p.exercises)?p.exercises:[]}]}}
 function exerciseProgressionMarkup(programId,programName,exerciseName){
- const sessions=(data.workoutSessions||[]).filter(s=>
-  (programId&&s.programId?s.programId===programId:(s.programName||"Treino")===programName)
- ).slice().sort((a,b)=>(a.date||"").localeCompare(b.date||""));
+ // A progressão pertence ao exercício: considera sessões anteriores pelo nome,
+ // inclusive registros antigos sem programId ou com outra ficha.
  const rows=[];
+ const sessions=(data.workoutSessions||[]).slice().sort((a,b)=>(a.date||"").localeCompare(b.date||""));
  sessions.forEach(s=>(s.exercises||[]).forEach(ex=>{
   if((ex.name||"").trim().toLocaleLowerCase("pt-BR")!==(exerciseName||"").trim().toLocaleLowerCase("pt-BR"))return;
   const loads=[];
   if(ex.actualLoads&&typeof ex.actualLoads==="object")Object.keys(ex.actualLoads).sort((a,b)=>Number(a)-Number(b)).forEach(k=>{
-   const v=Number(ex.actualLoads[k]);if(ex.doneSets?.includes(Number(k))&&Number.isFinite(v)&&v>=0)loads.push(v)
+   const v=Number(ex.actualLoads[k]);
+   const done=Array.isArray(ex.doneSets)?ex.doneSets.map(Number).includes(Number(k)):false;
+   if(done&&Number.isFinite(v)&&v>=0)loads.push(v);
   });
-  if(!loads.length&&ex.doneSets?.length&&ex.currentLoad!==""&&ex.currentLoad!=null&&Number.isFinite(Number(ex.currentLoad)))loads.push(Number(ex.currentLoad));
-  if(loads.length)rows.push({date:s.date||"—",loads,top:Math.max(...loads)});
+  if(!loads.length&&Array.isArray(ex.doneSets)&&ex.doneSets.length&&ex.currentLoad!==""&&ex.currentLoad!=null&&Number.isFinite(Number(ex.currentLoad)))loads.push(Number(ex.currentLoad));
+  if(loads.length)rows.push({date:s.date||"—",loads,top:Math.max(...loads),programName:s.programName||programName||"Treino"});
  }));
- if(!rows.length)return `<details class="exercise-progression"><summary>↗ Ver progressão deste exercício</summary><p class="meta">A evolução aparecerá aqui depois que você concluir e finalizar uma sessão deste exercício.</p></details>`;
+ if(!rows.length)return `<div class="exercise-progression exercise-progression-empty"><div class="exercise-progression-label"><span>↗ Progressão de carga</span><small>Sem histórico registrado</small></div><p>Conclua e finalize uma sessão para começar a acompanhar este exercício.</p></div>`;
  const values=rows.map(r=>r.top),min=Math.min(...values),max=Math.max(...values),range=max-min||1,W=420,H=88,pad=10;
  const pts=values.map((v,i)=>`${pad+(values.length===1?(W-2*pad)/2:i*(W-2*pad)/(values.length-1))},${H-pad-((v-min)/range)*(H-2*pad)}`).join(" ");
  const circles=values.map((v,i)=>{const x=pad+(values.length===1?(W-2*pad)/2:i*(W-2*pad)/(values.length-1)),y=H-pad-((v-min)/range)*(H-2*pad);return `<circle cx="${x}" cy="${y}" r="3.8" class="progression-point"/><text x="${x}" y="${Math.max(10,y-9)}" text-anchor="middle" class="progression-value">${v.toLocaleString("pt-BR")}</text>`}).join("");
  const prev=rows.length>1?rows[rows.length-2]:null,last=rows[rows.length-1],diff=prev?last.top-prev.top:null;
  const delta=diff===null?"Primeiro registro":diff>0?`+${diff.toLocaleString("pt-BR")} kg`:diff<0?`${diff.toLocaleString("pt-BR")} kg`:"Sem alteração";
  const cls=diff===null?"neutral":diff>0?"up":diff<0?"down":"neutral";
- return `<details class="exercise-progression"><summary>↗ Ver progressão deste exercício <span class="exercise-progress-current">${last.top.toLocaleString("pt-BR")} kg</span></summary>
+ return `<details class="exercise-progression"><summary><span class="exercise-progression-label"><span>↗ Progressão de carga</span><small>${rows.length} sessão(ões) · última maior carga: ${last.top.toLocaleString("pt-BR")} kg</small></span><span class="exercise-progress-current">${last.top.toLocaleString("pt-BR")} kg</span></summary>
   <div class="exercise-progress-content"><div class="exercise-progress-stats"><strong>${last.top.toLocaleString("pt-BR")} kg</strong><span class="progression-change ${cls}">${delta}${prev?" vs. sessão anterior":""}</span><small>${rows.length} sessão(ões) registradas</small></div>
   <svg class="progression-chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Progressão de carga de ${esc(exerciseName)}"><line x1="${pad}" y1="${H/2}" x2="${W-pad}" y2="${H/2}" class="progression-gridline"/><polyline points="${pts}" class="progression-line"/>${circles}</svg>
   <div class="exercise-progress-history">${rows.slice().reverse().map(r=>`<div><span>${esc(r.date)}</span><b>${r.loads.map(v=>v.toLocaleString("pt-BR")+" kg").join(" · ")}</b></div>`).join("")}</div></div></details>`;
