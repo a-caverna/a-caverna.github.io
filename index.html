@@ -632,6 +632,16 @@ footer{margin:38px 0 8px;color:#665d72}
  .real-human-model img{height:285px;max-width:210px}
 }
 
+
+/* Treinos: registro avulso e histórico no próprio módulo */
+#page-training .physical-workout-section{margin-top:20px}
+#page-training .physical-workout-section>.physical-section-heading{margin:0 0 12px}
+#page-training .physical-workout-section .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+#page-training .physical-workout-section .grid>.card{min-width:0}
+#page-training #workoutHistory .listitem{padding:12px 0;border-bottom:1px solid #302a38}
+#page-training #workoutHistory .listitem:last-child{border-bottom:0}
+@media(max-width:760px){#page-training .physical-workout-section .grid{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -731,11 +741,7 @@ footer{margin:38px 0 8px;color:#665d72}
   <div class="physical-save-row"><p class="meta">Os campos são opcionais, exceto a data. Você pode registrar apenas o peso, por exemplo.</p><button class="primary" type="submit">Salvar avaliação</button></div>
  </form>
  <div class="card physical-history-card"><div class="physical-section-heading"><div><span class="physical-kicker">04 · ACOMPANHAMENTO</span><h3>Histórico corporal</h3></div><span class="pill" id="bodyRecordCount">0 avaliações</span></div><div id="bodyHistory"></div></div>
- <div class="physical-workout-section"><div class="physical-section-heading"><div><span class="physical-kicker">DESEMPENHO</span><h3>Registro de treinos</h3><p class="sub">Registre sessões realizadas fora das fichas de treino.</p></div></div>
-  <div class="grid"><div class="card span6">
-   <div class="card physical-template-card"><h3>Usar uma ficha da biblioteca</h3><p class="meta">Escolha a ficha e o dia realizado para preencher os exercícios automaticamente.</p><div class="formgrid"><div class="full"><label for="workoutTemplateProgram">Ficha cadastrada</label><select id="workoutTemplateProgram"><option value="">Selecionar ficha...</option></select></div><div class="full"><label for="workoutTemplateDay">Dia da ficha</label><select id="workoutTemplateDay" disabled><option value="">Selecione primeiro uma ficha</option></select></div></div><button type="button" id="loadWorkoutTemplate" class="small" style="margin-top:10px">Carregar exercícios deste dia</button><p id="workoutTemplateStatus" class="meta" role="status"></p></div>
-   <form id="workoutForm"><div class="formgrid"><div><label>Data</label><input id="workoutDate" type="date" required></div><div><label>Treino / grupo</label><input id="workoutName" required placeholder="Ex.: Treino de fim de ano — Dia A"></div></div><div style="margin-top:16px"><div class="row"><h3 style="margin:0">Exercícios</h3><button type="button" class="small" id="addExerciseBtn">+ Adicionar exercício</button></div><div id="workoutExercises"></div></div><button class="primary" style="margin-top:12px">Salvar treino</button></form>
-  </div><div class="card span6"><h3>Histórico de treinos</h3><div id="workoutHistory"></div></div></div>
+ 
  </div>
 </section>
 
@@ -757,8 +763,13 @@ footer{margin:38px 0 8px;color:#665d72}
     </form>
    </div>
    <div class="card span8"><div class="row"><h3>Minha biblioteca</h3><span class="pill" id="programCount">0 fichas</span></div><div id="trainingProgramList"></div></div>
-   <div class="card span12"><h3>Histórico de sessões</h3><div id="trainingSessionHistory"></div></div>
+   
   </div>
+  <div class="physical-workout-section"><div class="physical-section-heading"><div><span class="physical-kicker">REGISTRO E HISTÓRICO</span><h3>Treinos realizados</h3><p class="sub">Registre sessões avulsas ou acompanhe automaticamente os treinos finalizados pelas suas fichas.</p></div></div>
+  <div class="grid"><div class="card span6">
+   <div class="card physical-template-card"><h3>Usar uma ficha da biblioteca</h3><p class="meta">Escolha a ficha e o dia realizado para preencher os exercícios automaticamente.</p><div class="formgrid"><div class="full"><label for="workoutTemplateProgram">Ficha cadastrada</label><select id="workoutTemplateProgram"><option value="">Selecionar ficha...</option></select></div><div class="full"><label for="workoutTemplateDay">Dia da ficha</label><select id="workoutTemplateDay" disabled><option value="">Selecione primeiro uma ficha</option></select></div></div><button type="button" id="loadWorkoutTemplate" class="small" style="margin-top:10px">Carregar exercícios deste dia</button><p id="workoutTemplateStatus" class="meta" role="status"></p></div>
+   <form id="workoutForm"><div class="formgrid"><div><label>Data</label><input id="workoutDate" type="date" required></div><div><label>Treino / grupo</label><input id="workoutName" required placeholder="Ex.: Treino de fim de ano — Dia A"></div></div><div style="margin-top:16px"><div class="row"><h3 style="margin:0">Exercícios</h3><button type="button" class="small" id="addExerciseBtn">+ Adicionar exercício</button></div><div id="workoutExercises"></div></div><button class="primary" style="margin-top:12px">Salvar treino</button></form>
+  </div><div class="card span6"><h3>Histórico de treinos</h3><div id="workoutHistory"></div></div></div>
  </div>
  <div id="trainingDayView" class="hidden">
   <div class="actions" style="margin-bottom:14px"><button type="button" id="backToTrainingLibrary">← Voltar à biblioteca</button></div>
@@ -1012,7 +1023,6 @@ function renderBodyFigure(gender){
  figure.innerHTML=`<div class="real-human-model"><img src="${src}" alt="Modelo corporal humano ${label}" loading="eager"><span class="real-model-caption">MODELO CORPORAL · VISTA FRONTAL</span></div>`;
 }
 function renderPhysical(){
- renderWorkoutTemplateOptions();
  const measureFields=[
  ["bodyFat","Gordura corporal","%"],["bodyNeck","Pescoço","cm"],["bodyChest","Tórax / peito","cm"],["bodyShoulders","Ombros","cm"],["bodyWaist","Cintura","cm"],["bodyAbdomen","Abdômen","cm"],["bodyHips","Quadril","cm"],
  ["bodyBicepsRight","Bíceps direito","cm"],["bodyBicepsLeft","Bíceps esquerdo","cm"],["bodyForearmRight","Antebraço direito","cm"],["bodyForearmLeft","Antebraço esquerdo","cm"],["bodyThighRight","Coxa direita","cm"],["bodyThighLeft","Coxa esquerda","cm"],["bodyCalfRight","Panturrilha direita","cm"],["bodyCalfLeft","Panturrilha esquerda","cm"]
@@ -1028,7 +1038,6 @@ function renderPhysical(){
   const weight=x.weight??x.bodyWeight;
   return `<div class="physical-history-item"><div class="physical-history-top"><div><strong>${esc(x.date)}</strong><small>${x.gender==="feminino"?"Modelo feminino":x.gender==="masculino"?"Modelo masculino":""}</small></div><strong class="physical-history-weight">${weight!==undefined&&weight!==null&&weight!==""?esc(weight)+" kg":"—"}</strong></div>${measures.length?`<div class="physical-history-measures">${measures.map(m=>`<span>${m}</span>`).join("")}</div>`:""}${x.note?`<p class="meta">${esc(x.note)}</p>`:""}</div>`;
  }).join("")||'<div class="empty">Suas avaliações aparecerão aqui depois do primeiro registro.</div>';
- $("workoutHistory").innerHTML=data.workouts.slice().reverse().map(x=>{let exercises=Array.isArray(x.exercises)?x.exercises:(x.exercise?[{name:x.exercise,load:x.load,sets:x.sets,reps:x.reps}]:[]);return `<div class="listitem"><strong>${esc(x.date)} · ${esc(x.name)}</strong>${x.programName?`<div class="meta">Ficha: ${esc(x.programName)} · Dia ${esc(x.programDay||"A")}${x.programDayLabel?" — "+esc(x.programDayLabel):""}</div>`:""}${exercises.map((ex,i)=>`<div class="meta" style="margin-top:6px">${i+1}. ${esc(ex.name||"Exercício")}${ex.load!==""&&ex.load!=null?" · "+esc(ex.load)+" kg":""}${ex.sets?" · "+esc(ex.sets)+" séries":""}${ex.reps?" × "+esc(ex.reps)+" reps":""}</div>`).join("")}${x.duration?`<div class="meta">${esc(x.duration)} min</div>`:""}</div>`}).join("")||'<div class="empty">Sem treinos registrados.</div>';
 }
 $("bodyDate").value=today();$("workoutDate").value=today();
 $("bodyGender").onchange=()=>{data.profile=data.profile||{};data.profile.bodyGender=$("bodyGender").value;renderBodyFigure(data.profile.bodyGender);save()};
@@ -1125,8 +1134,38 @@ window.toggleTrainingProgram = id => {
   window.selectedTrainingProgramId = window.selectedTrainingProgramId === id ? null : id;
   renderTraining();
 };
+function renderWorkoutHistory(){
+ const target=$("workoutHistory");if(!target)return;
+ const records=(data.workouts||[]).slice();
+ const mirrored=new Set(records.map(x=>x.sessionId).filter(Boolean));
+ (data.workoutSessions||[]).forEach(s=>{
+  if(mirrored.has(s.id))return;
+  records.push({
+   id:s.id,sessionId:s.id,date:s.date,
+   name:`${s.programName||"Treino"} — Dia ${s.day||"A"}${s.dayLabel?" · "+s.dayLabel:""}`,
+   programName:s.programName,programDay:s.day,programDayLabel:s.dayLabel,
+   duration:s.duration,completedSets:s.completedSets,totalSets:s.totalSets,
+   exercises:(s.exercises||[]).map(ex=>({
+    name:ex.name,load:ex.currentLoad??ex.load??"",
+    sets:(ex.doneSets||[]).length||ex.sets,
+    reps:ex.repsMin!=null&&ex.repsMax!=null?(ex.repsMin===ex.repsMax?String(ex.repsMin):`${ex.repsMin}–${ex.repsMax}`):"",
+    actualLoads:ex.actualLoads||{},doneSets:ex.doneSets||[]
+   }))
+  });
+ });
+ records.sort((a,b)=>(b.date||"").localeCompare(a.date||""));
+ target.innerHTML=records.length?records.map(x=>{
+  const exercises=Array.isArray(x.exercises)?x.exercises:(x.exercise?[{name:x.exercise,load:x.load,sets:x.sets,reps:x.reps}]:[]);
+  return `<div class="listitem"><div class="row"><strong>${esc(x.name||x.programName||"Treino")}</strong><span class="meta">${esc(x.date||"")}</span></div>${x.programName&&x.programDay?`<div class="meta">Ficha: ${esc(x.programName)} · Dia ${esc(x.programDay)}${x.programDayLabel?" — "+esc(x.programDayLabel):""}</div>`:""}${x.completedSets!=null?`<div class="meta">${x.completedSets}/${x.totalSets||0} séries concluídas${x.duration?" · "+x.duration+" min":""}</div>`:""}${exercises.map((ex,i)=>{
+   const loads=ex.actualLoads&&typeof ex.actualLoads==="object"?Object.keys(ex.actualLoads).sort((a,b)=>Number(a)-Number(b)).map(k=>ex.actualLoads[k]+" kg"):[];
+   return `<div class="meta" style="margin-top:6px">${i+1}. ${esc(ex.name||"Exercício")}${loads.length?" · cargas: "+loads.map(esc).join(", "):ex.load!==""&&ex.load!=null?" · "+esc(ex.load)+" kg":""}${ex.sets?" · "+esc(ex.sets)+" séries":""}${ex.reps?" × "+esc(ex.reps)+" reps":""}</div>`;
+  }).join("")}</div>`;
+ }).join(""):'<div class="empty">Nenhum treino registrado ainda. Quando finalizar uma sessão, ela aparecerá aqui automaticamente.</div>';
+}
 function renderTraining(){
  const list=$("trainingProgramList");if(!list)return;
+ renderWorkoutTemplateOptions();
+ renderWorkoutHistory();
  const programs=(data.workoutPrograms||[]).map(normalizeProgram);
  if(window.selectedTrainingProgramId && !programs.some(p=>p.id===window.selectedTrainingProgramId))window.selectedTrainingProgramId=null;
  $("programCount").textContent=programs.length+" ficha(s)";
@@ -1148,8 +1187,6 @@ function renderTraining(){
    ${details}
   </article>`;
  }).join(""):'<div class="empty">Sua biblioteca está vazia. Crie sua primeira ficha — por exemplo, Shape of Hate — e organize os dias e exercícios dentro dela.</div>';
- const hist=$("trainingSessionHistory"),sessions=(data.workoutSessions||[]).slice().reverse();
- hist.innerHTML=sessions.length?sessions.map(s=>`<div class="listitem"><div class="row"><strong>${esc(s.programName)} · Dia ${esc(s.day||"A")}${s.dayLabel?" · "+esc(s.dayLabel):""}</strong><span class="meta">${esc(s.date)}</span></div><div class="meta">${s.completedSets||0}/${s.totalSets||0} séries concluídas${s.duration?" · "+s.duration+" min":""}</div></div>`).join(""):'<div class="empty">Nenhuma sessão concluída ainda.</div>';
  renderActiveTraining();
 }
 
@@ -1170,7 +1207,7 @@ function updateTimerDisplay(){const n=$("timerNumber");if(!n)return;const m=Math
 function stopRestTimer(){if(restInterval){clearInterval(restInterval);restInterval=null}restPaused=false;if($("trainingTimer")&&restRemaining<=0)$("trainingTimer").classList.add("hidden")}
 $("timerPauseBtn").onclick=()=>{if(!restInterval)return;restPaused=!restPaused;$("timerPauseBtn").textContent=restPaused?"Continuar":"Pausar";$("timerMessage").textContent=restPaused?"Descanso pausado.":"Descanso em andamento."};
 $("timerSkipBtn").onclick=()=>{stopRestTimer();restRemaining=0;$("timerMessage").textContent="Descanso pulado. Pode continuar.";$("trainingTimer").classList.add("hidden");playRestBeep(1100)};
-$("finishTrainingBtn").onclick=()=>{if(!activeTraining)return;const total=activeTraining.exercises.reduce((n,x)=>n+(Number(x.sets)||0),0),done=activeTraining.exercises.reduce((n,x)=>n+x.doneSets.length,0);if(done===0&&!confirm("Você ainda não concluiu nenhuma série. Finalizar mesmo assim?"))return;const session={id:uid(),programId:activeTraining.programId,programName:activeTraining.programName,day:activeTraining.day,dayLabel:activeTraining.dayLabel||"",date:today(),completedSets:done,totalSets:total,duration:Math.max(1,Math.round((Date.now()-activeTraining.startedAt)/60000)),exercises:activeTraining.exercises.map(x=>({...x,doneSets:[...x.doneSets]}))};data.workoutSessions=data.workoutSessions||[];data.workoutSessions.push(session);activeTraining=null;stopRestTimer();restRemaining=0;save();renderActiveTraining();alert(`Treino registrado: ${done} de ${total} séries concluídas.`)};
+$("finishTrainingBtn").onclick=()=>{if(!activeTraining)return;const total=activeTraining.exercises.reduce((n,x)=>n+(Number(x.sets)||0),0),done=activeTraining.exercises.reduce((n,x)=>n+x.doneSets.length,0);if(done===0&&!confirm("Você ainda não concluiu nenhuma série. Finalizar mesmo assim?"))return;const session={id:uid(),programId:activeTraining.programId,programName:activeTraining.programName,day:activeTraining.day,dayLabel:activeTraining.dayLabel||"",date:activeTraining.date||today(),completedSets:done,totalSets:total,duration:Math.max(1,Math.round((Date.now()-activeTraining.startedAt)/60000)),exercises:activeTraining.exercises.map(x=>({...x,doneSets:[...x.doneSets],actualLoads:{...(x.actualLoads||{})}}))};data.workoutSessions=data.workoutSessions||[];data.workouts=data.workouts||[];if(!data.workoutSessions.some(s=>s.id===session.id))data.workoutSessions.push(session);if(!data.workouts.some(w=>w.sessionId===session.id)){data.workouts.push({id:session.id,sessionId:session.id,date:session.date,name:`${session.programName} — Dia ${session.day}${session.dayLabel?" · "+session.dayLabel:""}`,programId:session.programId,programName:session.programName,programDay:session.day,programDayLabel:session.dayLabel,completedSets:done,totalSets:total,duration:session.duration,exercises:session.exercises.map(ex=>({name:ex.name,load:ex.currentLoad??ex.load??"",sets:ex.doneSets.length,reps:ex.repsMin!=null&&ex.repsMax!=null?(ex.repsMin===ex.repsMax?String(ex.repsMin):`${ex.repsMin}–${ex.repsMax}`):"",actualLoads:{...(ex.actualLoads||{})},doneSets:[...ex.doneSets]}))})}activeTraining=null;stopRestTimer();restRemaining=0;save();renderActiveTraining();alert(`Treino registrado no histórico do dia ${session.date}: ${done} de ${total} séries concluídas.`)};
 trainingDayKeys.forEach(ensureDraftDay);renderDayTabs();selectDraftDay("A");
 let mentorBusy=false;
 function mentorStatus(message){const el=$("mentorStatus");if(el)el.textContent=message||""}
