@@ -385,6 +385,23 @@ footer{margin:38px 0 8px;color:#665d72}
  .progression-history-row{grid-template-columns:1fr;gap:3px}
 }
 
+
+/* Progressão fica dentro do exercício: compacta e sob demanda */
+.exercise-progression{margin:10px 0 4px;border:1px solid #3b3048;border-radius:10px;background:#15121b;overflow:hidden}
+.exercise-progression summary{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px 11px;color:#c9a9ec;font-size:11px;font-weight:650;cursor:pointer;list-style:none}
+.exercise-progression summary::-webkit-details-marker{display:none}
+.exercise-progression summary::after{content:"＋";color:#a875f5;font-size:15px}
+.exercise-progression[open] summary::after{content:"−"}
+.exercise-progress-current{margin-left:auto;color:#e1c9ff;font-size:11px}
+.exercise-progress-content{padding:2px 11px 11px;border-top:1px solid #30283a}
+.exercise-progress-stats{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:9px 0 2px}
+.exercise-progress-stats strong{font-size:19px;color:#e0c6ff}
+.exercise-progress-stats small{font-size:10px;color:#92899c}
+.exercise-progress-content .progression-chart{width:100%;max-height:105px;margin:5px 0}
+.exercise-progress-history{display:grid;gap:5px}
+.exercise-progress-history>div{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-top:1px solid #292330;font-size:10px;color:#9f96a9}
+.exercise-progress-history b{color:#d8c8e8;text-align:right}
+
 </style>
 </head>
 <body>
@@ -465,7 +482,6 @@ footer{margin:38px 0 8px;color:#665d72}
    </div>
    <div class="card span8"><div class="row"><h3>Minha biblioteca</h3><span class="pill" id="programCount">0 fichas</span></div><div id="trainingProgramList"></div></div>
    <div class="card span12"><h3>Histórico de sessões</h3><div id="trainingSessionHistory"></div></div>
-   <div class="card span12"><h3>Progressão de carga</h3><p class="meta">Acompanhe a carga registrada em cada série concluída. A progressão aparece conforme você salva suas sessões.</p><div id="loadProgressionHistory"></div></div>
   </div>
  </div>
  <div id="trainingDayView" class="hidden">
@@ -759,6 +775,33 @@ function resetProgramForm(){editingProgramId=null;programDraftDays={};trainingDa
 $("resetProgramForm").onclick=()=>{if(confirm("Limpar a ficha que está sendo montada?"))resetProgramForm()};
 $("trainingProgramForm").onsubmit=e=>{e.preventDefault();programDraftDays[currentDraftDay].label=$("programDayName").value.trim();const name=$("programName").value.trim();const days=trainingDayKeys.map(key=>{const d=ensureDraftDay(key);return {key,label:(d.label||"").trim(),exercises:d.exercises.map(x=>({...x}))}}).filter(d=>d.exercises.length>0);if(!days.length){alert("Adicione pelo menos um exercício em algum dia antes de salvar.");return}const record={id:editingProgramId||uid(),name,days,createdAt:new Date().toISOString()};data.workoutPrograms=data.workoutPrograms||[];if(editingProgramId){const idx=data.workoutPrograms.findIndex(p=>p.id===editingProgramId);if(idx>=0)data.workoutPrograms[idx]=record;else data.workoutPrograms.push(record)}else data.workoutPrograms.push(record);resetProgramForm();save();showTrainingHome()};
 function normalizeProgram(p){if(Array.isArray(p.days))return {...p,days:p.days.map((d,i)=>({key:d.key||d.day||trainingDayKeys[i]||"A",label:d.label||d.dayName||"",exercises:Array.isArray(d.exercises)?d.exercises:[]}))};return {id:p.id,name:p.name||"Treino",createdAt:p.createdAt,days:[{key:p.day||"A",label:p.dayName||"",exercises:Array.isArray(p.exercises)?p.exercises:[]}]}}
+function exerciseProgressionMarkup(programId,programName,exerciseName){
+ const sessions=(data.workoutSessions||[]).filter(s=>
+  (programId&&s.programId?s.programId===programId:(s.programName||"Treino")===programName)
+ ).slice().sort((a,b)=>(a.date||"").localeCompare(b.date||""));
+ const rows=[];
+ sessions.forEach(s=>(s.exercises||[]).forEach(ex=>{
+  if((ex.name||"").trim().toLocaleLowerCase("pt-BR")!==(exerciseName||"").trim().toLocaleLowerCase("pt-BR"))return;
+  const loads=[];
+  if(ex.actualLoads&&typeof ex.actualLoads==="object")Object.keys(ex.actualLoads).sort((a,b)=>Number(a)-Number(b)).forEach(k=>{
+   const v=Number(ex.actualLoads[k]);if(ex.doneSets?.includes(Number(k))&&Number.isFinite(v)&&v>=0)loads.push(v)
+  });
+  if(!loads.length&&ex.doneSets?.length&&ex.currentLoad!==""&&ex.currentLoad!=null&&Number.isFinite(Number(ex.currentLoad)))loads.push(Number(ex.currentLoad));
+  if(loads.length)rows.push({date:s.date||"—",loads,top:Math.max(...loads)});
+ }));
+ if(!rows.length)return `<details class="exercise-progression"><summary>↗ Ver progressão deste exercício</summary><p class="meta">A evolução aparecerá aqui depois que você concluir e finalizar uma sessão deste exercício.</p></details>`;
+ const values=rows.map(r=>r.top),min=Math.min(...values),max=Math.max(...values),range=max-min||1,W=420,H=88,pad=10;
+ const pts=values.map((v,i)=>`${pad+(values.length===1?(W-2*pad)/2:i*(W-2*pad)/(values.length-1))},${H-pad-((v-min)/range)*(H-2*pad)}`).join(" ");
+ const circles=values.map((v,i)=>{const x=pad+(values.length===1?(W-2*pad)/2:i*(W-2*pad)/(values.length-1)),y=H-pad-((v-min)/range)*(H-2*pad);return `<circle cx="${x}" cy="${y}" r="3.8" class="progression-point"/><text x="${x}" y="${Math.max(10,y-9)}" text-anchor="middle" class="progression-value">${v.toLocaleString("pt-BR")}</text>`}).join("");
+ const prev=rows.length>1?rows[rows.length-2]:null,last=rows[rows.length-1],diff=prev?last.top-prev.top:null;
+ const delta=diff===null?"Primeiro registro":diff>0?`+${diff.toLocaleString("pt-BR")} kg`:diff<0?`${diff.toLocaleString("pt-BR")} kg`:"Sem alteração";
+ const cls=diff===null?"neutral":diff>0?"up":diff<0?"down":"neutral";
+ return `<details class="exercise-progression"><summary>↗ Ver progressão deste exercício <span class="exercise-progress-current">${last.top.toLocaleString("pt-BR")} kg</span></summary>
+  <div class="exercise-progress-content"><div class="exercise-progress-stats"><strong>${last.top.toLocaleString("pt-BR")} kg</strong><span class="progression-change ${cls}">${delta}${prev?" vs. sessão anterior":""}</span><small>${rows.length} sessão(ões) registradas</small></div>
+  <svg class="progression-chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Progressão de carga de ${esc(exerciseName)}"><line x1="${pad}" y1="${H/2}" x2="${W-pad}" y2="${H/2}" class="progression-gridline"/><polyline points="${pts}" class="progression-line"/>${circles}</svg>
+  <div class="exercise-progress-history">${rows.slice().reverse().map(r=>`<div><span>${esc(r.date)}</span><b>${r.loads.map(v=>v.toLocaleString("pt-BR")+" kg").join(" · ")}</b></div>`).join("")}</div></div></details>`;
+}
+
 window.selectedTrainingProgramId = window.selectedTrainingProgramId || null;
 window.toggleTrainingProgram = id => {
   window.selectedTrainingProgramId = window.selectedTrainingProgramId === id ? null : id;
@@ -772,10 +815,10 @@ function renderTraining(){
  list.innerHTML=programs.length?programs.map(p=>{
   const selected=window.selectedTrainingProgramId===p.id;
   const exerciseCount=p.days.reduce((n,d)=>n+d.exercises.length,0);
-  const dayButtons=p.days.map(d=>`<button type="button" class="small primary" onclick="openProgramDay('${p.id}','${d.key}')">Abrir ${esc(d.label||("Dia "+d.key))} · ${d.exercises.length} exercícios</button>`).join("");
+  const dayButtons=p.days.map(d=>`<button type="button" class="small primary" onclick="startProgramDay('${p.id}','${d.key}')">Abrir ${esc(d.label||("Dia "+d.key))} · ${d.exercises.length} exercícios</button>`).join("");
   const details=selected?`<div class="program-detail">
     <div class="program-detail-head"><div><span class="program-eyebrow">FICHA SELECIONADA</span><h4>${esc(p.name)}</h4><p>${p.days.length} dias · ${exerciseCount} exercícios</p></div><span class="program-selected-mark">✓ Selecionado</span></div>
-    <div class="program-days">${p.days.map(d=>`<div class="program-day-detail"><div class="program-day-title"><strong>${esc(d.label||("Dia "+d.key))}</strong><span>${d.exercises.length} exercício(s)</span></div>${d.exercises.length?`<div class="program-exercises">${d.exercises.map((x,i)=>`<div class="program-exercise-line"><span>${i+1}. ${esc(x.name)}</span><small>${x.sets} × ${x.repsMin}–${x.repsMax}${x.load!==""&&x.load!=null?" · "+esc(x.load)+" kg":""}</small></div>`).join("")}</div>`:'<p class="meta">Nenhum exercício cadastrado neste dia.</p>'}<div class="program-open-day">${dayButtons.includes("")?"":`<button type="button" class="small primary" onclick="openProgramDay('${p.id}','${d.key}')">Abrir este dia <span aria-hidden="true">→</span></button>`}</div></div>`).join("")}</div>
+    <div class="program-days">${p.days.map(d=>`<div class="program-day-detail"><div class="program-day-title"><strong>${esc(d.label||("Dia "+d.key))}</strong><span>${d.exercises.length} exercício(s)</span></div>${d.exercises.length?`<div class="program-exercises">${d.exercises.map((x,i)=>`<div class="program-exercise-line"><span>${i+1}. ${esc(x.name)}</span><small>${x.sets} × ${x.repsMin}–${x.repsMax}${x.load!==""&&x.load!=null?" · "+esc(x.load)+" kg":""}</small></div>`).join("")}</div>`:'<p class="meta">Nenhum exercício cadastrado neste dia.</p>'}<div class="program-open-day">${dayButtons.includes("")?"":`<button type="button" class="small primary" onclick="startProgramDay('${p.id}','${d.key}')">Iniciar este dia <span aria-hidden="true">→</span></button>`}</div></div>`).join("")}</div>
    </div>`:"";
   return `<article class="program-card ${selected?"is-selected":""}">
    <div class="program-card-main">
@@ -789,47 +832,17 @@ function renderTraining(){
  }).join(""):'<div class="empty">Sua biblioteca está vazia. Crie sua primeira ficha — por exemplo, Shape of Hate — e organize os dias e exercícios dentro dela.</div>';
  const hist=$("trainingSessionHistory"),sessions=(data.workoutSessions||[]).slice().reverse();
  hist.innerHTML=sessions.length?sessions.map(s=>`<div class="listitem"><div class="row"><strong>${esc(s.programName)} · Dia ${esc(s.day||"A")}${s.dayLabel?" · "+esc(s.dayLabel):""}</strong><span class="meta">${esc(s.date)}</span></div><div class="meta">${s.completedSets||0}/${s.totalSets||0} séries concluídas${s.duration?" · "+s.duration+" min":""}</div></div>`).join(""):'<div class="empty">Nenhuma sessão concluída ainda.</div>';
- renderLoadProgressionHistory();renderActiveTraining();
+ renderActiveTraining();
 }
-function renderLoadProgressionHistory(){
- const box=$("loadProgressionHistory");if(!box)return;
- const sessions=(data.workoutSessions||[]).slice().sort((a,b)=>(a.date||"").localeCompare(b.date||""));
- const records={};
- sessions.forEach(session=>(session.exercises||[]).forEach(ex=>{
-  const name=(ex.name||"Exercício").trim(),program=session.programName||"Treino";
-  const key=program+"|||"+name,loads=[];
-  if(ex.actualLoads&&typeof ex.actualLoads==="object")Object.keys(ex.actualLoads).sort((a,b)=>Number(a)-Number(b)).forEach(k=>{
-   const v=Number(ex.actualLoads[k]);if(ex.doneSets?.includes(Number(k))&&Number.isFinite(v)&&v>=0)loads.push(v)
-  });
-  if(!loads.length&&ex.doneSets?.length&&ex.currentLoad!==""&&ex.currentLoad!=null&&Number.isFinite(Number(ex.currentLoad)))loads.push(Number(ex.currentLoad));
-  if(!records[key])records[key]=[];
-  if(loads.length)records[key].push({date:session.date||"—",loads,top:Math.max(...loads),programName:program});
- }));
- const entries=Object.entries(records).filter(([,r])=>r.length).sort((a,b)=>a[0].localeCompare(b[0],"pt-BR"));
- if(!entries.length){box.innerHTML='<div class="empty">Ainda não há cargas registradas. Conclua séries durante um treino e finalize a sessão para começar a acompanhar sua evolução.</div>';return}
- box.innerHTML=`<div class="progression-intro"><span class="progression-dot"></span><span>Maior carga registrada por sessão · em kg</span></div>`+entries.map(([key,rows])=>{
-  const [program,name]=key.split("|||"),latest=rows[rows.length-1],previous=rows.length>1?rows[rows.length-2]:null;
-  const diff=previous?latest.top-previous.top:null,first=rows[0].top;
-  const delta=diff===null?"Primeiro registro":diff>0?`+${diff.toLocaleString("pt-BR")} kg`:diff<0?`${diff.toLocaleString("pt-BR")} kg`:"Sem alteração";
-  const trendClass=diff===null?"neutral":diff>0?"up":diff<0?"down":"neutral";
-  const values=rows.map(r=>r.top),min=Math.min(...values),max=Math.max(...values),range=max-min||1;
-  const W=560,H=112,pad=12;
-  const pts=values.map((v,i)=>`${pad+(values.length===1?(W-2*pad)/2:i*(W-2*pad)/(values.length-1))},${H-pad-((v-min)/range)*(H-2*pad)}`).join(" ");
-  const circles=values.map((v,i)=>{const x=pad+(values.length===1?(W-2*pad)/2:i*(W-2*pad)/(values.length-1)),y=H-pad-((v-min)/range)*(H-2*pad);return `<circle cx="${x}" cy="${y}" r="4.5" class="progression-point"/><text x="${x}" y="${Math.max(10,y-10)}" text-anchor="middle" class="progression-value">${v.toLocaleString("pt-BR")}</text>`}).join("");
-  return `<article class="progression-card"><div class="progression-card-top"><div><span class="progression-program">${esc(program)}</span><h4>${esc(name)}</h4><div class="meta">${rows.length} sessão(ões) registrada(s)</div></div><div class="progression-current"><strong>${latest.top.toLocaleString("pt-BR")} <small>kg</small></strong><span>maior carga atual</span></div></div>
-   <div class="progression-chart-wrap"><svg class="progression-chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Progressão de carga de ${esc(name)}">${[0,1,2].map(n=>`<line x1="${pad}" y1="${pad+n*(H-2*pad)/2}" x2="${W-pad}" y2="${pad+n*(H-2*pad)/2}" class="progression-gridline"/>`).join("")}<polyline points="${pts}" class="progression-line"/>${circles}</svg></div>
-   <div class="progression-footer"><span>Início: <b>${first.toLocaleString("pt-BR")} kg</b></span><span class="progression-change ${trendClass}">${delta} ${previous?"vs. sessão anterior":""}</span><span>Última: ${esc(latest.date)}</span></div>
-   <details class="progression-details"><summary>Ver cargas de todas as sessões</summary>${rows.slice().reverse().map(r=>`<div class="progression-history-row"><span>${esc(r.date)}</span><span>${r.loads.map(v=>v.toLocaleString("pt-BR")+" kg").join(" · ")}</span><b>Máx. ${r.top.toLocaleString("pt-BR")} kg</b></div>`).join("")}</details>
-  </article>`;
- }).join("");
-}
+
 window.editProgram=id=>{const raw=(data.workoutPrograms||[]).find(p=>p.id===id);if(!raw)return;const p=normalizeProgram(raw);resetProgramForm();editingProgramId=id;$("programName").value=p.name;programDraftDays={};trainingDayKeys.forEach(ensureDraftDay);p.days.forEach(d=>{if(!trainingDayKeys.includes(d.key))return;programDraftDays[d.key]={label:d.label||"",exercises:d.exercises.map(x=>({...x,id:x.id||uid()}))}});$("programFormHeading").textContent="Editar ficha completa";$("trainingProgramForm").querySelector('button[type="submit"]').textContent="Salvar alterações";selectDraftDay("A");renderDayTabs();showTrainingHome();window.scrollTo({top:0,behavior:"smooth"})};
 window.deleteProgram=id=>{if(confirm("Excluir esta ficha completa? O histórico de sessões será preservado.")){data.workoutPrograms=(data.workoutPrograms||[]).filter(p=>p.id!==id);save()}};
 function showTrainingHome(){$("trainingHome").classList.remove("hidden");$("trainingDayView").classList.add("hidden");selectedProgramDay=null;}
-function openProgramDay(id,key){const raw=(data.workoutPrograms||[]).find(p=>p.id===id);if(!raw)return;const p=normalizeProgram(raw),d=p.days.find(x=>x.key===key);if(!d)return;selectedProgramDay={programId:p.id,programName:p.name,day:d.key,dayLabel:d.label||"",exercises:d.exercises.map(x=>({...x}))};if(activeTraining&&activeTraining.programId!==p.id&&!confirm("Há um treino em andamento. Abrir outro dia vai descartar o progresso ainda não salvo. Continuar?"))return;if(activeTraining&&activeTraining.programId!==p.id){activeTraining=null;stopRestTimer()}$("trainingHome").classList.add("hidden");$("trainingDayView").classList.remove("hidden");$("selectedDayTitle").textContent=p.name+" · Dia "+d.key+(d.label?" — "+d.label:"");$("selectedDaySubtitle").textContent=d.exercises.length+" exercício(s). Esta tela mostra somente o dia selecionado.";$("selectedDayExercises").innerHTML=d.exercises.map((x,i)=>`<div class="training-day"><strong>${i+1}. ${esc(x.name)}</strong><div class="meta">${x.sets} séries · ${x.repsMin}–${x.repsMax} repetições · ${x.load!==""&&x.load!=null?esc(x.load)+" kg planejados":"carga não definida"} · descanso ${x.rest||0}s</div></div>`).join("");$("startSelectedDay").classList.toggle("hidden",!d.exercises.length);$("activeTrainingPanel").classList.add("hidden");renderActiveTraining();showPage("training")}
+function openProgramDay(id,key){const raw=(data.workoutPrograms||[]).find(p=>p.id===id);if(!raw)return;const p=normalizeProgram(raw),d=p.days.find(x=>x.key===key);if(!d)return;selectedProgramDay={programId:p.id,programName:p.name,day:d.key,dayLabel:d.label||"",exercises:d.exercises.map(x=>({...x}))};if(activeTraining&&activeTraining.programId!==p.id&&!confirm("Há um treino em andamento. Abrir outro dia vai descartar o progresso ainda não salvo. Continuar?"))return;if(activeTraining&&activeTraining.programId!==p.id){activeTraining=null;stopRestTimer()}$("trainingHome").classList.add("hidden");$("trainingDayView").classList.remove("hidden");$("selectedDayTitle").textContent=p.name+" · Dia "+d.key+(d.label?" — "+d.label:"");$("selectedDaySubtitle").textContent=d.exercises.length+" exercício(s). Esta tela mostra somente o dia selecionado.";$("selectedDayExercises").innerHTML=d.exercises.map((x,i)=>`<div class="training-day"><strong>${i+1}. ${esc(x.name)}</strong><div class="meta">${x.sets} séries · ${x.repsMin}–${x.repsMax} repetições · ${x.load!==""&&x.load!=null?esc(x.load)+" kg planejados":"carga não definida"} · descanso ${x.rest||0}s</div>${exerciseProgressionMarkup(p.id,p.name,x.name)}</div>`).join("");$("startSelectedDay").classList.toggle("hidden",!d.exercises.length);$("activeTrainingPanel").classList.add("hidden");renderActiveTraining();showPage("training")}
+function startProgramDay(id,key){openProgramDay(id,key);if(selectedProgramDay&&selectedProgramDay.programId===id&&selectedProgramDay.day===key){$("startSelectedDay").click()}}
 $("backToTrainingLibrary").onclick=()=>{if(activeTraining&&!confirm("Voltar à biblioteca? O progresso desta sessão será descartado."))return;if(activeTraining){activeTraining=null;stopRestTimer();restRemaining=0}showTrainingHome();renderTraining()};
 $("startSelectedDay").onclick=()=>{if(!selectedProgramDay)return;if(activeTraining&&!confirm("Substituir o treino em andamento? O progresso não salvo será perdido."))return;stopRestTimer();const d=selectedProgramDay;activeTraining={programId:d.programId,programName:d.programName,day:d.day,dayLabel:d.dayLabel,date:today(),startedAt:Date.now(),exercises:d.exercises.map(x=>({...x,currentLoad:x.load??"",doneSets:[],actualLoads:{}}))};$("activeTrainingPanel").classList.remove("hidden");renderActiveTraining();$("activeTrainingPanel").scrollIntoView({behavior:"smooth",block:"start"})};
-function renderActiveTraining(){const box=$("activeTraining"),finish=$("finishTrainingBtn"),timer=$("trainingTimer");if(!box)return;if(!activeTraining){box.innerHTML='<div class="empty">Inicie a sessão quando estiver pronto.</div>';finish.classList.add("hidden");if(!restInterval)timer.classList.add("hidden");return}finish.classList.remove("hidden");box.innerHTML=`<div class="row"><div><h3 style="margin-bottom:3px">${esc(activeTraining.programName)} · Dia ${esc(activeTraining.day)}${activeTraining.dayLabel?" — "+esc(activeTraining.dayLabel):""}</h3><div class="meta">Iniciado em ${esc(activeTraining.date)} · ajuste a carga a qualquer momento</div></div><span class="pill">${activeTraining.exercises.reduce((n,x)=>n+x.doneSets.length,0)} / ${activeTraining.exercises.reduce((n,x)=>n+(Number(x.sets)||0),0)} séries</span></div>`+activeTraining.exercises.map((x,ei)=>`<div class="training-day"><strong>${ei+1}. ${esc(x.name)}</strong><div class="meta">Meta: ${x.repsMin}–${x.repsMax} repetições · carga planejada: ${x.load!==""&&x.load!=null?esc(x.load)+" kg":"não definida"}</div><div style="margin:10px 0"><label for="activeLoad${ei}">Carga atual (kg)</label><input id="activeLoad${ei}" type="number" min="0" step="0.5" inputmode="decimal" value="${esc(x.currentLoad??x.load??"")}" placeholder="Informe a carga" onchange="updateTrainingLoad(${ei},this.value)" oninput="updateTrainingLoad(${ei},this.value)"></div>${Array.from({length:Number(x.sets)||1},(_,si)=>{const done=x.doneSets.includes(si);return `<div class="set-row"><div><strong>Série ${si+1}</strong><div class="meta">${x.repsMin}–${x.repsMax} reps${x.actualLoads[si]!=null?" · carga usada: "+esc(x.actualLoads[si])+" kg":""}</div></div><button type="button" class="small ${done?"":"primary"}" ${done?"disabled":""} onclick="completeTrainingSet(${ei},${si})">${done?"Concluída":"Concluir série"}</button></div>`}).join("")}</div>`).join("");if(restInterval||restRemaining>0)timer.classList.remove("hidden")}
+function renderActiveTraining(){const box=$("activeTraining"),finish=$("finishTrainingBtn"),timer=$("trainingTimer");if(!box)return;if(!activeTraining){box.innerHTML='<div class="empty">Inicie a sessão quando estiver pronto.</div>';finish.classList.add("hidden");if(!restInterval)timer.classList.add("hidden");return}finish.classList.remove("hidden");box.innerHTML=`<div class="row"><div><h3 style="margin-bottom:3px">${esc(activeTraining.programName)} · Dia ${esc(activeTraining.day)}${activeTraining.dayLabel?" — "+esc(activeTraining.dayLabel):""}</h3><div class="meta">Iniciado em ${esc(activeTraining.date)} · ajuste a carga a qualquer momento</div></div><span class="pill">${activeTraining.exercises.reduce((n,x)=>n+x.doneSets.length,0)} / ${activeTraining.exercises.reduce((n,x)=>n+(Number(x.sets)||0),0)} séries</span></div>`+activeTraining.exercises.map((x,ei)=>`<div class="training-day"><strong>${ei+1}. ${esc(x.name)}</strong><div class="meta">Meta: ${x.repsMin}–${x.repsMax} repetições · carga planejada: ${x.load!==""&&x.load!=null?esc(x.load)+" kg":"não definida"}</div>${exerciseProgressionMarkup(activeTraining.programId,activeTraining.programName,x.name)}<div style="margin:10px 0"><label for="activeLoad${ei}">Carga atual (kg)</label><input id="activeLoad${ei}" type="number" min="0" step="0.5" inputmode="decimal" value="${esc(x.currentLoad??x.load??"")}" placeholder="Informe a carga" onchange="updateTrainingLoad(${ei},this.value)" oninput="updateTrainingLoad(${ei},this.value)"></div>${Array.from({length:Number(x.sets)||1},(_,si)=>{const done=x.doneSets.includes(si);return `<div class="set-row"><div><strong>Série ${si+1}</strong><div class="meta">${x.repsMin}–${x.repsMax} reps${x.actualLoads[si]!=null?" · carga usada: "+esc(x.actualLoads[si])+" kg":""}</div></div><button type="button" class="small ${done?"":"primary"}" ${done?"disabled":""} onclick="completeTrainingSet(${ei},${si})">${done?"Concluída":"Concluir série"}</button></div>`}).join("")}</div>`).join("");if(restInterval||restRemaining>0)timer.classList.remove("hidden")}
 function playRestBeep(freq=880){try{const C=window.AudioContext||window.webkitAudioContext;if(!C)return;const ctx=new C(),osc=ctx.createOscillator(),gain=ctx.createGain();osc.type="sine";osc.frequency.value=freq;gain.gain.value=.08;osc.connect(gain);gain.connect(ctx.destination);osc.start();osc.stop(ctx.currentTime+.16);osc.onended=()=>ctx.close()}catch(e){console.warn("Áudio indisponível",e)}}
 function playRestFinishedSignal(){[0,220,440].forEach(delay=>setTimeout(()=>playRestBeep(1320),delay))}
 window.updateTrainingLoad=(ei,value)=>{if(!activeTraining)return;const ex=activeTraining.exercises[ei];if(!ex)return;ex.currentLoad=value;};
