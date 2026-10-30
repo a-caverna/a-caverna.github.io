@@ -1,475 +1,472 @@
-<!doctype html>
-<html lang="pt-BR">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#0b0b0d">
-<link rel="manifest" href="./manifest.webmanifest">
-<title>CAVERNA — Disciplina e evolução</title>
-<style>
-:root{--bg:#0b0b0d;--panel:#151518;--panel2:#1d1d21;--line:#2b2b30;--text:#e8e8eb;--muted:#92929b;--accent:#b8b8c2;--danger:#b86b6b;--ok:#9aa99a}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-button,input,textarea,select{font:inherit}button{cursor:pointer;border:1px solid var(--line);background:#222226;color:var(--text);padding:10px 13px;border-radius:10px}
-button:hover{border-color:#62626b}button.primary{background:#d7d7dd;color:#111;border-color:#d7d7dd;font-weight:650}
-button.danger{color:#e6a0a0;border-color:#593737;background:#261919}
-input,textarea,select{width:100%;background:#101013;border:1px solid var(--line);border-radius:10px;color:var(--text);padding:11px}
-textarea{min-height:95px;resize:vertical}label{display:block;color:var(--muted);font-size:13px;margin:10px 0 5px}
-.shell{max-width:1180px;margin:auto;padding:20px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:24px}
-.brand{display:flex;align-items:center;gap:12px}.mark{width:42px;height:42px;border:1px solid #55555e;border-radius:12px;display:grid;place-items:center;color:#ddd;font-size:20px}
-.brand h1{font-size:19px;letter-spacing:.18em;margin:0}.brand p{font-size:11px;color:var(--muted);margin:2px 0 0;letter-spacing:.13em}
-nav{display:flex;gap:7px;flex-wrap:wrap;margin:0 0 22px}nav button{background:transparent;color:var(--muted)}nav button.active{background:#242428;color:var(--text);border-color:#55555d}
-h2{font-size:25px;margin:0 0 5px}h3{font-size:17px;margin:0 0 12px}.sub{color:var(--muted);margin:0 0 20px}
-.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:17px;min-width:0}.span8{grid-column:span 8}.span4{grid-column:span 4}.span6{grid-column:span 6}.span12{grid-column:span 12}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}.stat{background:var(--panel2);padding:13px;border-radius:12px}.stat strong{font-size:25px;display:block}.stat span{color:var(--muted);font-size:12px}
-.row{display:flex;align-items:center;justify-content:space-between;gap:12px}.habit{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}.habit:last-child{border:0}.habit input[type=checkbox]{width:20px;height:20px;accent-color:#c4c4cc}.habit .name{flex:1}.habit.done .name{color:#77777f;text-decoration:line-through}.meta{font-size:12px;color:var(--muted)}
-.actions{display:flex;gap:7px;flex-wrap:wrap}.small{padding:6px 9px;font-size:12px}.empty{color:var(--muted);padding:18px 0}.hidden{display:none!important}.formgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.formgrid .full{grid-column:1/-1}.listitem{padding:12px 0;border-bottom:1px solid var(--line)}.listitem:last-child{border:0}
-.measure-section{border-top:1px solid var(--line);margin-top:16px;padding-top:12px}.measure-section h3{font-size:14px;color:var(--muted);margin-bottom:6px}.exercise-entry{border:1px solid var(--line);border-radius:12px;padding:12px;margin-top:10px}.exercise-fields{display:grid;grid-template-columns:2fr repeat(3,1fr);gap:8px}.exercise-fields label{margin-top:4px}.exercise-entry .remove-exercise{margin-top:8px}@media(max-width:520px){.exercise-fields{grid-template-columns:1fr 1fr}.exercise-fields .exercise-name-field{grid-column:1/-1}}
-.day-tabs{margin:8px 0 12px}.day-tabs button{min-width:42px}.day-tabs button.active{background:#d7d7dd;color:#111;border-color:#d7d7dd;font-weight:700}.day-name-box{padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--panel2);margin:10px 0}.program-card{border:1px solid var(--line);border-radius:14px;padding:14px;margin:12px 0;background:var(--panel2)}.program-day-buttons{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.program-day-buttons button{flex:1;min-width:110px}.program-day-preview{padding:9px 0;border-bottom:1px solid var(--line)}.program-day-preview:last-child{border-bottom:0}.training-day{border:1px solid var(--line);border-radius:14px;padding:14px;margin:10px 0;background:var(--panel2)}.training-exercise{padding:12px 0;border-bottom:1px solid var(--line)}.training-exercise:last-child{border-bottom:0}.set-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 0}.timer-panel{position:sticky;bottom:12px;background:#242428;border:1px solid #62626b;border-radius:14px;padding:14px;margin-top:14px;box-shadow:0 8px 30px #0008}.timer-number{font-size:30px;font-weight:750;font-variant-numeric:tabular-nums}.training-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.training-form-grid .full{grid-column:1/-1}@media(max-width:520px){.training-form-grid{grid-template-columns:1fr}}.pill{font-size:11px;border:1px solid var(--line);padding:3px 8px;border-radius:99px;color:var(--muted)}.progress{height:6px;background:#303036;border-radius:9px;overflow:hidden;margin:8px 0}.progress i{height:100%;display:block;background:#aaaab4}
-footer{margin:30px 0 5px;color:#66666f;font-size:11px;text-align:center;letter-spacing:.08em}
-@media(max-width:760px){.shell{padding:14px}.span8,.span4,.span6{grid-column:span 12}.stats{grid-template-columns:repeat(3,1fr)}.top{align-items:flex-start}.brand h1{font-size:16px}}
 
-.auth-wrap{min-height:100vh;display:grid;place-items:center;padding:20px}
-.auth-card{width:min(100%,440px);background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:24px}
-.auth-card h2{letter-spacing:.12em}.auth-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.auth-actions button{flex:1}
-.auth-note{font-size:12px;color:var(--muted);margin-top:12px}#authMessage{min-height:20px;color:var(--muted);font-size:13px;margin-top:10px}
-#appShell{display:none}
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-/* Identidade visual exclusiva do Mentor; o restante da Caverna permanece intacto. */
-:root{--mentor-violet:#9b5de5;--mentor-violet-soft:#6f3db8;--mentor-violet-glow:#b879ff}
-nav button[data-page="mentor"]{display:inline-flex;align-items:center;gap:8px;border-color:#49345f;color:#d8b8ff;background:linear-gradient(135deg,#1a1422,#111014)}
-nav button[data-page="mentor"]::before{content:"☠";display:grid;place-items:center;width:23px;height:23px;border-radius:50%;border:1px solid #8051a8;color:#d7b0ff;font-size:15px;box-shadow:0 0 12px #8b45c955}
-nav button[data-page="mentor"].active{background:linear-gradient(135deg,#38204e,#1b1425);border-color:var(--mentor-violet-glow);color:#f0dcff;box-shadow:0 0 16px #8b45c922}
-.mentor-chat-shell{height:min(760px,calc(100vh - 230px));min-height:500px;display:flex;flex-direction:column;overflow:hidden;border:1px solid #33283e;border-radius:18px;background:#0d0c10;box-shadow:0 14px 45px #0005}
-.mentor-chat-header{display:flex;align-items:center;gap:12px;padding:14px 18px;background:linear-gradient(110deg,#17131d,#100f13);border-bottom:1px solid #302637}
-.mentor-avatar{width:48px;height:48px;flex:0 0 48px;border-radius:50%;display:grid;place-items:center;overflow:hidden;border:1px solid #8d5ab5;background:radial-gradient(circle at 50% 45%,#3a2848,#100d14 72%);box-shadow:0 0 18px #8b45c933}
-.mentor-avatar svg{width:42px;height:42px}
-.mentor-header-title{font-size:17px;font-weight:700;line-height:1.25}.mentor-header-sub{font-size:12px;color:#b29ac5;margin-top:3px}.mentor-header-sub::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:#9b5de5;margin-right:6px}
-.mentor-chat-card{display:flex;flex:1;min-height:0;flex-direction:column}
-.mentor-messages{flex:1;min-height:0;overflow:auto;padding:20px 16px;display:flex;flex-direction:column;gap:13px;background:radial-gradient(ellipse at 100% 0%,#21152d55,transparent 45%),radial-gradient(ellipse at 0% 100%,#24152f33,transparent 50%),#0d0c10}
-.mentor-msg-row{display:flex;align-items:flex-end;gap:8px;max-width:88%}.mentor-msg-row.user{align-self:flex-end;justify-content:flex-end}.mentor-msg-row.assistant{align-self:flex-start}
-.mentor-msg{max-width:100%;padding:11px 14px;border:1px solid #302b35;border-radius:16px;white-space:pre-wrap;overflow-wrap:anywhere;box-shadow:0 3px 10px #0002}
-.mentor-msg.user{background:linear-gradient(135deg,#59347a,#3b2453);border-color:#79509a;color:#fff;border-bottom-right-radius:5px}
-.mentor-msg.assistant{background:#1a191f;border-color:#302d36;color:#eeeaf2;border-bottom-left-radius:5px}
-.mentor-msg .meta{margin-bottom:5px;display:block;font-size:10px;letter-spacing:.07em;color:#b7a4c7}
-.mentor-mini-avatar{width:28px;height:28px;flex:0 0 28px;border-radius:50%;display:grid;place-items:center;background:#21182b;border:1px solid #65427c;color:#d8b5ff;font-size:16px}
-.mentor-compose-wrap{padding:12px 14px 8px;border-top:1px solid #302637;background:#121015}
-.mentor-compose{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:9px;align-items:end;padding:0}
-.mentor-compose textarea{min-height:48px;max-height:140px;resize:none;border-radius:15px;background:#1b191f;border-color:#38303f;padding:12px 14px}
-.mentor-compose button{height:48px;min-width:48px;border-radius:15px;background:linear-gradient(135deg,#a45be0,#63369b);border-color:#bd82f0;color:white;font-size:19px;padding:8px 15px;box-shadow:0 0 16px #8b45c922}
-.mentor-compose button:hover{border-color:#e0b8ff;filter:brightness(1.08)}
-.mentor-status{min-height:18px;color:#9c8da9;font-size:11px;margin:6px 4px 0}
-.mentor-welcome{margin:auto;max-width:420px;text-align:center;color:#b9afc3;padding:22px}.mentor-welcome strong{display:block;color:#e7d8f3;font-size:16px;margin-bottom:6px}
-@media(max-width:760px){.mentor-chat-shell{height:calc(100dvh - 210px);min-height:460px;border-radius:14px}.mentor-messages{padding:14px 10px}.mentor-msg-row{max-width:96%}.mentor-chat-header{padding:11px 13px}.mentor-compose-wrap{padding:9px}.mentor-compose button{min-width:45px}.mentor-mini-avatar{width:24px;height:24px;flex-basis:24px}}
-
-</style>
-</head>
-<body>
-<section id="authScreen" class="auth-wrap"><div class="auth-card">
-<div class="brand" style="margin-bottom:24px"><div class="mark">⌁</div><div><h1>CAVERNA</h1><p>DISCIPLINA · EVOLUÇÃO</p></div></div>
-<h2 id="authTitle">ENTRE NA SUA CAVERNA.</h2><p class="sub" id="authSubtitle">Acesse seus registros. Honre seus compromissos.</p>
-<form id="authForm"><label for="authEmail">E-mail</label><input id="authEmail" type="email" autocomplete="email" required>
-<label for="authPassword">Senha</label><input id="authPassword" type="password" autocomplete="current-password" minlength="6" required>
-<div class="auth-actions"><button class="primary" id="authSubmit" type="submit">Entrar</button><button id="authSignup" type="button">Criar conta</button></div>
-<div class="auth-actions"><button id="authReset" type="button">Recuperar senha</button></div></form>
-<p id="authMessage" role="status"></p><p class="auth-note">Entre ou crie sua conta para acessar seus registros.</p>
-</div></section>
-<div id="appShell"><div class="shell">
-<header class="top">
-  <div class="brand"><div class="mark">⌁</div><div><h1>CAVERNA</h1><p>DISCIPLINA · EVOLUÇÃO</p></div></div>
-  <div class="actions"><span id="userEmail" class="meta"></span><button id="logoutBtn" class="small">Sair</button><button id="exportBtn" class="small">Exportar dados</button><button id="importBtn" class="small">Importar</button><input id="importFile" type="file" accept="application/json" class="hidden"></div>
-</header>
-<nav id="nav">
-<button class="active" data-page="today">Ritual diário</button>
-<button data-page="habits">Hábitos</button>
-<button data-page="physical">Evolução física</button>
- <button data-page="training">Treinos</button>
-<button data-page="mentor" aria-label="Abrir Mentor">Mentor</button>
-<button data-page="books">Biblioteca</button>
-<button data-page="gratitude">Gratidão</button>
-<button data-page="failures">Falhas</button>
-<button data-page="settings">Configurações</button>
-<button data-page="admin" id="adminNavBtn" class="hidden">Administração</button>
-</nav>
-<main>
-<section id="page-today">
-  <h2>Entre na sua caverna.</h2><p class="sub" id="todayDate"></p>
-  <div class="stats"><div class="stat"><strong id="doneCount">0</strong><span>Rituais cumpridos</span></div><div class="stat"><strong id="totalCount">0</strong><span>Rituais programados</span></div><div class="stat"><strong id="percentCount">0%</strong><span>Execução do dia</span></div></div>
-  <div class="grid"><div class="card span8"><div class="row"><h3>Compromissos de hoje</h3><button class="small" onclick="showPage('habits')">Gerenciar hábitos</button></div><div id="todayHabits"></div></div>
-  <div class="card span4"><h3>Registro rápido</h3><p class="meta">Uma coisa pela qual sou grato hoje</p><textarea id="quickGratitude" placeholder="Escreva aqui..."></textarea><button class="primary" id="saveQuickGratitude">Registrar gratidão</button><p class="meta" id="gratitudeStatus"></p></div>
-  <div class="card span12"><h3>Palavra de ordem</h3><p>Não espere vontade. Honre o compromisso.</p></div></div>
-</section>
-
-<section id="page-habits" class="hidden">
-<h2>Hábitos</h2><p class="sub">Crie, ajuste e acompanhe seus compromissos.</p>
-<div class="grid"><div class="card span4"><h3 id="habitFormTitle">Novo hábito</h3><form id="habitForm">
-<input type="hidden" id="habitId"><label>Nome do hábito</label><input id="habitName" required placeholder="Ex.: Ler 10 páginas">
-<label>Categoria</label><select id="habitCategory"><option>Rotina</option><option>Saúde</option><option>Leitura</option><option>Espiritualidade</option><option>Casa</option><option>Trabalho</option><option>Outro</option></select>
-<label>Frequência</label><select id="habitFrequency"><option value="daily">Todos os dias</option><option value="weekly">Dias específicos</option></select>
-<div id="weekdayBox" class="hidden"><label>Dias da semana</label><div id="weekdays" class="actions"></div></div>
-<label>Horário (opcional)</label><input id="habitTime" type="time">
-<label>Meta/descrição (opcional)</label><input id="habitTarget" placeholder="Ex.: 10 páginas, 1 registro">
-<div class="actions" style="margin-top:14px"><button class="primary" type="submit">Salvar hábito</button><button type="button" id="cancelHabit" class="hidden">Cancelar edição</button></div></form></div>
-<div class="card span8"><div class="row"><h3>Seus hábitos</h3><span class="pill" id="habitCount"></span></div><div id="habitList"></div></div></div>
-</section>
-
-<section id="page-physical" class="hidden">
-<h2>Evolução física</h2><p class="sub">Registre medidas e desempenho. Observe a tendência, não um dia isolado.</p>
-<div class="grid"><div class="card span6"><h3>Registro corporal</h3><p class="meta">Preencha somente as medidas que quiser acompanhar. As medidas são em centímetros, salvo peso e percentual de gordura.</p><form id="bodyForm"><div class="formgrid"><div><label>Data</label><input id="bodyDate" type="date" required></div><div><label>Peso (kg)</label><input id="bodyWeight" type="number" step=".1" min="0" placeholder="Opcional"></div><div><label>Gordura corporal (%)</label><input id="bodyFat" type="number" step=".1" min="0" max="100" placeholder="Opcional"></div></div><div class="measure-section"><h3>Medidas centrais (cm)</h3><div class="formgrid"><div><label>Pescoço</label><input id="bodyNeck" type="number" step=".1" min="0" placeholder="Opcional"></div><div><label>Tórax / peito</label><input id="bodyChest" type="number" step=".1" min="0" placeholder="Opcional"></div><div><label>Ombros</label><input id="bodyShoulders" type="number" step=".1" min="0" placeholder="Opcional"></div><div><label>Cintura</label><input id="bodyWaist" type="number" step=".1" min="0" placeholder="Opcional"></div><div><label>Abdômen</label><input id="bodyAbdomen" type="number" step=".1" min="0" placeholder="Opcional"></div><div><label>Quadril</label><input id="bodyHips" type="number" step=".1" min="0" placeholder="Opcional"></div></div></div><div class="measure-section"><h3>Membros (cm)</h3><div class="formgrid"><div><label>Bíceps direito</label><input id="bodyBicepsRight" type="number" step=".1" min="0" placeholder="Opcional"></div><div><label>Bíceps esquerdo</label><input id="bodyBicepsLeft" type="number" step=".1" min="0" placeholder="Opcional"></div><div><label>Antebraço direito</label><input id="bodyForearmRight" type="number" step=".1" min="0" placeholder="Opcional"></div><div><label>Antebraço esquerdo</label><input id="bodyForearmLeft" type="number" step=".1" min="0" placeholder="Opcional"></div><div><label>Coxa direita</label><input id="bodyThighRight" type="number" step=".1" min="0" placeholder="Opcional"></div><div><label>Coxa esquerda</label><input id="bodyThighLeft" type="number" step=".1" min="0" placeholder="Opcional"></div><div><label>Panturrilha direita</label><input id="bodyCalfRight" type="number" step=".1" min="0" placeholder="Opcional"></div><div><label>Panturrilha esquerda</label><input id="bodyCalfLeft" type="number" step=".1" min="0" placeholder="Opcional"></div></div></div><div><label>Observação</label><input id="bodyNote" placeholder="Como está se sentindo?"></div><button class="primary" style="margin-top:12px">Salvar registro</button></form><div id="bodyHistory"></div></div>
-<div class="card span6"><h3>Registrar treino</h3>
-<div class="card" style="padding:12px;margin-bottom:14px;background:var(--panel2)"><h3 style="margin-bottom:4px">Usar uma ficha da biblioteca</h3><p class="meta">Escolha a ficha e o dia que realizou. Os exercícios serão preenchidos automaticamente e você poderá ajustá-los antes de salvar.</p><div class="formgrid"><div class="full"><label for="workoutTemplateProgram">Ficha cadastrada</label><select id="workoutTemplateProgram"><option value="">Selecionar ficha...</option></select></div><div class="full"><label for="workoutTemplateDay">Dia da ficha</label><select id="workoutTemplateDay" disabled><option value="">Selecione primeiro uma ficha</option></select></div></div><button type="button" id="loadWorkoutTemplate" class="small" style="margin-top:10px">Carregar exercícios deste dia</button><p id="workoutTemplateStatus" class="meta" role="status"></p></div>
-<form id="workoutForm"><div class="formgrid"><div><label>Data</label><input id="workoutDate" type="date" required></div><div><label>Treino / grupo</label><input id="workoutName" required placeholder="Ex.: Treino de fim de ano — Dia A"></div></div>
-<div style="margin-top:16px"><div class="row"><h3 style="margin:0">Exercícios</h3><button type="button" class="small" id="addExerciseBtn">+ Adicionar exercício</button></div><div id="workoutExercises"></div></div>
-<button class="primary" style="margin-top:12px">Salvar treino</button></form><div id="workoutHistory"></div></div></div>
-</section>
-
-
-<section id="page-training" class="hidden">
- <div id="trainingHome">
-  <h2>Treinos</h2><p class="sub">Monte fichas completas e, na academia, abra somente o dia que vai executar.</p>
-  <div class="grid">
-   <div class="card span4">
-    <h3 id="programFormHeading">Nova ficha completa</h3>
-    <form id="trainingProgramForm">
-     <label>Nome da ficha</label><input id="programName" required placeholder="Ex.: Treino de fim de ano">
-     <label>Dias desta ficha</label><div id="programDayTabs" class="actions day-tabs"></div>
-     <div class="day-name-box"><label for="programDayName">Nome opcional deste dia</label><input id="programDayName" maxlength="40" placeholder="Ex.: Push (deixe vazio para usar só A)"><p class="meta">O nome é opcional. Você pode usar apenas A, B, C... ou nomes como Push e Pull.</p></div>
-     <div class="training-form-grid"><div class="full"><label>Exercício</label><input id="programExerciseName" placeholder="Ex.: Supino reto"></div><div><label>Séries</label><input id="programSets" type="number" min="1" max="20" value="4"></div><div><label>Repetições mín.</label><input id="programRepsMin" type="number" min="1" value="8"></div><div><label>Repetições máx.</label><input id="programRepsMax" type="number" min="1" value="12"></div><div><label>Carga planejada (kg)</label><input id="programLoad" type="number" min="0" step="0.5" placeholder="Ex.: 40"></div><div class="full"><label>Descanso (segundos)</label><input id="programRest" type="number" min="0" max="900" step="5" value="90"></div></div>
-     <div class="actions" style="margin-top:12px"><button type="button" id="addProgramExercise">+ Adicionar exercício ao dia</button></div>
-     <div id="programDraftList"></div>
-     <div class="actions" style="margin-top:16px"><button type="button" id="resetProgramForm">Limpar ficha</button><button class="primary" type="submit">Salvar ficha completa</button></div>
-    </form>
-   </div>
-   <div class="card span8"><div class="row"><h3>Minha biblioteca</h3><span class="pill" id="programCount">0 fichas</span></div><div id="trainingProgramList"></div></div>
-   <div class="card span12"><h3>Histórico de sessões</h3><div id="trainingSessionHistory"></div></div>
-   <div class="card span12"><h3>Progressão de carga</h3><p class="meta">Acompanhe a carga registrada em cada série concluída. A progressão aparece conforme você salva suas sessões.</p><div id="loadProgressionHistory"></div></div>
-  </div>
- </div>
- <div id="trainingDayView" class="hidden">
-  <div class="actions" style="margin-bottom:14px"><button type="button" id="backToTrainingLibrary">← Voltar à biblioteca</button></div>
-  <h2 id="selectedDayTitle">Treino</h2><p class="sub" id="selectedDaySubtitle"></p>
-  <div class="card"><div id="selectedDayExercises"></div><div class="actions" style="margin-top:14px"><button type="button" class="primary" id="startSelectedDay">Iniciar este treino</button></div></div>
-  <div id="activeTrainingPanel" class="card" style="margin-top:14px"><div class="row"><h3>Treino em andamento</h3><button id="finishTrainingBtn" class="primary hidden" type="button">Finalizar treino</button></div><div id="activeTraining"><div class="empty">Toque em “Iniciar este treino” quando estiver pronto.</div></div><div id="trainingTimer" class="timer-panel hidden"><div class="row"><div><div class="meta" id="timerCaption">Descanso</div><div class="timer-number" id="timerNumber">01:30</div></div><div class="actions"><button type="button" id="timerPauseBtn">Pausar</button><button type="button" id="timerSkipBtn">Pular descanso</button></div></div><div class="meta" id="timerMessage">Prepare-se para a próxima série.</div></div></div>
- </div>
-</section>
-<section id="page-mentor" class="hidden">
- <h2>Mentor</h2><p class="sub">O tempo não espera. Entre na conversa e encare o que precisa mudar.</p>
- <div class="mentor-chat-shell">
-  <header class="mentor-chat-header">
-   <div class="mentor-avatar" aria-label="Avatar da Morte">
-    <svg viewBox="0 0 64 64" role="img" aria-label="Morte encapuzada com foice">
-     <path d="M5 56 Q10 21 28 8 Q43 0 57 16 Q63 25 61 56 L52 62 L12 62 Z" fill="#17111f" stroke="#775091" stroke-width="1.4"/>
-     <path d="M15 57 Q17 27 31 17 Q45 20 49 57Z" fill="#08070b"/>
-     <path d="M22 30 Q22 19 32 18 Q43 20 43 31 L40 44 L32 51 L24 44Z" fill="#c8c0d0"/>
-     <path d="M24 31 L30 29 L29 35 L23 35Z M35 29 L41 31 L41 35 L35 35Z" fill="#8c4bc6"/>
-     <path d="M29 38 L35 38 L32 43Z" fill="#30253a"/>
-     <path d="M25 45 L39 45 M28 45 L28 49 M32 45 L32 50 M36 45 L36 49" stroke="#51465a" stroke-width="1.5"/>
-     <path d="M47 10 Q57 5 60 14 Q57 21 49 22" fill="none" stroke="#b9a2cc" stroke-width="2.5" stroke-linecap="round"/>
-     <path d="M50 21 L60 4" stroke="#9b5de5" stroke-width="2.5" stroke-linecap="round"/>
-    </svg>
-   </div>
-   <div style="flex:1;min-width:0"><div class="mentor-header-title">A Morte <span style="font-size:11px;color:#b879ff;font-weight:500">· MENTOR</span></div><div class="mentor-header-sub">Lembre-se: seu tempo é limitado</div></div>
-   <button type="button" class="small" id="mentorRefresh" title="Atualizar conversa" aria-label="Atualizar conversa">↻</button>
-  </header>
-  <div class="mentor-chat-card">
-   <div id="mentorMessages" class="mentor-messages" aria-live="polite"><div class="mentor-welcome"><strong>Você não tem tempo infinito.</strong>Eu não estou aqui para assustar você. Estou aqui para lembrar que cada dia é uma escolha. O que precisa enfrentar hoje?</div></div>
-   <div class="mentor-compose-wrap">
-    <form id="mentorForm" class="mentor-compose"><textarea id="mentorInput" maxlength="6000" required aria-label="Sua mensagem" placeholder="Escreva sua mensagem..."></textarea><button id="mentorSend" type="submit" title="Enviar mensagem" aria-label="Enviar mensagem">➤</button></form>
-    <div id="mentorStatus" class="mentor-status" role="status">Sua conversa é pessoal. A chave da IA permanece protegida no backend.</div>
-   </div>
-  </div>
- </div>
-</section>
-
-<section id="page-books" class="hidden">
-<h2>Biblioteca</h2><p class="sub">Acompanhe a leitura atual, sessões e livros concluídos.</p>
-<div class="grid"><div class="card span4"><h3>Adicionar livro</h3><form id="bookForm"><input type="hidden" id="bookId"><label>Título</label><input id="bookTitle" required><label>Autor</label><input id="bookAuthor"><div class="formgrid"><div><label>Total de páginas</label><input id="bookTotal" type="number" min="1"></div><div><label>Página atual</label><input id="bookCurrent" type="number" min="0" value="0"></div></div><label>Status</label><select id="bookStatus"><option value="reading">Lendo agora</option><option value="queue">Na fila</option><option value="finished">Concluído</option></select><button class="primary" style="margin-top:12px">Salvar livro</button></form></div>
-<div class="card span8"><h3>Seus livros</h3><div id="bookList"></div></div>
-<div class="card span12"><h3>Registrar sessão de leitura</h3><form id="readingForm"><div class="formgrid"><div><label>Livro</label><select id="readingBook" required></select></div><div><label>Data</label><input id="readingDate" type="date" required></div><div><label>Páginas lidas</label><input id="readingPages" type="number" min="1" required></div><div><label>Nota (opcional)</label><input id="readingNote" placeholder="Ideia ou trecho para lembrar"></div></div><button class="primary" style="margin-top:12px">Registrar leitura</button></form><div id="readingHistory"></div></div></div>
-</section>
-
-<section id="page-gratitude" class="hidden">
-<h2>Caderno de gratidão</h2><p class="sub">Uma coisa por dia. Sem obrigação de ser grandiosa.</p>
-<div class="grid"><div class="card span4"><h3>Novo registro</h3><form id="gratitudeForm"><label>Data</label><input id="gratitudeDate" type="date" required><label>Hoje sou grato por...</label><textarea id="gratitudeText" required></textarea><button class="primary" style="margin-top:12px">Guardar registro</button></form></div><div class="card span8"><h3>Seu caderno</h3><div id="gratitudeHistory"></div></div></div>
-</section>
-
-<section id="page-failures" class="hidden">
-<h2>Registro de falhas</h2><p class="sub">Encare o ocorrido. Identifique a causa. Defina a correção.</p>
-<div class="grid"><div class="card span6"><h3>Registrar falha</h3><form id="failureForm"><label>Data</label><input id="failureDate" type="date" required><label>O que aconteceu?</label><textarea id="failureWhat" required></textarea><label>Área relacionada</label><select id="failureArea"><option>Treino</option><option>Alimentação</option><option>Rotina</option><option>Leitura</option><option>Casa</option><option>Trabalho</option><option>Outro</option></select><label>Por que aconteceu?</label><textarea id="failureWhy"></textarea><label>Qual será a correção?</label><textarea id="failureFix"></textarea><button class="primary" style="margin-top:12px">Registrar falha</button></form></div><div class="card span6"><h3>Histórico</h3><div id="failureHistory"></div></div></div>
-</section>
-
-<section id="page-settings" class="hidden">
-<h2>Configurações</h2><p class="sub">Ajuste seus lembretes e exporte seus dados para manter uma cópia.</p>
-<div class="grid"><div class="card span6"><h3>Lembretes</h3><p class="meta">Ative as notificações push para receber lembretes no dispositivo.</p><button id="notifyPermission">Permitir notificações</button> <button id="pushSubscribe" class="primary">Ativar lembretes push</button><p id="notifyStatus" class="meta" role="status"></p></div><div class="card span6"><h3>Dados</h3><p class="meta">Os registros desta versão ficam salvos neste navegador e dispositivo.</p><button id="clearData" class="danger">Apagar todos os dados</button></div></div>
-</section>
-<section id="page-admin" class="hidden">
-<h2>Administração de contas</h2><p class="sub">Gerencie contas de acesso. Esta área não exibe hábitos nem registros pessoais.</p>
-<div class="grid"><div class="card span12">
-<div class="row" style="flex-wrap:wrap"><div style="flex:1;min-width:220px"><label for="adminSearch">Pesquisar por e-mail</label><input id="adminSearch" type="search" placeholder="Digite um e-mail..."></div><button id="adminRefresh" class="small" type="button" style="align-self:end">Atualizar lista</button></div>
-<p id="adminStatus" class="meta" role="status"></p><div id="adminUsers"></div>
-</div></div></section>
-</main>
-<footer>DESENVOLVIDO POR DIEGO NICOLATO</footer>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-const $=id=>document.getElementById(id);
-
-const SUPABASE_URL = "https://vxqufrxtkeszqvhggbgh.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_Bii_xKIKGoyyBt7U73uRmg_cBAs_CLB";
-// Configure com a chave pública VAPID gerada para o backend antes de ativar push.
-const VAPID_PUBLIC_KEY = "BCbJHEibHvI5VWVO40TPQguGmUF6eDrnL7lpgTJ-B0RZqX8-jGTvGX2hjfPBIHGsKLKoSAT364PC0fEtTdLci3M";
-let cavernaSWRegistration = null;
-const supabaseConfigured = SUPABASE_URL.startsWith("https://") && !SUPABASE_URL.includes("COLE_AQUI") && !SUPABASE_ANON_KEY.includes("COLE_AQUI");
-const sb = supabaseConfigured ? window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY) : null;
-let currentUser=null, saveTimer=null;
-function authMsg(m){$("authMessage").textContent=m||""}
-async function registerCavernaSW(){
- if(!("serviceWorker" in navigator))return null;
- try{cavernaSWRegistration=await navigator.serviceWorker.register("./service-worker.js");return cavernaSWRegistration}
- catch(e){console.warn("Service worker não registrado",e);return null}
-}
-function urlBase64ToUint8Array(base64String){const padding="=".repeat((4-base64String.length%4)%4);const base64=(base64String+padding).replace(/-/g,"+").replace(/_/g,"/");const raw=atob(base64);return Uint8Array.from([...raw].map(c=>c.charCodeAt(0)))}
-async function enablePushReminders(){
- const status=$("notifyStatus");
- if(!currentUser){status.textContent="Entre na sua conta antes de ativar.";return}
- if(!("serviceWorker" in navigator)||!("PushManager" in window)){status.textContent="Este navegador não oferece suporte a push.";return}
- if(!VAPID_PUBLIC_KEY||VAPID_PUBLIC_KEY.startsWith("COLE_AQUI")){status.textContent="Falta configurar a chave pública VAPID no index.html e o backend no Supabase.";return}
- try{
-  const permission=await Notification.requestPermission();if(permission!=="granted"){status.textContent="Permissão de notificações não concedida.";return}
-  const reg=cavernaSWRegistration||await registerCavernaSW();if(!reg){status.textContent="Não foi possível registrar o service worker.";return}
-  let sub=await reg.pushManager.getSubscription();
-  if(!sub)sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:urlBase64ToUint8Array(VAPID_PUBLIC_KEY)});
-  const {error}=await sb.from("caverna_push_subscriptions").upsert({user_id:currentUser.id,endpoint:sub.endpoint,subscription:sub.toJSON(),updated_at:new Date().toISOString()},{onConflict:"endpoint"});
-  if(error)throw error;
-  status.textContent="Push ativado neste dispositivo.";
- }catch(e){console.error(e);status.textContent="Não foi possível ativar: "+(e.message||"verifique as configurações do Supabase")}
-}
-$("pushSubscribe").onclick=enablePushReminders;
-function showAuth(mode="login"){
- $("authScreen").style.display="grid";$("appShell").style.display="none";
- $("authTitle").textContent=mode==="signup"?"CRIAR ACESSO.":mode==="reset"?"RECUPERAR ACESSO.":"ENTRE NA SUA CAVERNA.";
- $("authSubtitle").textContent=mode==="signup"?"Crie sua conta para guardar sua evolução.":mode==="reset"?"Enviaremos um link para redefinir sua senha.":"Acesse seus registros. Honre seus compromissos.";
- $("authPassword").classList.toggle("hidden",mode==="reset");$("authPassword").required=mode!=="reset";
- $("authSubmit").textContent=mode==="signup"?"Criar conta":mode==="reset"?"Enviar link":"Entrar";
- $("authSignup").classList.toggle("hidden",mode==="signup");$("authReset").classList.toggle("hidden",mode==="reset");
- $("authForm").dataset.mode=mode;authMsg("");
-}
-function showApp(user){currentUser=user;$("authScreen").style.display="none";$("appShell").style.display="block";$("userEmail").textContent=user.email||"Conta conectada";checkAdminAccess(user)}
-function freshData(){return {habits:defaultHabits.map(h=>({...h,id:uid(),active:true})),checks:{},body:[],workouts:[],workoutPrograms:[],workoutSessions:[],books:[],readings:[],gratitude:[],failures:[]}}
-function migrateWorkoutPrograms(list){
- const items=Array.isArray(list)?list:[], modern=items.filter(p=>Array.isArray(p.days)), legacy=items.filter(p=>!Array.isArray(p.days));
- const grouped=new Map();for(const p of legacy){const name=(p.name||"Treino").trim();if(!grouped.has(name))grouped.set(name,{id:p.id||uid(),name,createdAt:p.createdAt,days:[]});const group=grouped.get(name);const key=p.day||"A";let day=group.days.find(d=>d.key===key);if(!day){day={key,label:p.dayLabel||"",exercises:[]};group.days.push(day)}day.exercises.push(...(Array.isArray(p.exercises)?p.exercises:[]))}
- return [...modern,...grouped.values()];
-}
-function normalizeData(d){let b=freshData();return {...b,...(d||{}),habits:Array.isArray(d?.habits)?d.habits:b.habits,checks:d?.checks||{},body:d?.body||[],workouts:d?.workouts||[],workoutPrograms:migrateWorkoutPrograms(d?.workoutPrograms),workoutSessions:Array.isArray(d?.workoutSessions)?d.workoutSessions:[],books:d?.books||[],readings:d?.readings||[],gratitude:d?.gratitude||[],failures:d?.failures||[]}}
-async function loadUserData(user){
- const {data:row,error}=await sb.from("caverna_data").select("payload").eq("user_id",user.id).maybeSingle();if(error)throw error;
- if(row?.payload){data=normalizeData(row.payload);localStorage.setItem("cavernaData",JSON.stringify(data))}
- else{data=normalizeData(JSON.parse(localStorage.getItem("cavernaData")||"null")||freshData());const {error:e}=await sb.from("caverna_data").upsert({user_id:user.id,payload:data,updated_at:new Date().toISOString()});if(e)throw e}
- renderAll()
-}
-async function persistUserData(){if(!currentUser||!sb)return;const {error}=await sb.from("caverna_data").upsert({user_id:currentUser.id,payload:JSON.parse(JSON.stringify(data)),updated_at:new Date().toISOString()});if(error)console.error("Erro ao sincronizar:",error)}
-async function bootAuth(){
- if(!supabaseConfigured){showAuth();authMsg("Configuração pendente: preencha SUPABASE_URL e SUPABASE_ANON_KEY no index.html.");$("authSubmit").disabled=true;$("authSignup").disabled=true;$("authReset").disabled=true;return}
- showAuth();const {data:{session}}=await sb.auth.getSession();
- if(session?.user){try{await loadUserData(session.user);showApp(session.user)}catch(e){authMsg("Erro ao carregar dados. Confira a tabela e as políticas RLS.");console.error(e)}}
- sb.auth.onAuthStateChange((event)=>{if(event==="SIGNED_OUT"){currentUser=null;localStorage.removeItem("cavernaData");showAuth()}})
-}
-$("authSignup").onclick=()=>showAuth("signup");$("authReset").onclick=()=>showAuth("reset");
-$("authForm").onsubmit=async e=>{
- e.preventDefault();if(!sb){authMsg("Configure o Supabase primeiro.");return}
- let mode=e.target.dataset.mode,email=$("authEmail").value.trim(),password=$("authPassword").value;
- $("authSubmit").disabled=true;authMsg("Processando...");
- try{
-  if(mode==="signup"){let {data,error}=await sb.auth.signUp({email,password});if(error)throw error;
-   if(data.session&&data.user){await loadUserData(data.user);showApp(data.user)}else{showAuth("login");authMsg("Conta criada. Confira seu e-mail para confirmar o cadastro e depois entre.")}
-  }else if(mode==="reset"){let {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:location.href});if(error)throw error;authMsg("Se esse e-mail estiver cadastrado, você receberá um link para redefinir a senha.")
-  }else{let {data,error}=await sb.auth.signInWithPassword({email,password});if(error)throw error;await loadUserData(data.user);showApp(data.user)}
- }catch(err){authMsg(err.message||"Não foi possível concluir. Tente novamente.")}finally{$("authSubmit").disabled=false}
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
-$("logoutBtn").onclick=async()=>{await persistUserData();let {error}=await sb.auth.signOut();if(error)alert(error.message)};
 
-const today=()=>new Date().toLocaleDateString('en-CA');
-const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
-const defaultHabits=[
-{name:"Arrumar a cama",category:"Casa",frequency:"daily",days:[],time:"",target:""},
-{name:"Higiene pessoal",category:"Rotina",frequency:"daily",days:[],time:"",target:""},
-{name:"Treinar",category:"Saúde",frequency:"weekly",days:[1,3,5],time:"",target:""},
-{name:"Alimentação planejada",category:"Saúde",frequency:"daily",days:[],time:"",target:""},
-{name:"Ler 10 páginas",category:"Leitura",frequency:"daily",days:[],time:"",target:"10 páginas"},
-{name:"Orar",category:"Espiritualidade",frequency:"daily",days:[],time:"",target:""},
-{name:"Caderno de gratidão",category:"Espiritualidade",frequency:"daily",days:[],time:"",target:"1 registro"}
-];
-let data=JSON.parse(localStorage.getItem("cavernaData")||"null")||freshData();
-function save(){localStorage.setItem("cavernaData",JSON.stringify(data));renderAll();if(currentUser){clearTimeout(saveTimer);saveTimer=setTimeout(()=>persistUserData(),500)}}
-function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
-function showPage(p){document.querySelectorAll("main section").forEach(s=>s.classList.add("hidden"));$("page-"+p).classList.remove("hidden");document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===p));renderAll();if(p==="mentor")loadMentorHistory()}
-window.showPage=showPage;
-$("nav").addEventListener("click",e=>{let b=e.target.closest("button[data-page]");if(b)showPage(b.dataset.page)});
-$("todayDate").textContent=new Date().toLocaleDateString("pt-BR",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
-function scheduled(h){let d=new Date().getDay();return h.active!==false&&(h.frequency!=="weekly"||(h.days||[]).includes(d))}
-function checkKey(id,date=today()){return date+"_"+id}
-function renderToday(){
-let hs=data.habits.filter(scheduled),done=hs.filter(h=>data.checks[checkKey(h.id)]).length;
-$("doneCount").textContent=done;$("totalCount").textContent=hs.length;$("percentCount").textContent=hs.length?Math.round(done/hs.length*100)+"%":"—";
-$("todayHabits").innerHTML=hs.length?hs.map(h=>`<div class="habit ${data.checks[checkKey(h.id)]?'done':''}"><input type="checkbox" ${data.checks[checkKey(h.id)]?'checked':''} onchange="toggleHabit('${h.id}',this.checked)"><div class="name"><div>${esc(h.name)}</div><div class="meta">${esc(h.target||h.category)} ${h.time?'· '+esc(h.time):''}</div></div><span class="pill">${esc(h.category)}</span></div>`).join(""):'<div class="empty">Nenhum hábito programado para hoje.</div>';
+const json = (body: unknown, status = 200) =>
+  new Response(JSON.stringify(body), {
+    status,
+    headers: { ...corsHeaders, "Content-Type": "application/json" },
+  });
+
+function summarizeCaverna(payload: any) {
+  const d = payload || {};
+  const today = new Date().toISOString().slice(0, 10);
+  const habits = Array.isArray(d.habits) ? d.habits : [];
+  const checks = d.checks || {};
+
+  const scheduled = habits.filter(
+    (h: any) =>
+      h &&
+      h.active !== false &&
+      (h.frequency !== "weekly" ||
+        (Array.isArray(h.days) && h.days.includes(new Date().getDay())))
+  );
+
+  const done = scheduled.filter(
+    (h: any) => Boolean(checks[`${today}_${h.id}`])
+  );
+
+  const body = Array.isArray(d.body) ? d.body : [];
+  const lastBody = body.length ? body[body.length - 1] : null;
+
+  const programs = Array.isArray(d.workoutPrograms)
+    ? d.workoutPrograms.map((p: any) => ({
+        name: p.name,
+        days: (p.days || []).map((day: any) => ({
+          key: day.key,
+          label: day.label,
+          exercises: (day.exercises || []).map((x: any) => x.name),
+        })),
+      }))
+    : [];
+
+  const sessions = Array.isArray(d.workoutSessions)
+    ? d.workoutSessions.slice(-10).map((s: any) => ({
+        date: s.date,
+        programName: s.programName,
+        day: s.day,
+        dayLabel: s.dayLabel,
+        completedSets: s.completedSets,
+        totalSets: s.totalSets,
+      }))
+    : [];
+
+  const books = Array.isArray(d.books)
+    ? d.books.map((b: any) => ({
+        title: b.title,
+        status: b.status,
+        current: b.current,
+        total: b.total,
+      }))
+    : [];
+
+  const failures = Array.isArray(d.failures)
+    ? d.failures.slice(-8).map((f: any) => ({
+        date: f.date,
+        area: f.area,
+        what: f.what,
+        why: f.why,
+        fix: f.fix,
+        status: f.status,
+      }))
+    : [];
+
+  return {
+    habits: habits.slice(0, 60),
+    today: {
+      date: today,
+      scheduled: scheduled.map((h: any) => h.name),
+      completed: done.map((h: any) => h.name),
+      completionPercent: scheduled.length
+        ? Math.round((done.length / scheduled.length) * 100)
+        : null,
+    },
+    latestBodyRecord: lastBody,
+    workoutPrograms: programs,
+    recentWorkoutSessions: sessions,
+    books,
+    recentFailures: failures,
+    gratitudeEntriesCount: Array.isArray(d.gratitude)
+      ? d.gratitude.length
+      : 0,
+  };
 }
-window.toggleHabit=async(id,v)=>{
- const key=checkKey(id);
- data.checks[key]=v;
- save();
- // Ao concluir, sincroniza primeiro o estado e depois solicita o parabéns via push.
- if(v && currentUser && sb){
-  try{
-   await persistUserData();
-   const {error}=await sb.functions.invoke("caverna-push-reminders",{
-    body:{action:"habit_completed",habit_id:String(id),date:today()}
-   });
-   if(error)console.warn("Não foi possível enviar o parabéns por push:",error);
-  }catch(e){console.warn("Falha ao solicitar parabéns por push:",e)}
- }
-};
-function renderHabits(){
-$("habitCount").textContent=data.habits.length+" hábitos";
-$("habitList").innerHTML=data.habits.length?data.habits.map(h=>`<div class="listitem"><div class="row"><div><strong>${esc(h.name)}</strong><div class="meta">${esc(h.category)} · ${h.frequency==="daily"?"Diário":(h.days||[]).map(d=>["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"][d]).join(", ")} ${h.time?'· '+esc(h.time):''}</div></div><div class="actions"><button class="small" onclick="editHabit('${h.id}')">Editar</button><button class="small" onclick="toggleActive('${h.id}')">${h.active===false?"Ativar":"Pausar"}</button><button class="small danger" onclick="deleteHabit('${h.id}')">Excluir</button></div></div></div>`).join(""):'<div class="empty">Nenhum hábito cadastrado.</div>';
-}
-window.editHabit=id=>{let h=data.habits.find(x=>x.id===id);if(!h)return;$("habitId").value=h.id;$("habitName").value=h.name;$("habitCategory").value=h.category;$("habitFrequency").value=h.frequency;$("habitTime").value=h.time||"";$("habitTarget").value=h.target||"";document.querySelectorAll("#weekdays input").forEach(i=>i.checked=(h.days||[]).includes(+i.value));$("weekdayBox").classList.toggle("hidden",h.frequency!=="weekly");$("habitFormTitle").textContent="Editar hábito";$("cancelHabit").classList.remove("hidden");showPage("habits");};
-window.toggleActive=id=>{let h=data.habits.find(x=>x.id===id);h.active=h.active===false;save()};
-window.deleteHabit=id=>{if(confirm("Excluir este hábito e seus registros?")){data.habits=data.habits.filter(h=>h.id!==id);save()}};
-const dayNames=["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
-$("weekdays").innerHTML=dayNames.map((d,i)=>`<label style="display:flex;align-items:center;gap:5px;color:var(--text)"><input type="checkbox" value="${i}" style="width:auto">${d}</label>`).join("");
-$("habitFrequency").onchange=()=> $("weekdayBox").classList.toggle("hidden",$("habitFrequency").value!=="weekly");
-$("habitForm").onsubmit=e=>{e.preventDefault();let id=$("habitId").value,old=data.habits.find(h=>h.id===id);let h={id:id||uid(),name:$("habitName").value.trim(),category:$("habitCategory").value,frequency:$("habitFrequency").value,days:[...document.querySelectorAll("#weekdays input:checked")].map(i=>+i.value),time:$("habitTime").value,target:$("habitTarget").value.trim(),active:old?old.active:true};if(h.frequency==="weekly"&&!h.days.length){alert("Selecione pelo menos um dia da semana.");return}if(old)Object.assign(old,h);else data.habits.push(h);resetHabitForm();save()};
-function resetHabitForm(){$("habitForm").reset();$("habitId").value="";$("weekdayBox").classList.add("hidden");$("habitFormTitle").textContent="Novo hábito";$("cancelHabit").classList.add("hidden")}
-$("cancelHabit").onclick=resetHabitForm;
-function renderWorkoutTemplateOptions(){
- const programSelect=$("workoutTemplateProgram"),daySelect=$("workoutTemplateDay");if(!programSelect||!daySelect)return;
- const previousProgram=programSelect.value,previousDay=daySelect.value;
- const programs=(data.workoutPrograms||[]).map(normalizeProgram);
- programSelect.innerHTML='<option value="">Selecionar ficha...</option>'+programs.map(p=>`<option value="${esc(p.id)}">${esc(p.name)}</option>`).join("");
- if(programs.some(p=>p.id===previousProgram))programSelect.value=previousProgram;
- const selected=programs.find(p=>p.id===programSelect.value);
- daySelect.innerHTML=selected?'<option value="">Selecionar dia...</option>'+selected.days.map(d=>`<option value="${esc(d.key)}">Dia ${esc(d.key)}${d.label?' — '+esc(d.label):''}</option>`).join(""):'<option value="">Selecione primeiro uma ficha</option>';
- daySelect.disabled=!selected;
- if(selected&&selected.days.some(d=>d.key===previousDay))daySelect.value=previousDay;
-}
-$("workoutTemplateProgram").addEventListener("change",()=>{renderWorkoutTemplateOptions();window.workoutTemplateLoaded=null;$("workoutTemplateStatus").textContent=""});
-$("workoutTemplateDay").addEventListener("change",()=>{window.workoutTemplateLoaded=null;$("workoutTemplateStatus").textContent=""});
-$("loadWorkoutTemplate").addEventListener("click",()=>{
- const program=(data.workoutPrograms||[]).map(normalizeProgram).find(p=>p.id===$("workoutTemplateProgram").value);
- const day=program?.days.find(d=>d.key===$("workoutTemplateDay").value);
- if(!program||!day){$("workoutTemplateStatus").textContent="Selecione uma ficha e um dia válido.";return}
- if(!day.exercises.length){$("workoutTemplateStatus").textContent="Este dia não tem exercícios cadastrados.";return}
- $("workoutName").value=`${program.name} — Dia ${day.key}${day.label?' · '+day.label:''}`;
- $("workoutExercises").innerHTML="";
- day.exercises.forEach(ex=>addWorkoutExercise({name:ex.name,load:ex.load??"",sets:ex.sets??"",reps:ex.repsMin!=null&&ex.repsMax!=null?(ex.repsMin===ex.repsMax?String(ex.repsMin):`${ex.repsMin}–${ex.repsMax}`):(ex.reps??"")}));
- window.workoutTemplateLoaded={programId:program.id,programName:program.name,day:day.key,dayLabel:day.label||""};
- $("workoutTemplateStatus").textContent=`Carregados ${day.exercises.length} exercício(s). Confira os dados e salve o treino.`;
+
+Deno.serve(async (req) => {
+  if (req.method === "OPTIONS") {
+    return new Response("ok", { headers: corsHeaders });
+  }
+
+  if (req.method !== "POST") {
+    return json({ error: "Método não permitido." }, 405);
+  }
+
+  const supabaseUrl = Deno.env.get("SUPABASE_URL");
+  const anonKey = Deno.env.get("SUPABASE_ANON_KEY");
+  const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+  const geminiKey = Deno.env.get("GEMINI_API_KEY");
+
+  if (!supabaseUrl || !anonKey || !serviceKey) {
+    console.error("Configuração incompleta do Mentor.");
+    return json({
+      error: "Configuração incompleta do Supabase no backend do Mentor. Confira os Secrets.",
+    }, 500);
+  }
+
+  const authHeader = req.headers.get("Authorization");
+  if (!authHeader) {
+    return json({ error: "Faça login para conversar com o Mentor." }, 401);
+  }
+
+  const userClient = createClient(supabaseUrl, anonKey, {
+    global: { headers: { Authorization: authHeader } },
+    auth: { persistSession: false },
+  });
+
+  const { data: authData, error: authError } =
+    await userClient.auth.getUser();
+
+  const user = authData?.user;
+
+  if (authError || !user) {
+    return json({ error: "Sessão inválida. Entre novamente." }, 401);
+  }
+
+  const admin = createClient(supabaseUrl, serviceKey, {
+    auth: { persistSession: false },
+  });
+
+  // Somente usuários cadastrados como administradores podem usar o Mentor.
+  const { data: adminRecord, error: adminError } = await admin
+    .from("caverna_admins")
+    .select("user_id")
+    .eq("user_id", user.id)
+    .maybeSingle();
+
+  if (adminError) {
+    console.error("Erro ao verificar administrador:", adminError);
+    return json({ error: "Não foi possível validar sua autorização." }, 500);
+  }
+
+  if (!adminRecord) {
+    return json({ error: "O Mentor está disponível somente para administradores nesta fase." }, 403);
+  }
+
+  let body: any;
+  try {
+    body = await req.json();
+  } catch {
+    return json({ error: "Corpo da requisição inválido." }, 400);
+  }
+
+  const message =
+    typeof body?.message === "string" ? body.message.trim() : "";
+
+  if (!message) {
+    return json({ error: "Escreva uma mensagem para o Mentor." }, 400);
+  }
+
+  if (message.length > 6000) {
+    return json({ error: "Escreva uma mensagem de até 6.000 caracteres." }, 400);
+  }
+
+  const { data: cavernaRow, error: cavernaError } = await admin
+    .from("caverna_data")
+    .select("payload")
+    .eq("user_id", user.id)
+    .maybeSingle();
+
+  if (cavernaError) {
+    console.error("Erro ao consultar dados da Caverna:", cavernaError);
+    return json({ error: "Não foi possível consultar seus dados." }, 500);
+  }
+
+  const { data: memories, error: memoriesError } = await admin
+    .from("mentor_memory")
+    .select("category,memory")
+    .eq("user_id", user.id)
+    .order("updated_at", { ascending: false })
+    .limit(12);
+
+  const { data: prefs, error: prefsError } = await admin
+    .from("mentor_preferences")
+    .select("tone,scope")
+    .eq("user_id", user.id)
+    .maybeSingle();
+
+  const { data: prior, error: historyError } = await admin
+    .from("mentor_messages")
+    .select("role,content,created_at")
+    .eq("user_id", user.id)
+    .order("created_at", { ascending: false })
+    .limit(16);
+
+  if (memoriesError || prefsError || historyError) {
+    console.error("Erro ao consultar memória ou histórico.", {
+      memoriesError,
+      prefsError,
+      historyError,
+    });
+    return json({
+      error: "Não foi possível carregar a memória do Mentor. Confira o schema SQL.",
+    }, 500);
+  }
+
+  const history = (prior || []).reverse();
+
+  const { error: saveUserError } = await admin
+    .from("mentor_messages")
+    .insert({
+      user_id: user.id,
+      role: "user",
+      content: message,
+    });
+
+  if (saveUserError) {
+    console.error("Erro ao salvar mensagem:", saveUserError);
+    return json({ error: "Não foi possível salvar sua mensagem." }, 500);
+  }
+
+  const systemPrompt = `
+Você é o Mentor da Caverna, um agente pessoal de evolução integral.
+
+PERSONALIDADE:
+Seja direto, exigente, lúcido e humano. Não use frases motivacionais vazias, bajulação ou humilhação. Confronte inconsistências com respeito. Ajude o usuário a transformar reflexão em ações concretas.
+
+MÉTODO:
+- Faça uma pergunta de cada vez quando faltar contexto.
+- Para pedidos comuns, seja conciso e termine com um próximo passo executável.
+- Acompanhe evolução em treino, hábitos, leitura, projetos, objetivos e responsabilidade pessoal.
+- Use o histórico e as memórias relevantes, mas não invente informações.
+- Diferencie fatos conhecidos de hipóteses.
+- Não afirme que executou ações que não executou.
+- Não prometa enviar mensagens futuras: isso depende de uma função de agendamento configurada.
+- Em questões médicas, não dê diagnósticos; reconheça limites e recomende ajuda profissional quando apropriado.
+- Se houver risco iminente de autoagressão, priorize segurança e ajuda humana imediata.
+
+Preferência de tom: ${prefs?.tone || "direto_e_exigente"}.
+Escopo: ${prefs?.scope || "evolucao_integral"}.
+Responda em português brasileiro.
+`.trim();
+
+  const appContext = summarizeCaverna(cavernaRow?.payload);
+
+  const memoryContext = (memories || [])
+    .map((m: any) => `[${m.category}] ${m.memory}`)
+    .join("\n")
+    .slice(0, 10000) || "Nenhuma memória persistente cadastrada.";
+
+  const contents = [
+    ...history
+      .filter((m: any) => m.role === "user" || m.role === "assistant")
+      .map((m: any) => ({
+        role: m.role === "assistant" ? "model" : "user",
+        parts: [{ text: String(m.content || "").slice(0, 6000) }],
+      })),
+    { role: "user", parts: [{ text: message }] },
+  ];
+
+  // A mensagem atual já foi adicionada acima; evita duplicá-la no histórico.
+  const lastContent = contents[contents.length - 1];
+  if (
+    lastContent?.role === "user" &&
+    lastContent.parts?.[0]?.text === message
+  ) {
+    // Mantém a última mensagem exatamente uma vez.
+  }
+
+  // Groq como provedor principal; Gemini fica como alternativa se configurado.
+  const groqKey = Deno.env.get("GROQ_API_KEY");
+  const groqModel = "openai/gpt-oss-120b";
+  const startedAt = Date.now();
+  const totalTimeoutMs = 22000;
+  let answer = "";
+  let lastStatus = 0;
+  let lastError = "";
+
+  const providerMessages = [
+    {
+      role: "system",
+      content: `${systemPrompt}
+
+CONTEXTO ATUAL DA CAVERNA:
+${JSON.stringify(appContext).slice(0, 18000)}
+
+MEMÓRIAS SALVAS:
+${memoryContext}`,
+    },
+    ...history
+      .filter((m: any) => m.role === "user" || m.role === "assistant")
+      .map((m: any) => ({
+        role: m.role,
+        content: String(m.content || "").slice(0, 6000),
+      })),
+    { role: "user", content: message },
+  ];
+
+  if (groqKey) {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 18000);
+    try {
+      const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${groqKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: groqModel,
+          messages: providerMessages,
+          temperature: 0.7,
+          max_completion_tokens: 1800,
+        }),
+        signal: controller.signal,
+      });
+
+      const responseText = await response.text();
+      let parsed: any;
+      try {
+        parsed = responseText ? JSON.parse(responseText) : {};
+      } catch {
+        parsed = { error: { message: responseText.slice(0, 500) } };
+      }
+
+      if (response.ok) {
+        answer = String(parsed?.choices?.[0]?.message?.content || "").trim();
+        if (answer) {
+          console.log(`Mentor respondeu usando Groq ${groqModel}.`);
+        } else {
+          lastStatus = 502;
+          lastError = "A Groq retornou uma resposta vazia.";
+          console.error(lastError);
+        }
+      } else {
+        lastStatus = response.status;
+        lastError = String(parsed?.error?.message || `HTTP ${response.status}`);
+        console.error(`Erro da Groq: HTTP ${response.status}`, lastError);
+      }
+    } catch (error) {
+      lastStatus = error instanceof Error && error.name === "AbortError" ? 504 : 502;
+      lastError = error instanceof Error && error.name === "AbortError"
+        ? "Tempo limite de 18 segundos excedido na Groq."
+        : String(error);
+      console.error("Falha de conexão com a Groq:", lastError);
+    } finally {
+      clearTimeout(timeoutId);
+    }
+  } else {
+    lastStatus = 500;
+    lastError = "Secret GROQ_API_KEY não configurado.";
+    console.error(lastError);
+  }
+
+  // Se a Groq falhar, tenta Gemini somente se a chave já estiver configurada
+  // e ainda houver tempo. Não apaga nem altera memória/histórico.
+  const remainingMs = totalTimeoutMs - (Date.now() - startedAt);
+  if (!answer && geminiKey && remainingMs > 1000) {
+    const fallbackController = new AbortController();
+    const fallbackTimeoutMs = Math.min(4000, remainingMs);
+    const fallbackTimeoutId = setTimeout(
+      () => fallbackController.abort(),
+      fallbackTimeoutMs,
+    );
+    try {
+      const fallbackContents = [
+        ...history
+          .filter((m: any) => m.role === "user" || m.role === "assistant")
+          .map((m: any) => ({
+            role: m.role === "assistant" ? "model" : "user",
+            parts: [{ text: String(m.content || "").slice(0, 6000) }],
+          })),
+        { role: "user", parts: [{ text: message }] },
+      ];
+      const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${encodeURIComponent(geminiKey)}`;
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          systemInstruction: {
+            parts: [{
+              text: `${systemPrompt}
+
+CONTEXTO ATUAL DA CAVERNA:
+${JSON.stringify(appContext).slice(0, 18000)}
+
+MEMÓRIAS SALVAS:
+${memoryContext}`,
+            }],
+          },
+          contents: fallbackContents,
+          generationConfig: { temperature: 0.7, maxOutputTokens: 1200 },
+        }),
+        signal: fallbackController.signal,
+      });
+
+      const responseText = await response.text();
+      let parsed: any;
+      try {
+        parsed = responseText ? JSON.parse(responseText) : {};
+      } catch {
+        parsed = { error: { message: responseText.slice(0, 500) } };
+      }
+
+      if (response.ok) {
+        answer = (parsed?.candidates?.[0]?.content?.parts || [])
+          .map((part: any) => part.text || "")
+          .join("\n")
+          .trim();
+        if (answer) console.log("Mentor respondeu usando Gemini como alternativa.");
+      } else {
+        lastStatus = response.status;
+        lastError = String(parsed?.error?.message || `HTTP ${response.status}`);
+        console.error(`Falha da alternativa Gemini: HTTP ${response.status}`, lastError);
+      }
+    } catch (error) {
+      lastStatus = error instanceof Error && error.name === "AbortError" ? 504 : 502;
+      lastError = error instanceof Error && error.name === "AbortError"
+        ? "Tempo limite da alternativa Gemini excedido."
+        : String(error);
+      console.error("Falha de conexão com a alternativa Gemini:", lastError);
+    } finally {
+      clearTimeout(fallbackTimeoutId);
+    }
+  }
+
+  if (!answer) {
+    const friendlyMessage = lastStatus === 429
+      ? "A Groq atingiu um limite temporário de uso. Aguarde um pouco e tente novamente."
+      : lastStatus === 401 || lastStatus === 403
+      ? "A Groq recusou a chave da API. Confira o Secret GROQ_API_KEY no Supabase."
+      : lastStatus === 504
+      ? "A IA demorou demais para responder. Tente novamente em instantes."
+      : !groqKey
+      ? "Falta configurar o Secret GROQ_API_KEY no Supabase."
+      : "O Mentor não conseguiu obter uma resposta agora. Tente novamente.";
+
+    console.error("Falha final do Mentor:", { status: lastStatus, error: lastError });
+    return json({ error: friendlyMessage }, 502);
+  }
+
+  const { error: saveAssistantError } = await admin
+    .from("mentor_messages")
+    .insert({
+      user_id: user.id,
+      role: "assistant",
+      content: answer,
+    });
+
+  if (saveAssistantError) {
+    console.error("Erro ao salvar resposta:", saveAssistantError);
+    return json({
+      error: "O Mentor respondeu, mas não foi possível salvar a resposta.",
+    }, 500);
+  }
+
+  return json({ answer });
 });
-function renderPhysical(){
-renderWorkoutTemplateOptions();
-const measureFields=[
-["bodyFat","Gordura corporal","%"],["bodyNeck","Pescoço","cm"],["bodyChest","Tórax / peito","cm"],["bodyShoulders","Ombros","cm"],["bodyWaist","Cintura","cm"],["bodyAbdomen","Abdômen","cm"],["bodyHips","Quadril","cm"],
-["bodyBicepsRight","Bíceps direito","cm"],["bodyBicepsLeft","Bíceps esquerdo","cm"],["bodyForearmRight","Antebraço direito","cm"],["bodyForearmLeft","Antebraço esquerdo","cm"],["bodyThighRight","Coxa direita","cm"],["bodyThighLeft","Coxa esquerda","cm"],["bodyCalfRight","Panturrilha direita","cm"],["bodyCalfLeft","Panturrilha esquerda","cm"]
-];
-$("bodyHistory").innerHTML=data.body.slice().reverse().map(x=>{const measures=measureFields.filter(([key])=>x[key]!==undefined&&x[key]!==null&&x[key]!=="").map(([key,label,unit])=>`${label}: ${esc(x[key])} ${unit}`);const weight=x.weight??x.bodyWeight;return `<div class="listitem"><div class="row"><strong>${esc(x.date)}</strong><span>${weight!==undefined&&weight!==null&&weight!==""?esc(weight)+" kg":""}</span></div>${measures.length?`<div class="meta" style="margin-top:6px;line-height:1.8">${measures.join(" · ")}</div>`:""}${x.note?`<div class="meta" style="margin-top:6px">${esc(x.note)}</div>`:""}</div>`}).join("")||'<div class="empty">Sem registros corporais.</div>';
-$("workoutHistory").innerHTML=data.workouts.slice().reverse().map(x=>{let exercises=Array.isArray(x.exercises)?x.exercises:(x.exercise?[{name:x.exercise,load:x.load,sets:x.sets,reps:x.reps}]:[]);return `<div class="listitem"><strong>${esc(x.date)} · ${esc(x.name)}</strong>${x.programName?`<div class="meta">Ficha: ${esc(x.programName)} · Dia ${esc(x.programDay||"A")}${x.programDayLabel?" — "+esc(x.programDayLabel):""}</div>`:""}${exercises.map((ex,i)=>`<div class="meta" style="margin-top:6px">${i+1}. ${esc(ex.name||"Exercício")}${ex.load!==""&&ex.load!=null?" · "+esc(ex.load)+" kg":""}${ex.sets?" · "+esc(ex.sets)+" séries":""}${ex.reps?" × "+esc(ex.reps)+" reps":""}</div>`).join("")}${x.duration?`<div class="meta">${esc(x.duration)} min</div>`:""}</div>`}).join("")||'<div class="empty">Sem treinos registrados.</div>';
-}
-$("bodyDate").value=today();$("workoutDate").value=today();
-$("bodyForm").onsubmit=e=>{e.preventDefault();const fields=["bodyWeight","bodyFat","bodyNeck","bodyChest","bodyShoulders","bodyWaist","bodyAbdomen","bodyHips","bodyBicepsRight","bodyBicepsLeft","bodyForearmRight","bodyForearmLeft","bodyThighRight","bodyThighLeft","bodyCalfRight","bodyCalfLeft"];const record={id:uid(),date:$("bodyDate").value,note:$("bodyNote").value.trim()};fields.forEach(id=>record[id]=$(id).value);if(!fields.some(id=>record[id]!=="")){alert("Preencha pelo menos uma medida ou o peso antes de salvar.");return}data.body.push(record);e.target.reset();$("bodyDate").value=today();save()};
-function addWorkoutExercise(values={}){let wrap=document.createElement("div");wrap.className="exercise-entry";wrap.innerHTML=`<div class="exercise-fields"><div class="exercise-name-field"><label>Exercício</label><input class="ex-name" required placeholder="Ex.: Supino reto"></div><div><label>Carga (kg)</label><input class="ex-load" type="number" step=".5" min="0" placeholder="40"></div><div><label>Séries</label><input class="ex-sets" type="number" min="1" step="1" placeholder="3"></div><div><label>Repetições</label><input class="ex-reps" type="text" placeholder="Ex.: 12 ou 8–12"></div></div><button type="button" class="small danger remove-exercise">Remover exercício</button>`;wrap.querySelector(".ex-name").value=values.name||"";wrap.querySelector(".ex-load").value=values.load??"";wrap.querySelector(".ex-sets").value=values.sets??"";wrap.querySelector(".ex-reps").value=values.reps??"";wrap.querySelector(".remove-exercise").onclick=()=>{wrap.remove();if(!$("workoutExercises").children.length)addWorkoutExercise()};$("workoutExercises").appendChild(wrap)}
-$("addExerciseBtn").onclick=()=>addWorkoutExercise();
-addWorkoutExercise();
-$("workoutForm").onsubmit=e=>{e.preventDefault();let exercises=[...$("workoutExercises").querySelectorAll(".exercise-entry")].map(w=>({name:w.querySelector(".ex-name").value.trim(),load:w.querySelector(".ex-load").value,sets:w.querySelector(".ex-sets").value,reps:w.querySelector(".ex-reps").value})).filter(x=>x.name);if(!exercises.length){alert("Adicione pelo menos um exercício.");return}const source=window.workoutTemplateLoaded||null;data.workouts.push({id:uid(),date:$("workoutDate").value,name:$("workoutName").value.trim(),...(source?{programId:source.programId,programName:source.programName,programDay:source.day,programDayLabel:source.dayLabel}:{}),exercises});window.workoutTemplateLoaded=null;e.target.reset();$("workoutExercises").innerHTML="";addWorkoutExercise();$("workoutDate").value=today();$("workoutTemplateStatus").textContent="";save()};
-function renderBooks(){
-$("bookList").innerHTML=data.books.map(b=>{let pct=b.total?Math.min(100,Math.round((b.current||0)/b.total*100)):0;return `<div class="listitem"><div class="row"><div><strong>${esc(b.title)}</strong><div class="meta">${esc(b.author||"Autor não informado")} · ${b.status==="reading"?"Lendo agora":b.status==="queue"?"Na fila":"Concluído"}</div></div><div class="actions"><button class="small" onclick="editBook('${b.id}')">Editar</button><button class="small danger" onclick="deleteBook('${b.id}')">Excluir</button></div>${b.total?`<div class="progress"><i style="width:${pct}%"></i></div><div class="meta">${b.current||0}/${b.total} páginas · ${pct}%</div>`:""}</div>`}).join("")||'<div class="empty">Sua biblioteca está vazia.</div>';
-$("readingBook").innerHTML='<option value="">Selecione um livro</option>'+data.books.filter(b=>b.status!=="finished").map(b=>`<option value="${b.id}">${esc(b.title)}</option>`).join("");
-$("readingHistory").innerHTML=data.readings.slice().reverse().map(r=>{let b=data.books.find(x=>x.id===r.bookId);return `<div class="listitem"><div class="row"><strong>${esc(r.date)} · ${esc(b?.title||"Livro removido")}</strong><span>${r.pages} páginas</span></div><div class="meta">${esc(r.note||"")}</div></div>`}).join("")||'<div class="empty">Nenhuma sessão registrada.</div>';
-}
-$("bookForm").onsubmit=e=>{e.preventDefault();let id=$("bookId").value;let b={id:id||uid(),title:$("bookTitle").value.trim(),author:$("bookAuthor").value.trim(),total:+$("bookTotal").value||0,current:+$("bookCurrent").value||0,status:$("bookStatus").value};if(b.total&&b.current>b.total){alert("A página atual não pode superar o total.");return}if(id){let old=data.books.find(x=>x.id===id);Object.assign(old,b)}else data.books.push(b);e.target.reset();$("bookId").value="";save()};
-window.editBook=id=>{let b=data.books.find(x=>x.id===id);$("bookId").value=b.id;$("bookTitle").value=b.title;$("bookAuthor").value=b.author;$("bookTotal").value=b.total;$("bookCurrent").value=b.current;$("bookStatus").value=b.status;showPage("books")};
-window.deleteBook=id=>{if(confirm("Excluir livro?")){data.books=data.books.filter(b=>b.id!==id);save()}};
-$("readingDate").value=today();
-$("readingForm").onsubmit=e=>{e.preventDefault();let book=data.books.find(b=>b.id===$("readingBook").value),pages=+$("readingPages").value;if(!book||pages<1)return;data.readings.push({id:uid(),bookId:book.id,date:$("readingDate").value,pages,note:$("readingNote").value});if(book.total)book.current=Math.min(book.total,(book.current||0)+pages);if(book.total&&book.current>=book.total)book.status="finished";e.target.reset();$("readingDate").value=today();save()};
-function renderGratitude(){
-$("gratitudeHistory").innerHTML=data.gratitude.slice().reverse().map(g=>`<div class="listitem"><div class="meta">${esc(g.date)}</div><div>${esc(g.text)}</div><div class="actions" style="margin-top:8px"><button class="small danger" onclick="deleteGratitude('${g.id}')">Excluir</button></div>`).join("")||'<div class="empty">Nenhum registro ainda.</div>';
-}
-window.deleteGratitude=id=>{data.gratitude=data.gratitude.filter(g=>g.id!==id);save()};
-function addGratitude(date,text){if(data.gratitude.some(g=>g.date===date)){alert("Já existe uma gratidão registrada para essa data. Edite ou exclua o registro no caderno.");return false}data.gratitude.push({id:uid(),date,text});return true}
-$("gratitudeDate").value=today();
-$("gratitudeForm").onsubmit=e=>{e.preventDefault();if(addGratitude($("gratitudeDate").value,$("gratitudeText").value.trim())){e.target.reset();$("gratitudeDate").value=today();save()}};
-$("saveQuickGratitude").onclick=()=>{let t=$("quickGratitude").value.trim();if(!t)return;if(addGratitude(today(),t)){$("quickGratitude").value="";$("gratitudeStatus").textContent="Gratidão registrada.";save()}};
-function renderFailures(){
-$("failureHistory").innerHTML=data.failures.slice().reverse().map(f=>`<div class="listitem"><div class="row"><strong>${esc(f.date)} · ${esc(f.area)}</strong><span class="pill">${esc(f.status||"Pendente")}</span></div><p>${esc(f.what)}</p><div class="meta"><strong>Causa:</strong> ${esc(f.why||"Não registrada")}</div><div class="meta"><strong>Correção:</strong> ${esc(f.fix||"Não definida")}</div><div class="actions" style="margin-top:8px"><button class="small" onclick="resolveFailure('${f.id}')">Marcar resolvida</button><button class="small danger" onclick="deleteFailure('${f.id}')">Excluir</button></div></div>`).join("")||'<div class="empty">Nenhuma falha registrada.</div>';
-}
-window.resolveFailure=id=>{let f=data.failures.find(x=>x.id===id);f.status="Resolvida";save()};
-window.deleteFailure=id=>{if(confirm("Excluir registro de falha?")){data.failures=data.failures.filter(x=>x.id!==id);save()}};
-$("failureDate").value=today();
-$("failureForm").onsubmit=e=>{e.preventDefault();data.failures.push({id:uid(),date:$("failureDate").value,what:$("failureWhat").value,area:$("failureArea").value,why:$("failureWhy").value,fix:$("failureFix").value,status:"Pendente"});e.target.reset();$("failureDate").value=today();save()};
-let adminAuthorized=false, adminUsersCache=[];
-async function checkAdminAccess(user){adminAuthorized=false;$("adminNavBtn").classList.add("hidden");try{const {data,error}=await sb.from("caverna_admins").select("user_id").eq("user_id",user.id).maybeSingle();if(error)throw error;adminAuthorized=!!data;$("adminNavBtn").classList.toggle("hidden",!adminAuthorized);if(!adminAuthorized&&!$("page-admin").classList.contains("hidden"))showPage("today");}catch(e){console.warn("Falha ao verificar admin",e);}}
-function adminStatus(m){$("adminStatus").textContent=m||"";}
-function renderAdminUsers(){const term=($("adminSearch").value||"").trim().toLowerCase();const users=adminUsersCache.filter(u=>(u.email||"").toLowerCase().includes(term));if(!users.length){$("adminUsers").innerHTML='<div class="empty">Nenhuma conta encontrada.</div>';return;}$("adminUsers").innerHTML=users.map(u=>{const banned=!!u.banned_until&&new Date(u.banned_until)>new Date();const created=u.created_at?new Date(u.created_at).toLocaleDateString("pt-BR"):"—";const last=u.last_sign_in_at?new Date(u.last_sign_in_at).toLocaleString("pt-BR"):"Nunca";const self=currentUser&&u.id===currentUser.id;return `<div class="listitem"><div class="row" style="align-items:flex-start;flex-wrap:wrap"><div style="flex:1;min-width:220px"><strong>${esc(u.email||"E-mail não informado")}</strong><div class="meta">Criada: ${esc(created)} · Último acesso: ${esc(last)}</div><div class="meta">Status: ${banned?"Bloqueada":"Ativa"}</div></div><div class="actions">${self?'<span class="pill">Sua conta</span>':`<button class="small" data-admin-action="${banned?"unban":"ban"}" data-user-id="${esc(u.id)}">${banned?"Desbloquear":"Bloquear"}</button><button class="small danger" data-admin-action="delete" data-user-id="${esc(u.id)}">Excluir</button>`}</div></div></div>`;}).join("");}
-async function adminRequest(action,user_id){if(!adminAuthorized||!currentUser)throw new Error("Acesso administrativo não autorizado.");const {data,error}=await sb.functions.invoke("caverna_admins",{body:{action,...(user_id?{user_id}:{})}});if(error)throw error;if(data?.error)throw new Error(data.error);return data;}
-async function loadAdminUsers(){if(!adminAuthorized){adminStatus("Acesso negado.");return;}$("adminRefresh").disabled=true;adminStatus("Carregando contas...");try{const result=await adminRequest("list");adminUsersCache=result.users||[];renderAdminUsers();adminStatus(`${adminUsersCache.length} conta(s) carregada(s).`);}catch(e){console.error(e);adminStatus("Não foi possível carregar: "+(e.message||"erro desconhecido"));}finally{$("adminRefresh").disabled=false;}}
-$("adminRefresh").addEventListener("click",loadAdminUsers);$("adminSearch").addEventListener("input",renderAdminUsers);
-$("adminUsers").addEventListener("click",async event=>{const button=event.target.closest("button[data-admin-action]");if(!button)return;const action=button.dataset.adminAction,userId=button.dataset.userId,user=adminUsersCache.find(u=>u.id===userId);if(!user)return;const promptText=action==="delete"?`Excluir permanentemente a conta ${user.email||""}? Essa ação não pode ser desfeita.`:action==="ban"?`Bloquear a conta ${user.email||""}?`:`Desbloquear a conta ${user.email||""}?`;if(!confirm(promptText))return;button.disabled=true;adminStatus("Aplicando alteração...");try{await adminRequest(action,userId);adminStatus("Alteração concluída.");await loadAdminUsers();}catch(e){console.error(e);adminStatus("Falha: "+(e.message||"erro desconhecido"));button.disabled=false;}});
-
-
-// Biblioteca de fichas completas: um programa contém vários dias, cada um com nome opcional e exercícios.
-let programDraftDays={}, currentDraftDay="A", editingProgramId=null, selectedProgramDay=null, activeTraining=null, restInterval=null, restRemaining=0, restPaused=false, lastBeepSecond=null;
-const trainingDayKeys=["A","B","C","D","E","F"];
-function ensureDraftDay(key){if(!programDraftDays[key])programDraftDays[key]={label:"",exercises:[]};return programDraftDays[key]}
-function selectDraftDay(key){currentDraftDay=key;const d=ensureDraftDay(key);$("programDayName").value=d.label||"";document.querySelectorAll("#programDayTabs button").forEach(b=>b.classList.toggle("active",b.dataset.day===key));renderDraftExercises()}
-function renderDayTabs(){const box=$("programDayTabs");if(!box)return;box.innerHTML=trainingDayKeys.map(k=>{const d=ensureDraftDay(k);const count=d.exercises.length;return `<button type="button" class="${k===currentDraftDay?"active":""}" data-day="${k}">${k}${d.label?" · "+esc(d.label):""}${count?` (${count})`:""}</button>`}).join("");box.querySelectorAll("button").forEach(b=>b.onclick=()=>{programDraftDays[currentDraftDay].label=$("programDayName").value.trim();selectDraftDay(b.dataset.day);renderDayTabs()})}
-$("programDayName").addEventListener("input",()=>{ensureDraftDay(currentDraftDay).label=$("programDayName").value.trim();renderDayTabs()});
-function addDraftExercise(){
- const name=$("programExerciseName").value.trim();if(!name){alert("Informe o nome do exercício antes de adicionar.");$("programExerciseName").focus();return}
- const sets=Math.max(1,Math.min(20,Number($("programSets").value)||4));const min=Math.max(1,Number($("programRepsMin").value)||8),max=Math.max(min,Number($("programRepsMax").value)||12);
- ensureDraftDay(currentDraftDay).exercises.push({id:uid(),name,sets,repsMin:min,repsMax:max,load:$("programLoad").value===""?"":Number($("programLoad").value),rest:Math.max(0,Math.min(900,Number($("programRest").value)||0))});$("programExerciseName").value="";renderDraftExercises();renderDayTabs();$("programExerciseName").focus();
-}
-function renderDraftExercises(){const box=$("programDraftList");if(!box)return;const d=ensureDraftDay(currentDraftDay);box.innerHTML=`<div class="row" style="margin-top:14px"><h3 style="margin:0">Dia ${currentDraftDay}${d.label?" · "+esc(d.label):""}</h3><span class="pill">${d.exercises.length} exercício(s)</span></div>`+(d.exercises.length?d.exercises.map((x,i)=>`<div class="listitem"><div class="row"><div><strong>${i+1}. ${esc(x.name)}</strong><div class="meta">${x.sets} séries · ${x.repsMin}–${x.repsMax} reps · ${x.load!==""?esc(x.load)+" kg":"carga não definida"} · descanso ${x.rest}s</div></div><button type="button" class="small danger" onclick="removeDraftExercise('${x.id}')">Remover</button></div></div>`).join(""):'<p class="meta">Nenhum exercício neste dia ainda. Se não for usar este dia, deixe-o vazio.</p>')}
-window.removeDraftExercise=id=>{const d=ensureDraftDay(currentDraftDay);d.exercises=d.exercises.filter(x=>x.id!==id);renderDraftExercises();renderDayTabs()};
-$("addProgramExercise").onclick=addDraftExercise;
-function resetProgramForm(){editingProgramId=null;programDraftDays={};trainingDayKeys.forEach(ensureDraftDay);currentDraftDay="A";$("trainingProgramForm").reset();$("programSets").value=4;$("programRepsMin").value=8;$("programRepsMax").value=12;$("programRest").value=90;$("programFormHeading").textContent="Nova ficha completa";$("trainingProgramForm").querySelector('button[type="submit"]').textContent="Salvar ficha completa";selectDraftDay("A");renderDayTabs()}
-$("resetProgramForm").onclick=()=>{if(confirm("Limpar a ficha que está sendo montada?"))resetProgramForm()};
-$("trainingProgramForm").onsubmit=e=>{e.preventDefault();programDraftDays[currentDraftDay].label=$("programDayName").value.trim();const name=$("programName").value.trim();const days=trainingDayKeys.map(key=>{const d=ensureDraftDay(key);return {key,label:(d.label||"").trim(),exercises:d.exercises.map(x=>({...x}))}}).filter(d=>d.exercises.length>0);if(!days.length){alert("Adicione pelo menos um exercício em algum dia antes de salvar.");return}const record={id:editingProgramId||uid(),name,days,createdAt:new Date().toISOString()};data.workoutPrograms=data.workoutPrograms||[];if(editingProgramId){const idx=data.workoutPrograms.findIndex(p=>p.id===editingProgramId);if(idx>=0)data.workoutPrograms[idx]=record;else data.workoutPrograms.push(record)}else data.workoutPrograms.push(record);resetProgramForm();save();showTrainingHome()};
-function normalizeProgram(p){if(Array.isArray(p.days))return {...p,days:p.days.map((d,i)=>({key:d.key||d.day||trainingDayKeys[i]||"A",label:d.label||d.dayName||"",exercises:Array.isArray(d.exercises)?d.exercises:[]}))};return {id:p.id,name:p.name||"Treino",createdAt:p.createdAt,days:[{key:p.day||"A",label:p.dayName||"",exercises:Array.isArray(p.exercises)?p.exercises:[]}]}}
-function renderTraining(){const list=$("trainingProgramList");if(!list)return;const programs=(data.workoutPrograms||[]).map(normalizeProgram);$("programCount").textContent=programs.length+" ficha(s)";list.innerHTML=programs.length?programs.map(p=>`<div class="program-card"><div class="row" style="align-items:flex-start"><div><strong>${esc(p.name)}</strong><div class="meta">${p.days.length} dia(s) cadastrado(s)</div></div><div class="actions"><button type="button" class="small" onclick="editProgram('${p.id}')">Editar</button><button type="button" class="small danger" onclick="deleteProgram('${p.id}')">Excluir</button></div></div><div class="program-day-buttons">${p.days.map(d=>`<button type="button" class="small primary" onclick="openProgramDay('${p.id}','${d.key}')">Abrir dia ${esc(d.key)}${d.label?" · "+esc(d.label):""} (${d.exercises.length})</button>`).join("")}</div></div>`).join(""):'<div class="empty">Sua biblioteca está vazia. Crie uma ficha completa e adicione os exercícios de cada dia.</div>';
- const hist=$("trainingSessionHistory"),sessions=(data.workoutSessions||[]).slice().reverse();hist.innerHTML=sessions.length?sessions.map(s=>`<div class="listitem"><div class="row"><strong>${esc(s.programName)} · Dia ${esc(s.day||"A")}${s.dayLabel?" · "+esc(s.dayLabel):""}</strong><span class="meta">${esc(s.date)}</span></div><div class="meta">${s.completedSets||0}/${s.totalSets||0} séries concluídas${s.duration?" · "+s.duration+" min":""}</div></div>`).join(""):'<div class="empty">Nenhuma sessão concluída ainda.</div>';renderLoadProgressionHistory();renderActiveTraining();}
-function renderLoadProgressionHistory(){const box=$("loadProgressionHistory");if(!box)return;const sessions=(data.workoutSessions||[]).slice().sort((a,b)=>(a.date||"").localeCompare(b.date||""));const records={};sessions.forEach(session=>(session.exercises||[]).forEach(ex=>{const name=(ex.name||"Exercício").trim();const loads=[];if(ex.actualLoads&&typeof ex.actualLoads==="object")Object.keys(ex.actualLoads).sort((a,b)=>Number(a)-Number(b)).forEach(k=>{const v=Number(ex.actualLoads[k]);if(ex.doneSets?.includes(Number(k))&&Number.isFinite(v)&&v>=0)loads.push(v)});if(!loads.length&&ex.doneSets?.length&&ex.currentLoad!==""&&ex.currentLoad!=null&&Number.isFinite(Number(ex.currentLoad)))loads.push(Number(ex.currentLoad));if(!records[name])records[name]=[];if(loads.length)records[name].push({date:session.date||"—",loads,top:Math.max(...loads),programName:session.programName||"Treino"})}));const entries=Object.entries(records).filter(([,r])=>r.length).sort((a,b)=>a[0].localeCompare(b[0],"pt-BR"));if(!entries.length){box.innerHTML='<div class="empty">Ainda não há cargas registradas. Conclua séries durante um treino e finalize a sessão para começar a acompanhar sua evolução.</div>';return}box.innerHTML=entries.map(([name,rows])=>{const latest=rows[rows.length-1],previous=rows.length>1?rows[rows.length-2]:null;const diff=previous?latest.top-previous.top:null;const trend=diff===null?"Primeiro registro":diff>0?`+${diff.toLocaleString("pt-BR")} kg em relação à sessão anterior`:diff<0?`${diff.toLocaleString("pt-BR")} kg em relação à sessão anterior`:"Sem mudança na maior carga";return `<div class="listitem"><div class="row"><strong>${esc(name)}</strong><span class="pill">Maior carga: ${latest.top.toLocaleString("pt-BR")} kg</span></div><div class="meta" style="margin-top:5px">Última sessão: ${esc(latest.date)} · séries registradas: ${latest.loads.map(v=>v.toLocaleString("pt-BR")+" kg").join(", ")}</div><div class="meta" style="margin-top:4px">${esc(trend)}</div><details style="margin-top:8px"><summary>Ver histórico completo</summary>${rows.slice().reverse().map(r=>`<div class="meta" style="margin-top:6px">${esc(r.date)} · ${r.loads.map(v=>v.toLocaleString("pt-BR")+" kg").join(", ")} · maior: ${r.top.toLocaleString("pt-BR")} kg</div>`).join("")}</details></div>`}).join("")}
-window.editProgram=id=>{const raw=(data.workoutPrograms||[]).find(p=>p.id===id);if(!raw)return;const p=normalizeProgram(raw);resetProgramForm();editingProgramId=id;$("programName").value=p.name;programDraftDays={};trainingDayKeys.forEach(ensureDraftDay);p.days.forEach(d=>{if(!trainingDayKeys.includes(d.key))return;programDraftDays[d.key]={label:d.label||"",exercises:d.exercises.map(x=>({...x,id:x.id||uid()}))}});$("programFormHeading").textContent="Editar ficha completa";$("trainingProgramForm").querySelector('button[type="submit"]').textContent="Salvar alterações";selectDraftDay("A");renderDayTabs();showTrainingHome();window.scrollTo({top:0,behavior:"smooth"})};
-window.deleteProgram=id=>{if(confirm("Excluir esta ficha completa? O histórico de sessões será preservado.")){data.workoutPrograms=(data.workoutPrograms||[]).filter(p=>p.id!==id);save()}};
-function showTrainingHome(){$("trainingHome").classList.remove("hidden");$("trainingDayView").classList.add("hidden");selectedProgramDay=null;}
-function openProgramDay(id,key){const raw=(data.workoutPrograms||[]).find(p=>p.id===id);if(!raw)return;const p=normalizeProgram(raw),d=p.days.find(x=>x.key===key);if(!d)return;selectedProgramDay={programId:p.id,programName:p.name,day:d.key,dayLabel:d.label||"",exercises:d.exercises.map(x=>({...x}))};if(activeTraining&&activeTraining.programId!==p.id&&!confirm("Há um treino em andamento. Abrir outro dia vai descartar o progresso ainda não salvo. Continuar?"))return;if(activeTraining&&activeTraining.programId!==p.id){activeTraining=null;stopRestTimer()}$("trainingHome").classList.add("hidden");$("trainingDayView").classList.remove("hidden");$("selectedDayTitle").textContent=p.name+" · Dia "+d.key+(d.label?" — "+d.label:"");$("selectedDaySubtitle").textContent=d.exercises.length+" exercício(s). Esta tela mostra somente o dia selecionado.";$("selectedDayExercises").innerHTML=d.exercises.map((x,i)=>`<div class="training-day"><strong>${i+1}. ${esc(x.name)}</strong><div class="meta">${x.sets} séries · ${x.repsMin}–${x.repsMax} repetições · ${x.load!==""&&x.load!=null?esc(x.load)+" kg planejados":"carga não definida"} · descanso ${x.rest||0}s</div></div>`).join("");$("startSelectedDay").classList.toggle("hidden",!d.exercises.length);$("activeTrainingPanel").classList.add("hidden");renderActiveTraining();showPage("training")}
-$("backToTrainingLibrary").onclick=()=>{if(activeTraining&&!confirm("Voltar à biblioteca? O progresso desta sessão será descartado."))return;if(activeTraining){activeTraining=null;stopRestTimer();restRemaining=0}showTrainingHome();renderTraining()};
-$("startSelectedDay").onclick=()=>{if(!selectedProgramDay)return;if(activeTraining&&!confirm("Substituir o treino em andamento? O progresso não salvo será perdido."))return;stopRestTimer();const d=selectedProgramDay;activeTraining={programId:d.programId,programName:d.programName,day:d.day,dayLabel:d.dayLabel,date:today(),startedAt:Date.now(),exercises:d.exercises.map(x=>({...x,currentLoad:x.load??"",doneSets:[],actualLoads:{}}))};$("activeTrainingPanel").classList.remove("hidden");renderActiveTraining();$("activeTrainingPanel").scrollIntoView({behavior:"smooth",block:"start"})};
-function renderActiveTraining(){const box=$("activeTraining"),finish=$("finishTrainingBtn"),timer=$("trainingTimer");if(!box)return;if(!activeTraining){box.innerHTML='<div class="empty">Inicie a sessão quando estiver pronto.</div>';finish.classList.add("hidden");if(!restInterval)timer.classList.add("hidden");return}finish.classList.remove("hidden");box.innerHTML=`<div class="row"><div><h3 style="margin-bottom:3px">${esc(activeTraining.programName)} · Dia ${esc(activeTraining.day)}${activeTraining.dayLabel?" — "+esc(activeTraining.dayLabel):""}</h3><div class="meta">Iniciado em ${esc(activeTraining.date)} · ajuste a carga a qualquer momento</div></div><span class="pill">${activeTraining.exercises.reduce((n,x)=>n+x.doneSets.length,0)} / ${activeTraining.exercises.reduce((n,x)=>n+(Number(x.sets)||0),0)} séries</span></div>`+activeTraining.exercises.map((x,ei)=>`<div class="training-day"><strong>${ei+1}. ${esc(x.name)}</strong><div class="meta">Meta: ${x.repsMin}–${x.repsMax} repetições · carga planejada: ${x.load!==""&&x.load!=null?esc(x.load)+" kg":"não definida"}</div><div style="margin:10px 0"><label for="activeLoad${ei}">Carga atual (kg)</label><input id="activeLoad${ei}" type="number" min="0" step="0.5" inputmode="decimal" value="${esc(x.currentLoad??x.load??"")}" placeholder="Informe a carga" onchange="updateTrainingLoad(${ei},this.value)" oninput="updateTrainingLoad(${ei},this.value)"></div>${Array.from({length:Number(x.sets)||1},(_,si)=>{const done=x.doneSets.includes(si);return `<div class="set-row"><div><strong>Série ${si+1}</strong><div class="meta">${x.repsMin}–${x.repsMax} reps${x.actualLoads[si]!=null?" · carga usada: "+esc(x.actualLoads[si])+" kg":""}</div></div><button type="button" class="small ${done?"":"primary"}" ${done?"disabled":""} onclick="completeTrainingSet(${ei},${si})">${done?"Concluída":"Concluir série"}</button></div>`}).join("")}</div>`).join("");if(restInterval||restRemaining>0)timer.classList.remove("hidden")}
-function playRestBeep(freq=880){try{const C=window.AudioContext||window.webkitAudioContext;if(!C)return;const ctx=new C(),osc=ctx.createOscillator(),gain=ctx.createGain();osc.type="sine";osc.frequency.value=freq;gain.gain.value=.08;osc.connect(gain);gain.connect(ctx.destination);osc.start();osc.stop(ctx.currentTime+.16);osc.onended=()=>ctx.close()}catch(e){console.warn("Áudio indisponível",e)}}
-function playRestFinishedSignal(){[0,220,440].forEach(delay=>setTimeout(()=>playRestBeep(1320),delay))}
-window.updateTrainingLoad=(ei,value)=>{if(!activeTraining)return;const ex=activeTraining.exercises[ei];if(!ex)return;ex.currentLoad=value;};
-window.completeTrainingSet=(ei,si)=>{if(!activeTraining)return;const ex=activeTraining.exercises[ei];if(!ex||ex.doneSets.includes(si))return;ex.actualLoads[si]=ex.currentLoad!==undefined&&ex.currentLoad!==""?ex.currentLoad:(ex.load??"");ex.doneSets.push(si);save();const rest=Number(ex.rest)||0;if(rest>0){startRestTimer(rest,ex.name,si+1);playRestBeep(660)}};
-function startRestTimer(seconds,exerciseName,setNumber){stopRestTimer();restRemaining=seconds;restPaused=false;lastBeepSecond=null;$("timerCaption").textContent="Descanso · "+exerciseName;$("timerMessage").textContent="Série "+setNumber+" concluída. Respire e prepare-se para a próxima.";$("timerPauseBtn").textContent="Pausar";$("trainingTimer").classList.remove("hidden");updateTimerDisplay();restInterval=setInterval(()=>{if(restPaused)return;restRemaining=Math.max(0,restRemaining-1);if(restRemaining<=3&&restRemaining>0&&lastBeepSecond!==restRemaining){lastBeepSecond=restRemaining;playRestBeep(restRemaining===1?1100:restRemaining===2?950:820)}updateTimerDisplay();if(restRemaining<=0){stopRestTimer();$("timerMessage").textContent="Descanso encerrado. Vamos para a próxima série.";$("trainingTimer").classList.remove("hidden");playRestFinishedSignal()}},1000)}
-function updateTimerDisplay(){const n=$("timerNumber");if(!n)return;const m=Math.floor(restRemaining/60),s=restRemaining%60;n.textContent=String(m).padStart(2,"0")+":"+String(s).padStart(2,"0")}
-function stopRestTimer(){if(restInterval){clearInterval(restInterval);restInterval=null}restPaused=false;if($("trainingTimer")&&restRemaining<=0)$("trainingTimer").classList.add("hidden")}
-$("timerPauseBtn").onclick=()=>{if(!restInterval)return;restPaused=!restPaused;$("timerPauseBtn").textContent=restPaused?"Continuar":"Pausar";$("timerMessage").textContent=restPaused?"Descanso pausado.":"Descanso em andamento."};
-$("timerSkipBtn").onclick=()=>{stopRestTimer();restRemaining=0;$("timerMessage").textContent="Descanso pulado. Pode continuar.";$("trainingTimer").classList.add("hidden");playRestBeep(1100)};
-$("finishTrainingBtn").onclick=()=>{if(!activeTraining)return;const total=activeTraining.exercises.reduce((n,x)=>n+(Number(x.sets)||0),0),done=activeTraining.exercises.reduce((n,x)=>n+x.doneSets.length,0);if(done===0&&!confirm("Você ainda não concluiu nenhuma série. Finalizar mesmo assim?"))return;const session={id:uid(),programId:activeTraining.programId,programName:activeTraining.programName,day:activeTraining.day,dayLabel:activeTraining.dayLabel||"",date:today(),completedSets:done,totalSets:total,duration:Math.max(1,Math.round((Date.now()-activeTraining.startedAt)/60000)),exercises:activeTraining.exercises.map(x=>({...x,doneSets:[...x.doneSets]}))};data.workoutSessions=data.workoutSessions||[];data.workoutSessions.push(session);activeTraining=null;stopRestTimer();restRemaining=0;save();renderActiveTraining();alert(`Treino registrado: ${done} de ${total} séries concluídas.`)};
-trainingDayKeys.forEach(ensureDraftDay);renderDayTabs();selectDraftDay("A");
-let mentorBusy=false;
-function mentorStatus(message){const el=$("mentorStatus");if(el)el.textContent=message||""}
-function renderMentorMessages(messages){const box=$("mentorMessages");if(!box)return;box.innerHTML=messages.length?messages.map(m=>m.role==="user"?`<div class="mentor-msg-row user"><div class="mentor-msg user"><span class="meta">VOCÊ · ${m.created_at?esc(new Date(m.created_at).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})):"agora"}</span>${esc(m.content||"")}</div></div>`:`<div class="mentor-msg-row assistant"><div class="mentor-mini-avatar" aria-hidden="true">☠</div><div class="mentor-msg assistant"><span class="meta">A MORTE · ${m.created_at?esc(new Date(m.created_at).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})):"agora"}</span>${esc(m.content||"")}</div></div>`).join(""):'<div class="mentor-welcome"><strong>Você não tem tempo infinito.</strong>Eu não estou aqui para assustar você. Estou aqui para lembrar que cada dia é uma escolha. O que precisa enfrentar hoje?</div>';box.scrollTop=box.scrollHeight}
-async function loadMentorHistory(){if(!currentUser||!sb){mentorStatus("Entre na sua conta para usar o Mentor.");return}try{const {data:rows,error}=await sb.from("mentor_messages").select("id,role,content,created_at").eq("user_id",currentUser.id).order("created_at",{ascending:false}).limit(60);if(error)throw error;renderMentorMessages((rows||[]).reverse());mentorStatus("Histórico carregado.")}catch(e){console.warn("Histórico do Mentor indisponível",e);mentorStatus("O histórico será habilitado após aplicar o SQL de configuração do Mentor no Supabase.")}}
-$("mentorRefresh").onclick=loadMentorHistory;
-$("mentorForm").onsubmit=async e=>{e.preventDefault();if(mentorBusy)return;const field=$("mentorInput"),message=field.value.trim();if(!message)return;if(!currentUser||!sb){mentorStatus("Entre na sua conta antes de conversar com o Mentor.");return}mentorBusy=true;$("mentorSend").disabled=true;mentorStatus("O Mentor está pensando...");const box=$("mentorMessages");const temp=document.createElement("div");temp.className="mentor-msg-row user";const tempBubble=document.createElement("div");tempBubble.className="mentor-msg user";tempBubble.innerHTML='<span class="meta">VOCÊ · agora</span>';tempBubble.appendChild(document.createTextNode(message));temp.appendChild(tempBubble);box.appendChild(temp);box.scrollTop=box.scrollHeight;field.value="";try{const {data:result,error}=await sb.functions.invoke("caverna-mentor",{body:{message}});if(error)throw error;if(result?.error)throw new Error(result.error);await loadMentorHistory();mentorStatus("Resposta recebida.")}catch(err){console.error("Erro no Mentor",err);field.value=message;mentorStatus("Não foi possível obter resposta. Verifique se a função caverna-mentor foi publicada e se a chave da IA está configurada nos segredos do Supabase. Detalhe: "+(err.message||"erro desconhecido"));}finally{mentorBusy=false;$("mentorSend").disabled=false;field.focus()}};
-function renderAll(){renderToday();renderHabits();renderPhysical();renderBooks();renderGratitude();renderFailures();renderTraining()}
-$("exportBtn").onclick=()=>{let blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="caverna-backup-"+today()+".json";a.click();URL.revokeObjectURL(a.href)};
-$("importBtn").onclick=()=>$("importFile").click();
-$("importFile").onchange=async e=>{let f=e.target.files[0];if(!f)return;try{let d=JSON.parse(await f.text());if(!d.habits||!d.checks)throw 0;if(confirm("Substituir os dados atuais pelos dados do arquivo?")){data=d;save()}}catch{alert("Arquivo inválido.")}e.target.value=""};
-$("notifyPermission").onclick=async()=>{if(!("Notification"in window)){$("notifyStatus").textContent="Este navegador não oferece notificações.";return}let p=await Notification.requestPermission();$("notifyStatus").textContent="Permissão: "+p};
-$("clearData").onclick=()=>{if(confirm("Apagar todos os registros? Exporte um backup antes, se quiser guardá-los.")){localStorage.removeItem("cavernaData");data=freshData();save()}};
-renderAll();
-registerCavernaSW();
-bootAuth();
-</script>
-</body></html>
