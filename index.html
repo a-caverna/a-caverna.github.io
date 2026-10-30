@@ -402,6 +402,16 @@ footer{margin:38px 0 8px;color:#665d72}
 .exercise-progress-history>div{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-top:1px solid #292330;font-size:10px;color:#9f96a9}
 .exercise-progress-history b{color:#d8c8e8;text-align:right}
 
+
+/* Ação principal do dia em destaque, antes da lista de exercícios */
+.program-start-day{width:100%;display:flex;justify-content:space-between;align-items:center;margin:8px 0 5px;padding:11px 12px;border:1px solid #8c5fc0;border-radius:11px;background:linear-gradient(110deg,#7544ad,#4b2c70);color:#fff;font-weight:750;font-size:12px;box-shadow:0 5px 16px #7e4bb329}
+.program-start-day:hover{background:linear-gradient(110deg,#8955c5,#593681);border-color:#c09aeb}
+.program-start-day:disabled{opacity:.4;cursor:not-allowed}
+.program-exercises-preview{margin-top:8px}
+.program-exercises-preview summary{font-size:10px;color:#b7a7c8;cursor:pointer;padding:5px 0}
+.program-day-detail{display:flex;flex-direction:column}
+.program-exercises-preview[open]{padding-top:5px;border-top:1px solid #302a3a}
+
 </style>
 </head>
 <body>
@@ -818,7 +828,7 @@ function renderTraining(){
   const dayButtons=p.days.map(d=>`<button type="button" class="small primary" onclick="startProgramDay('${p.id}','${d.key}')">Abrir ${esc(d.label||("Dia "+d.key))} · ${d.exercises.length} exercícios</button>`).join("");
   const details=selected?`<div class="program-detail">
     <div class="program-detail-head"><div><span class="program-eyebrow">FICHA SELECIONADA</span><h4>${esc(p.name)}</h4><p>${p.days.length} dias · ${exerciseCount} exercícios</p></div><span class="program-selected-mark">✓ Selecionado</span></div>
-    <div class="program-days">${p.days.map(d=>`<div class="program-day-detail"><div class="program-day-title"><strong>${esc(d.label||("Dia "+d.key))}</strong><span>${d.exercises.length} exercício(s)</span></div>${d.exercises.length?`<div class="program-exercises">${d.exercises.map((x,i)=>`<div class="program-exercise-line"><span>${i+1}. ${esc(x.name)}</span><small>${x.sets} × ${x.repsMin}–${x.repsMax}${x.load!==""&&x.load!=null?" · "+esc(x.load)+" kg":""}</small></div>`).join("")}</div>`:'<p class="meta">Nenhum exercício cadastrado neste dia.</p>'}<div class="program-open-day">${dayButtons.includes("")?"":`<button type="button" class="small primary" onclick="startProgramDay('${p.id}','${d.key}')">Iniciar este dia <span aria-hidden="true">→</span></button>`}</div></div>`).join("")}</div>
+    <div class="program-days">${p.days.map(d=>`<div class="program-day-detail"><div class="program-day-title"><strong>${esc(d.label||("Treino "+d.key))}</strong><span>${d.exercises.length} exercício(s)</span></div><button type="button" class="program-start-day" ${d.exercises.length?"":"disabled"} onclick="startProgramDay('${p.id}','${d.key}')">Iniciar ${esc(d.label||("Treino "+d.key))} <span aria-hidden="true">→</span></button>${d.exercises.length?`<details class="program-exercises-preview"><summary>Ver exercícios e cargas planejadas</summary><div class="program-exercises">${d.exercises.map((x,i)=>`<div class="program-exercise-line"><span>${i+1}. ${esc(x.name)}</span><small>${x.sets} × ${x.repsMin}–${x.repsMax}${x.load!==""&&x.load!=null?" · "+esc(x.load)+" kg":""}</small></div>`).join("")}</div></details>`:'<p class="meta">Nenhum exercício cadastrado neste dia.</p>'}</div>`).join("")}</div>
    </div>`:"";
   return `<article class="program-card ${selected?"is-selected":""}">
    <div class="program-card-main">
