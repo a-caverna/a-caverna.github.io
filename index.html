@@ -36,6 +36,10 @@ footer{margin:30px 0 5px;color:#66666f;font-size:11px;text-align:center;letter-s
 
 /* Identidade visual exclusiva do Mentor; o restante da  permanece intacto. */
 :root{--mentor-violet:#9b5de5;--mentor-violet-soft:#6f3db8;--mentor-violet-glow:#b879ff}
+nav button[data-page="independencia"]{border-color:#625137;color:#e7cc98;background:linear-gradient(135deg,#211c14,#111014)}
+nav button[data-page="independencia"].active{background:linear-gradient(135deg,#49391f,#211b12);border-color:#c7a66b;color:#fff0cf;box-shadow:0 0 16px #b88a3822}
+#page-independencia .ind-stat strong{font-size:23px;display:block;color:#e5c58a}
+#page-independencia .ind-accent{border-color:#665333;background:linear-gradient(145deg,#211d16,#151518)}
 nav button[data-page="mentor"]{display:inline-flex;align-items:center;gap:8px;border-color:#49345f;color:#d8b8ff;background:linear-gradient(135deg,#1a1422,#111014)}
 nav button[data-page="mentor"]::before{content:"☠";display:grid;place-items:center;width:23px;height:23px;border-radius:50%;border:1px solid #8051a8;color:#d7b0ff;font-size:15px;box-shadow:0 0 12px #8b45c955}
 nav button[data-page="mentor"].active{background:linear-gradient(135deg,#38204e,#1b1425);border-color:var(--mentor-violet-glow);color:#f0dcff;box-shadow:0 0 16px #8b45c922}
@@ -174,7 +178,11 @@ nav#nav button.active{
   background:linear-gradient(100deg,#38264e,#211a2d);
   box-shadow:inset 3px 0 #b17af6,0 5px 18px #0002;
 }
-nav#nav button[data-page="mentor"]{
+nav#nav button[data-page="independencia"]{border-color:#625137;color:#e7cc98;background:linear-gradient(135deg,#211c14,#111014)}
+nav button[data-page="independencia"].active{background:linear-gradient(135deg,#49391f,#211b12);border-color:#c7a66b;color:#fff0cf;box-shadow:0 0 16px #b88a3822}
+#page-independencia .ind-stat strong{font-size:23px;display:block;color:#e5c58a}
+#page-independencia .ind-accent{border-color:#665333;background:linear-gradient(145deg,#211d16,#151518)}
+nav button[data-page="mentor"]{
   margin-top:8px;border:1px solid #4b3563;
   background:linear-gradient(110deg,#21172d,#15111b);
   color:#e0c5ff;
@@ -291,7 +299,11 @@ footer{margin:38px 0 8px;color:#665d72}
     border-color:#594076;background:#2b2038;
     box-shadow:inset 0 2px #b17af6,0 2px 12px #0003;
   }
-  nav#nav button[data-page="mentor"]{margin-top:0}
+  nav#nav button[data-page="independencia"]{border-color:#625137;color:#e7cc98;background:linear-gradient(135deg,#211c14,#111014)}
+nav button[data-page="independencia"].active{background:linear-gradient(135deg,#49391f,#211b12);border-color:#c7a66b;color:#fff0cf;box-shadow:0 0 16px #b88a3822}
+#page-independencia .ind-stat strong{font-size:23px;display:block;color:#e5c58a}
+#page-independencia .ind-accent{border-color:#665333;background:linear-gradient(145deg,#211d16,#151518)}
+nav button[data-page="mentor"]{margin-top:0}
   nav#nav button[data-page="mentor"]::before{
     width:auto;height:auto;border:0;border-radius:0;
     font-size:17px;box-shadow:none;
@@ -498,7 +510,11 @@ footer{margin:38px 0 8px;color:#665d72}
     display:block;width:auto;height:auto;flex:0 0 auto;
     font-size:16px;line-height:18px;
   }
-  nav#nav button[data-page="mentor"]{margin:0}
+  nav#nav button[data-page="independencia"]{border-color:#625137;color:#e7cc98;background:linear-gradient(135deg,#211c14,#111014)}
+nav button[data-page="independencia"].active{background:linear-gradient(135deg,#49391f,#211b12);border-color:#c7a66b;color:#fff0cf;box-shadow:0 0 16px #b88a3822}
+#page-independencia .ind-stat strong{font-size:23px;display:block;color:#e5c58a}
+#page-independencia .ind-accent{border-color:#665333;background:linear-gradient(145deg,#211d16,#151518)}
+nav button[data-page="mentor"]{margin:0}
   nav#nav button[data-page="mentor"]::before{
     width:auto;height:auto;border:0;border-radius:0;
     font-size:16px;box-shadow:none;
@@ -704,6 +720,7 @@ footer{margin:38px 0 8px;color:#665d72}
 <button data-page="physical">Evolução física</button>
  <button data-page="training">Treinos</button>
 <button data-page="mentor" aria-label="Abrir Mentor">Mentor</button>
+<button data-page="independencia" aria-label="Abrir Independência 2027">♙ Independência 2027</button>
 <button data-page="books">Biblioteca</button>
 <button data-page="gratitude">Gratidão</button>
 <button data-page="failures">Falhas</button>
@@ -869,6 +886,22 @@ footer{margin:38px 0 8px;color:#665d72}
 <div class="row" style="flex-wrap:wrap"><div style="flex:1;min-width:220px"><label for="adminSearch">Pesquisar por e-mail</label><input id="adminSearch" type="search" placeholder="Digite um e-mail..."></div><button id="adminRefresh" class="small" type="button" style="align-self:end">Atualizar lista</button></div>
 <p id="adminStatus" class="meta" role="status"></p><div id="adminUsers"></div>
 </div></div></section>
+<section id="page-independencia" class="hidden">
+ <div class="row" style="flex-wrap:wrap"><div><p class="meta" style="letter-spacing:.16em;color:#c7a66b">PROJETO PESSOAL · 2027</p><h2>Minha Independência</h2><p class="sub">Organizar hoje para conquistar meu próprio lar.</p></div><span class="pill">CAMBÉ · LONDRINA</span></div>
+ <div class="stats"><div class="stat ind-stat"><span>Saldo do mês</span><strong id="indBalance">R$ 0,00</strong></div><div class="stat ind-stat"><span>Dívidas cadastradas</span><strong id="indDebtTotal">R$ 0,00</strong></div><div class="stat ind-stat"><span>Reserva acumulada</span><strong id="indSavings">R$ 0,00</strong></div></div>
+ <div class="grid">
+  <div class="card span8 ind-accent"><div class="row"><h3>Mapa da Independência</h3><span class="pill">Missão 2027</span></div><p class="meta">Seu progresso começa com clareza. Atualize os registros e acompanhe cada conquista.</p><div class="grid" style="gap:9px"><div class="card span6"><span class="meta">01 · RECUPERAÇÃO</span><h3>Quitar dívidas</h3><p class="meta">Cartões, parcelas e pendências.</p></div><div class="card span6"><span class="meta">02 · SEGURANÇA</span><h3>Construir reserva</h3><p class="meta">Emergência e caixa para mudança.</p></div><div class="card span6"><span class="meta">03 · MORADIA</span><h3>Conquistar meu espaço</h3><p class="meta">Aluguel, mudança e custos da casa.</p></div><div class="card span6"><span class="meta">04 · PATRIMÔNIO</span><h3>Comprar meu flat</h3><p class="meta">Entrada, FGTS e financiamento.</p></div></div><div class="row" style="margin-top:14px"><strong>Progresso das metas</strong><span id="indGoalProgress" class="meta">0 metas</span></div><div id="indGoalList"></div></div>
+  <div class="card span4"><h3>Resumo do projeto</h3><div class="listitem"><span class="meta">Renda líquida de referência</span><strong id="indIncomeLabel">Não informada</strong></div><div class="listitem"><span class="meta">Objetivo de moradia</span><strong>Até R$ 1.200 de aluguel (referência)</strong></div><div class="listitem"><span class="meta">Reserva atual</span><strong id="indReserveLabel">R$ 0,00</strong></div></div>
+  <div class="card span6"><h3>Registrar movimentação</h3><form id="indTransactionForm"><div class="formgrid"><div><label>Tipo</label><select id="indTxType"><option value="income">Receita</option><option value="expense">Despesa</option></select></div><div><label>Data</label><input id="indTxDate" type="date" required></div><div class="full"><label>Descrição</label><input id="indTxDescription" required placeholder="Ex.: salário, mercado, aluguel"></div><div><label>Categoria</label><select id="indTxCategory"><option>Salário</option><option>Moradia</option><option>Alimentação</option><option>Transporte</option><option>Saúde</option><option>Lazer</option><option>Cartão</option><option>Outros</option></select></div><div><label>Valor (R$)</label><input id="indTxAmount" type="number" min="0.01" step="0.01" required></div></div><button class="primary" style="margin-top:12px">Salvar movimentação</button></form></div>
+  <div class="card span6"><h3>Cadastrar dívida</h3><form id="indDebtForm"><label>Nome da dívida</label><input id="indDebtName" required placeholder="Ex.: cartão, empréstimo"><div class="formgrid"><div><label>Saldo total (R$)</label><input id="indDebtAmount" type="number" min="0.01" step="0.01" required></div><div><label>Vencimento (opcional)</label><input id="indDebtDue" type="date"></div></div><button class="primary" style="margin-top:12px">Adicionar dívida</button></form></div>
+  <div class="card span6"><h3>Criar meta financeira</h3><form id="indGoalForm"><label>Nome da meta</label><input id="indGoalName" required placeholder="Ex.: Reserva de emergência"><div class="formgrid"><div><label>Valor desejado (R$)</label><input id="indGoalTarget" type="number" min="1" step="0.01" required></div><div><label>Já acumulado (R$)</label><input id="indGoalCurrent" type="number" min="0" step="0.01" value="0"></div></div><button class="primary" style="margin-top:12px">Salvar meta</button></form></div>
+  <div class="card span6"><h3>Cartões de crédito</h3><form id="indCardForm"><label>Nome do cartão</label><input id="indCardName" required placeholder="Ex.: Cartão principal"><div class="formgrid"><div><label>Limite (R$)</label><input id="indCardLimit" type="number" min="0" step="0.01"></div><div><label>Fatura atual (R$)</label><input id="indCardInvoice" type="number" min="0" step="0.01" value="0"></div></div><button class="primary" style="margin-top:12px">Adicionar cartão</button></form><div id="indCardList"></div></div>
+  <div class="card span12"><div class="row"><h3>Movimentações recentes</h3><span class="pill" id="indTxCount">0 registros</span></div><div id="indTransactionList" class="empty">Nenhuma movimentação cadastrada.</div></div>
+  <div class="card span12"><div class="row"><h3>Minhas dívidas</h3><span class="pill" id="indDebtCount">0 dívidas</span></div><div id="indDebtList" class="empty">Nenhuma dívida cadastrada.</div></div>
+  <div class="card span12"><h3>Mentor · contexto financeiro</h3><p class="meta">Prepare um resumo dos seus indicadores para conversar com o Mentor. Ele não altera seus registros.</p><button type="button" id="indMentorBtn" class="primary">Levar meu resumo ao Mentor</button></div>
+ </div>
+</section>
+
 </main>
 <footer>DESENVOLVIDO POR DIEGO NICOLATO</footer>
 </div>
@@ -1250,7 +1283,24 @@ function renderMentorMessages(messages){const box=$("mentorMessages");if(!box)re
 async function loadMentorHistory(){if(!currentUser||!sb){mentorStatus("Entre na sua conta para usar o Mentor.");return}try{const {data:rows,error}=await sb.from("mentor_messages").select("id,role,content,created_at").eq("user_id",currentUser.id).order("created_at",{ascending:false}).limit(60);if(error)throw error;renderMentorMessages((rows||[]).reverse());mentorStatus("Histórico carregado.")}catch(e){console.warn("Histórico do Mentor indisponível",e);mentorStatus("O histórico será habilitado após aplicar o SQL de configuração do Mentor no Supabase.")}}
 $("mentorRefresh").onclick=loadMentorHistory;
 $("mentorForm").onsubmit=async e=>{e.preventDefault();if(mentorBusy)return;const field=$("mentorInput"),message=field.value.trim();if(!message)return;if(!currentUser||!sb){mentorStatus("Entre na sua conta antes de conversar com o Mentor.");return}mentorBusy=true;$("mentorSend").disabled=true;mentorStatus("O Mentor está pensando...");const box=$("mentorMessages");const temp=document.createElement("div");temp.className="mentor-msg-row user";const tempBubble=document.createElement("div");tempBubble.className="mentor-msg user";tempBubble.innerHTML='<span class="meta">VOCÊ · agora</span>';tempBubble.appendChild(document.createTextNode(message));temp.appendChild(tempBubble);box.appendChild(temp);box.scrollTop=box.scrollHeight;field.value="";try{const {data:result,error}=await sb.functions.invoke("caverna-mentor",{body:{message}});if(error)throw error;if(result?.error)throw new Error(result.error);await loadMentorHistory();mentorStatus("Resposta recebida.")}catch(err){console.error("Erro no Mentor",err);field.value=message;mentorStatus("Não foi possível obter resposta. Verifique se a função caverna-mentor foi publicada e se a chave da IA está configurada nos segredos do Supabase. Detalhe: "+(err.message||"erro desconhecido"));}finally{mentorBusy=false;$("mentorSend").disabled=false;field.focus()}};
-function renderAll(){renderToday();renderHabits();renderPhysical();renderBooks();renderGratitude();renderFailures();renderTraining()}
+
+// Módulo Independência: dados isolados dentro do payload já sincronizado da Caverna.
+function indData(){if(!data.independencia)data.independencia={transactions:[],debts:[],goals:[],cards:[],monthlyIncome:null};const x=data.independencia;x.transactions=Array.isArray(x.transactions)?x.transactions:[];x.debts=Array.isArray(x.debts)?x.debts:[];x.goals=Array.isArray(x.goals)?x.goals:[];x.cards=Array.isArray(x.cards)?x.cards:[];return x}
+const indMoney=n=>Number(n||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+function renderIndependencia(){const x=indData(),month=today().slice(0,7),tx=x.transactions.filter(t=>(t.date||'').slice(0,7)===month),income=tx.filter(t=>t.type==='income').reduce((a,t)=>a+Number(t.amount),0),expense=tx.filter(t=>t.type==='expense').reduce((a,t)=>a+Number(t.amount),0),debt=x.debts.reduce((a,d)=>a+Number(d.amount),0),saved=x.goals.reduce((a,g)=>a+Number(g.current),0);$('indBalance').textContent=indMoney(income-expense);$('indDebtTotal').textContent=indMoney(debt);$('indSavings').textContent=indMoney(saved);$('indReserveLabel').textContent=indMoney(saved);$('indIncomeLabel').textContent=x.monthlyIncome?indMoney(x.monthlyIncome):'Não informada';
+ $('indTxCount').textContent=x.transactions.length+' registros';$('indTransactionList').innerHTML=x.transactions.length?[...x.transactions].sort((a,b)=>(b.date||'').localeCompare(a.date||'')).slice(0,12).map(t=>`<div class="listitem row"><div><strong>${esc(t.description)}</strong><div class="meta">${esc(t.date)} · ${esc(t.category||'Outros')}</div></div><strong style="color:${t.type==='income'?'#9aa99a':'#d58b8b'}">${t.type==='income'?'+':'−'} ${indMoney(t.amount)}</strong></div>`).join(''):'Nenhuma movimentação cadastrada.';
+ $('indDebtCount').textContent=x.debts.length+' dívidas';$('indDebtList').innerHTML=x.debts.length?x.debts.map(d=>`<div class="listitem row"><div><strong>${esc(d.name)}</strong><div class="meta">${d.due?'Vencimento: '+esc(d.due):'Sem vencimento informado'}</div></div><strong>${indMoney(d.amount)}</strong><button type="button" class="small danger" onclick="removeIndItem('debts','${d.id}')">Excluir</button></div>`).join(''):'Nenhuma dívida cadastrada.';
+ $('indGoalProgress').textContent=x.goals.length+' metas';$('indGoalList').innerHTML=x.goals.length?x.goals.map(g=>{let pct=Math.min(100,Math.round(Number(g.current)/Math.max(1,Number(g.target))*100));return `<div class="listitem"><div class="row"><strong>${esc(g.name)}</strong><span class="meta">${pct}%</span></div><div class="progress"><i style="width:${pct}%;background:#b99a68"></i></div><div class="meta">${indMoney(g.current)} de ${indMoney(g.target)}</div></div>`}).join(''):'<p class="meta">Cadastre sua primeira meta para acompanhar o progresso.</p>';
+ $('indCardList').innerHTML=x.cards.map(c=>`<div class="listitem"><strong>${esc(c.name)}</strong><div class="meta">Limite: ${indMoney(c.limit)} · Fatura informada: ${indMoney(c.invoice)}</div></div>`).join('')}
+window.removeIndItem=(kind,id)=>{if(!confirm('Excluir este registro?'))return;const x=indData();x[kind]=x[kind].filter(i=>i.id!==id);save()};
+$('indTransactionForm').onsubmit=e=>{e.preventDefault();const x=indData();x.transactions.push({id:uid(),type:$('indTxType').value,date:$('indTxDate').value,description:$('indTxDescription').value.trim(),category:$('indTxCategory').value,amount:Number($('indTxAmount').value)});e.target.reset();$('indTxDate').value=today();save()};
+$('indDebtForm').onsubmit=e=>{e.preventDefault();indData().debts.push({id:uid(),name:$('indDebtName').value.trim(),amount:Number($('indDebtAmount').value),due:$('indDebtDue').value});e.target.reset();save()};
+$('indGoalForm').onsubmit=e=>{e.preventDefault();indData().goals.push({id:uid(),name:$('indGoalName').value.trim(),target:Number($('indGoalTarget').value),current:Number($('indGoalCurrent').value||0)});e.target.reset();$('indGoalCurrent').value='0';save()};
+$('indCardForm').onsubmit=e=>{e.preventDefault();indData().cards.push({id:uid(),name:$('indCardName').value.trim(),limit:Number($('indCardLimit').value||0),invoice:Number($('indCardInvoice').value||0)});e.target.reset();$('indCardInvoice').value='0';save()};
+$('indMentorBtn').onclick=()=>{const x=indData(),debt=x.debts.reduce((a,d)=>a+Number(d.amount),0),saved=x.goals.reduce((a,g)=>a+Number(g.current),0),msg=`Quero analisar meu Projeto Independência 2027. Dívidas cadastradas: ${indMoney(debt)}. Reservas acumuladas nas metas: ${indMoney(saved)}. Metas: ${x.goals.map(g=>g.name+' ('+indMoney(g.current)+' de '+indMoney(g.target)+')').join('; ')||'nenhuma cadastrada'}. Cartões: ${x.cards.map(c=>c.name+'; fatura '+indMoney(c.invoice)).join('; ')||'nenhum cadastrado'}. Ajude-me a priorizar sem comprometer minha estabilidade financeira.`;showPage('mentor');$('mentorInput').value=msg;$('mentorInput').focus()};
+$('indTxDate').value=today();
+
+function renderAll(){renderToday();renderHabits();renderPhysical();renderBooks();renderGratitude();renderFailures();renderTraining();renderIndependencia()}
 $("exportBtn").onclick=()=>{let blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="caverna-backup-"+today()+".json";a.click();URL.revokeObjectURL(a.href)};
 $("importBtn").onclick=()=>$("importFile").click();
 $("importFile").onchange=async e=>{let f=e.target.files[0];if(!f)return;try{let d=JSON.parse(await f.text());if(!d.habits||!d.checks)throw 0;if(confirm("Substituir os dados atuais pelos dados do arquivo?")){data=d;save()}}catch{alert("Arquivo inválido.")}e.target.value=""};
