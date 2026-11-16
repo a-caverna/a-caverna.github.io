@@ -763,6 +763,32 @@ nav button[data-page="mentor"]{margin:0}
 #page-independencia .fin-project-goal-form{margin-top:14px;padding:12px;border-radius:10px;background:#13121a}
 #page-independencia .fin-project-goal-form label{margin-top:0}
 #page-independencia .fin-project-goal-form input{font-size:12px}
+
+/* Finanças: conteúdo recolhido em cards para reduzir ruído visual */
+#page-independencia .fin-content{align-items:start}
+#page-independencia details.fin-accordion{
+  padding:0;overflow:hidden;transition:border-color .18s ease,background .18s ease;
+}
+#page-independencia .fin-accordion-head{
+  list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;
+  gap:14px;padding:17px 19px;min-height:64px;font-size:14px;font-weight:650;color:var(--fin-text);
+}
+#page-independencia .fin-accordion-head::-webkit-details-marker{display:none}
+#page-independencia .fin-accordion-head::marker{content:""}
+#page-independencia .fin-accordion-head:hover{background:#ffffff06}
+#page-independencia .fin-accordion-toggle{
+  width:27px;height:27px;flex:0 0 27px;display:grid;place-items:center;
+  border:1px solid var(--fin-line);border-radius:50%;color:var(--fin-accent);
+  font-size:19px;font-weight:400;line-height:1;transition:transform .18s ease;
+}
+#page-independencia details[open].fin-accordion{border-color:#625078}
+#page-independencia details[open] .fin-accordion-toggle{transform:rotate(45deg)}
+#page-independencia .fin-accordion-body{padding:0 19px 19px;border-top:1px solid #292d36}
+#page-independencia .fin-accordion-body>form:first-child{padding-top:5px}
+#page-independencia .fin-accordion-body h3{margin-top:12px}
+#page-independencia .fin-accordion.fin-wide{grid-column:1/-1}
+#page-independencia .fin-accordion.fin-mentor .fin-accordion-body{padding-top:14px}
+
 </style>
 </head>
 <body>
@@ -975,14 +1001,14 @@ nav button[data-page="mentor"]{margin:0}
   <div class="fin-stat"><span>Reservas acumuladas</span><strong id="indSavings">R$ 0,00</strong></div>
  </div>
  <div class="fin-content">
-  <section class="fin-panel fin-wide"><div class="fin-section-head"><div><h3>Visão geral</h3><p class="meta" style="margin:4px 0 0">Seus indicadores financeiros, sem objetivos predefinidos.</p></div></div><div class="fin-overview-note">Crie projetos quando souber o que deseja alcançar. Você pode começar com um objetivo pequeno e ajustar o plano ao longo do caminho.</div></section>
-  <section class="fin-panel"><h3>Registrar movimentação</h3><form id="indTransactionForm"><div class="formgrid"><div><label>Tipo</label><select id="indTxType"><option value="income">Receita</option><option value="expense">Despesa</option></select></div><div><label>Data</label><input id="indTxDate" type="date" required></div><div class="full"><label>Descrição</label><input id="indTxDescription" required placeholder="Ex.: salário, mercado, aluguel"></div><div><label>Categoria</label><select id="indTxCategory"><option>Salário</option><option>Moradia</option><option>Alimentação</option><option>Transporte</option><option>Saúde</option><option>Lazer</option><option>Cartão</option><option>Outros</option></select></div><div><label>Valor (R$)</label><input id="indTxAmount" type="number" min="0.01" step="0.01" required></div></div><button class="primary" style="margin-top:12px">Salvar movimentação</button></form></section>
-  <section class="fin-panel"><h3>Cadastrar dívida</h3><form id="indDebtForm"><label>Nome da dívida</label><input id="indDebtName" required placeholder="Ex.: cartão, empréstimo"><div class="formgrid"><div><label>Saldo total (R$)</label><input id="indDebtAmount" type="number" min="0.01" step="0.01" required></div><div><label>Vencimento (opcional)</label><input id="indDebtDue" type="date"></div></div><button class="primary" style="margin-top:12px">Adicionar dívida</button></form></section>
-  <section class="fin-panel"><h3>Metas financeiras</h3><form id="indGoalForm"><label>Nome da meta</label><input id="indGoalName" required placeholder="Ex.: Reserva de emergência"><div class="formgrid"><div><label>Valor desejado (R$)</label><input id="indGoalTarget" type="number" min="1" step="0.01" required></div><div><label>Já acumulado (R$)</label><input id="indGoalCurrent" type="number" min="0" step="0.01" value="0"></div></div><button class="primary" style="margin-top:12px">Salvar meta</button></form></section>
-  <section class="fin-panel"><h3>Cartões de crédito</h3><form id="indCardForm"><label>Nome do cartão</label><input id="indCardName" required placeholder="Ex.: Cartão principal"><div class="formgrid"><div><label>Limite (R$)</label><input id="indCardLimit" type="number" min="0" step="0.01"></div><div><label>Fatura atual (R$)</label><input id="indCardInvoice" type="number" min="0" step="0.01" value="0"></div></div><button class="primary" style="margin-top:12px">Adicionar cartão</button></form><div id="indCardList"></div></section>
-  <section class="fin-panel fin-wide"><div class="fin-section-head"><h3>Movimentações recentes</h3><span class="pill" id="indTxCount">0 registros</span></div><div id="indTransactionList" class="empty">Nenhuma movimentação cadastrada.</div></section>
-  <section class="fin-panel fin-wide"><div class="fin-section-head"><h3>Minhas dívidas</h3><span class="pill" id="indDebtCount">0 dívidas</span></div><div id="indDebtList" class="empty">Nenhuma dívida cadastrada.</div></section>
-  <section class="fin-panel fin-wide fin-mentor"><div><h3 style="margin-bottom:3px">Mentor financeiro</h3><p class="meta">Leve seus indicadores ao Mentor para analisar prioridades e próximos passos.</p></div><button type="button" id="indMentorBtn" class="primary">Conversar com Mentor</button></section>
+  <details class="fin-panel fin-accordion fin-wide"  data-fin-accordion><summary class="fin-accordion-head"><span>Visão geral</span><span class="fin-accordion-toggle" aria-hidden="true">+</span></summary><div class="fin-accordion-body"><div class="fin-section-head"><div><p class="meta" style="margin:4px 0 0">Seus indicadores financeiros, sem objetivos predefinidos.</p></div></div><div class="fin-overview-note">Crie projetos quando souber o que deseja alcançar. Você pode começar com um objetivo pequeno e ajustar o plano ao longo do caminho.</div></div></details>
+  <details class="fin-panel fin-accordion "  data-fin-accordion><summary class="fin-accordion-head"><span>Registrar movimentação</span><span class="fin-accordion-toggle" aria-hidden="true">+</span></summary><div class="fin-accordion-body"><form id="indTransactionForm"><div class="formgrid"><div><label>Tipo</label><select id="indTxType"><option value="income">Receita</option><option value="expense">Despesa</option></select></div><div><label>Data</label><input id="indTxDate" type="date" required></div><div class="full"><label>Descrição</label><input id="indTxDescription" required placeholder="Ex.: salário, mercado, aluguel"></div><div><label>Categoria</label><select id="indTxCategory"><option>Salário</option><option>Moradia</option><option>Alimentação</option><option>Transporte</option><option>Saúde</option><option>Lazer</option><option>Cartão</option><option>Outros</option></select></div><div><label>Valor (R$)</label><input id="indTxAmount" type="number" min="0.01" step="0.01" required></div></div><button class="primary" style="margin-top:12px">Salvar movimentação</button></form></div></details>
+  <details class="fin-panel fin-accordion "  data-fin-accordion><summary class="fin-accordion-head"><span>Cadastrar dívida</span><span class="fin-accordion-toggle" aria-hidden="true">+</span></summary><div class="fin-accordion-body"><form id="indDebtForm"><label>Nome da dívida</label><input id="indDebtName" required placeholder="Ex.: cartão, empréstimo"><div class="formgrid"><div><label>Saldo total (R$)</label><input id="indDebtAmount" type="number" min="0.01" step="0.01" required></div><div><label>Vencimento (opcional)</label><input id="indDebtDue" type="date"></div></div><button class="primary" style="margin-top:12px">Adicionar dívida</button></form></div></details>
+  <details class="fin-panel fin-accordion "  data-fin-accordion><summary class="fin-accordion-head"><span>Metas financeiras</span><span class="fin-accordion-toggle" aria-hidden="true">+</span></summary><div class="fin-accordion-body"><form id="indGoalForm"><label>Nome da meta</label><input id="indGoalName" required placeholder="Ex.: Reserva de emergência"><div class="formgrid"><div><label>Valor desejado (R$)</label><input id="indGoalTarget" type="number" min="1" step="0.01" required></div><div><label>Já acumulado (R$)</label><input id="indGoalCurrent" type="number" min="0" step="0.01" value="0"></div></div><button class="primary" style="margin-top:12px">Salvar meta</button></form></div></details>
+  <details class="fin-panel fin-accordion "  data-fin-accordion><summary class="fin-accordion-head"><span>Cartões de crédito</span><span class="fin-accordion-toggle" aria-hidden="true">+</span></summary><div class="fin-accordion-body"><form id="indCardForm"><label>Nome do cartão</label><input id="indCardName" required placeholder="Ex.: Cartão principal"><div class="formgrid"><div><label>Limite (R$)</label><input id="indCardLimit" type="number" min="0" step="0.01"></div><div><label>Fatura atual (R$)</label><input id="indCardInvoice" type="number" min="0" step="0.01" value="0"></div></div><button class="primary" style="margin-top:12px">Adicionar cartão</button></form><div id="indCardList"></div></div></details>
+  <details class="fin-panel fin-accordion fin-wide"  data-fin-accordion><summary class="fin-accordion-head"><span>Movimentações recentes</span><span class="fin-accordion-toggle" aria-hidden="true">+</span></summary><div class="fin-accordion-body"><div class="fin-section-head"><span class="pill" id="indTxCount">0 registros</span></div><div id="indTransactionList" class="empty">Nenhuma movimentação cadastrada.</div></div></details>
+  <details class="fin-panel fin-accordion fin-wide"  data-fin-accordion><summary class="fin-accordion-head"><span>Minhas dívidas</span><span class="fin-accordion-toggle" aria-hidden="true">+</span></summary><div class="fin-accordion-body"><div class="fin-section-head"><span class="pill" id="indDebtCount">0 dívidas</span></div><div id="indDebtList" class="empty">Nenhuma dívida cadastrada.</div></div></details>
+  <details class="fin-panel fin-accordion fin-wide fin-mentor"  data-fin-accordion><summary class="fin-accordion-head"><span>Mentor financeiro</span><span class="fin-accordion-toggle" aria-hidden="true">+</span></summary><div class="fin-accordion-body"><div><p class="meta">Leve seus indicadores ao Mentor para analisar prioridades e próximos passos.</p></div><button type="button" id="indMentorBtn" class="primary">Conversar com Mentor</button></div></details>
  </div>
 </section>
 
