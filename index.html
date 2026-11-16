@@ -697,6 +697,46 @@ nav button[data-page="mentor"]{margin:0}
   #trainingTimer .actions button{padding:7px 8px;font-size:11px}
 }
 
+
+/* FINANCAS — interface clean e profissional */
+#page-independencia{--fin-bg:#101116;--fin-surface:#17191f;--fin-line:#292c34;--fin-text:#f0f1f3;--fin-muted:#9298a4;--fin-accent:#c5a875;max-width:1080px;margin:0 auto}
+#page-independencia .fin-header{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin:8px 0 22px}
+#page-independencia .fin-eyebrow{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--fin-muted);margin:0 0 5px}
+#page-independencia .fin-header h2{font-size:28px;letter-spacing:-.04em;margin:0;color:var(--fin-text)}
+#page-independencia .fin-header .sub{margin:5px 0 0;font-size:13px}
+#page-independencia .fin-projects{background:var(--fin-surface);border:1px solid var(--fin-line);border-radius:14px;padding:16px 18px;margin-bottom:16px}
+#page-independencia .fin-section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+#page-independencia .fin-section-head h3{font-size:14px;font-weight:650;margin:0;letter-spacing:.01em}
+#page-independencia .fin-project-card{width:100%;display:flex;align-items:center;justify-content:space-between;gap:14px;text-align:left;padding:15px 16px;border:1px solid #393b42;border-radius:11px;background:#1d2027;color:var(--fin-text)}
+#page-independencia .fin-project-card:hover{border-color:#8b795a;background:#22252c}
+#page-independencia .fin-project-card h3{font-size:15px;margin:3px 0 2px}
+#page-independencia .fin-project-card p{margin:0;color:var(--fin-muted);font-size:12px}
+#page-independencia .fin-project-tag{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--fin-accent)}
+#page-independencia .fin-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0 0 16px}
+#page-independencia .fin-stat{background:var(--fin-surface);border:1px solid var(--fin-line);border-radius:13px;padding:15px 16px;min-width:0}
+#page-independencia .fin-stat span{display:block;color:var(--fin-muted);font-size:12px}
+#page-independencia .fin-stat strong{display:block;color:var(--fin-text);font-size:23px;font-weight:650;letter-spacing:-.03em;margin-top:5px;overflow-wrap:anywhere}
+#page-independencia .fin-content{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+#page-independencia .fin-panel{background:var(--fin-surface);border:1px solid var(--fin-line);border-radius:13px;padding:17px;min-width:0}
+#page-independencia .fin-panel h3{font-size:14px;font-weight:650;margin:0 0 13px;color:var(--fin-text)}
+#page-independencia .fin-panel .meta{line-height:1.55}
+#page-independencia .fin-panel input,#page-independencia .fin-panel select{background:#101217;border-color:#30343d;border-radius:8px;padding:10px 11px;font-size:13px}
+#page-independencia .fin-panel label{font-size:11px;margin:9px 0 5px;color:#a5aab4}
+#page-independencia .fin-panel button.primary{background:#e6e7e9;border-color:#e6e7e9;color:#17181b;border-radius:8px;font-size:12px;padding:9px 12px}
+#page-independencia .fin-panel .listitem{border-color:#2a2d35}
+#page-independencia .fin-wide{grid-column:1/-1}
+#page-independencia .fin-project-map{background:#15171d;border-color:#343740}
+#page-independencia .fin-stage-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:14px 0}
+#page-independencia .fin-stage{background:#1c1f26;border:1px solid #2d3038;border-radius:10px;padding:12px;min-width:0}
+#page-independencia .fin-stage b{display:block;font-size:11px;color:var(--fin-accent);margin-bottom:7px}
+#page-independencia .fin-stage strong{display:block;font-size:12px;font-weight:600}
+#page-independencia .fin-stage small{display:block;color:var(--fin-muted);font-size:11px;margin-top:4px;line-height:1.4}
+#page-independencia .fin-progress-head{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-top:16px;font-size:12px}
+#page-independencia .fin-mentor{display:flex;align-items:center;justify-content:space-between;gap:14px}
+#page-independencia .fin-mentor p{margin:4px 0 0}
+@media(max-width:700px){#page-independencia .fin-header{align-items:flex-start}#page-independencia .fin-stats{grid-template-columns:1fr 1fr}#page-independencia .fin-stats .fin-stat:first-child{grid-column:1/-1}#page-independencia .fin-content{grid-template-columns:1fr}#page-independencia .fin-stage-grid{grid-template-columns:1fr 1fr}#page-independencia .fin-wide{grid-column:auto}#page-independencia .fin-stat strong{font-size:20px}}
+@media(max-width:390px){#page-independencia .fin-stage-grid{grid-template-columns:1fr}#page-independencia .fin-project-card{align-items:flex-start;flex-direction:column}}
+
 </style>
 </head>
 <body>
@@ -887,19 +927,39 @@ nav button[data-page="mentor"]{margin:0}
 <p id="adminStatus" class="meta" role="status"></p><div id="adminUsers"></div>
 </div></div></section>
 <section id="page-independencia" class="hidden">
- <div class="row" style="flex-wrap:wrap"><div><p class="meta" style="letter-spacing:.16em;color:#c7a66b">GESTÃO FINANCEIRA PESSOAL</p><h2>Finanças</h2><p class="sub">Controle financeiro, planejamento e construção de patrimônio.</p></div><span class="pill">CAMBÉ · LONDRINA</span></div>
- <div class="card ind-accent" style="margin-bottom:14px"><div class="row" style="flex-wrap:wrap"><div><p class="meta" style="letter-spacing:.14em;color:#c7a66b">ÁREA DE PLANEJAMENTO</p><h3 style="margin:0">Projetos</h3><p class="meta" style="margin:.35rem 0 0">Organize objetivos financeiros e acompanhe cada conquista.</p></div><span class="pill">1 projeto</span></div><button type="button" class="card" style="width:100%;text-align:left;margin-top:12px;border-color:#665333;background:linear-gradient(145deg,#211d16,#151518);cursor:pointer" onclick="document.getElementById('indProjectMap').scrollIntoView({behavior:'smooth',block:'start'})"><div class="row"><div><span class="meta" style="color:#c7a66b">PROJETO ATIVO · 2027</span><h3 style="margin:5px 0">⌂ Independência 2027</h3><p class="meta" style="margin:0">Minha primeira residência e construção patrimonial.</p></div><span class="pill">Abrir projeto ↗</span></div></button></div>
- <div class="stats"><div class="stat ind-stat"><span>Saldo do mês</span><strong id="indBalance">R$ 0,00</strong></div><div class="stat ind-stat"><span>Dívidas cadastradas</span><strong id="indDebtTotal">R$ 0,00</strong></div><div class="stat ind-stat"><span>Reserva acumulada</span><strong id="indSavings">R$ 0,00</strong></div></div>
- <div class="grid">
-  <div class="card span8 ind-accent" id="indProjectMap"><div class="row"><h3>Projeto · Independência 2027</h3><span class="pill">Projeto ativo</span></div><p class="meta">Seu progresso começa com clareza. Atualize os registros e acompanhe cada conquista.</p><div class="grid" style="gap:9px"><div class="card span6"><span class="meta">01 · RECUPERAÇÃO</span><h3>Quitar dívidas</h3><p class="meta">Cartões, parcelas e pendências.</p></div><div class="card span6"><span class="meta">02 · SEGURANÇA</span><h3>Construir reserva</h3><p class="meta">Emergência e caixa para mudança.</p></div><div class="card span6"><span class="meta">03 · MORADIA</span><h3>Conquistar meu espaço</h3><p class="meta">Aluguel, mudança e custos da casa.</p></div><div class="card span6"><span class="meta">04 · PATRIMÔNIO</span><h3>Comprar meu flat</h3><p class="meta">Entrada, FGTS e financiamento.</p></div></div><div class="row" style="margin-top:14px"><strong>Progresso das metas</strong><span id="indGoalProgress" class="meta">0 metas</span></div><div id="indGoalList"></div></div>
-  <div class="card span4"><h3>Resumo do projeto</h3><div class="listitem"><span class="meta">Renda líquida de referência</span><strong id="indIncomeLabel">Não informada</strong></div><div class="listitem"><span class="meta">Objetivo de moradia</span><strong>Até R$ 1.200 de aluguel (referência)</strong></div><div class="listitem"><span class="meta">Reserva atual</span><strong id="indReserveLabel">R$ 0,00</strong></div></div>
-  <div class="card span6"><h3>Registrar movimentação</h3><form id="indTransactionForm"><div class="formgrid"><div><label>Tipo</label><select id="indTxType"><option value="income">Receita</option><option value="expense">Despesa</option></select></div><div><label>Data</label><input id="indTxDate" type="date" required></div><div class="full"><label>Descrição</label><input id="indTxDescription" required placeholder="Ex.: salário, mercado, aluguel"></div><div><label>Categoria</label><select id="indTxCategory"><option>Salário</option><option>Moradia</option><option>Alimentação</option><option>Transporte</option><option>Saúde</option><option>Lazer</option><option>Cartão</option><option>Outros</option></select></div><div><label>Valor (R$)</label><input id="indTxAmount" type="number" min="0.01" step="0.01" required></div></div><button class="primary" style="margin-top:12px">Salvar movimentação</button></form></div>
-  <div class="card span6"><h3>Cadastrar dívida</h3><form id="indDebtForm"><label>Nome da dívida</label><input id="indDebtName" required placeholder="Ex.: cartão, empréstimo"><div class="formgrid"><div><label>Saldo total (R$)</label><input id="indDebtAmount" type="number" min="0.01" step="0.01" required></div><div><label>Vencimento (opcional)</label><input id="indDebtDue" type="date"></div></div><button class="primary" style="margin-top:12px">Adicionar dívida</button></form></div>
-  <div class="card span6"><h3>Criar meta financeira</h3><form id="indGoalForm"><label>Nome da meta</label><input id="indGoalName" required placeholder="Ex.: Reserva de emergência"><div class="formgrid"><div><label>Valor desejado (R$)</label><input id="indGoalTarget" type="number" min="1" step="0.01" required></div><div><label>Já acumulado (R$)</label><input id="indGoalCurrent" type="number" min="0" step="0.01" value="0"></div></div><button class="primary" style="margin-top:12px">Salvar meta</button></form></div>
-  <div class="card span6"><h3>Cartões de crédito</h3><form id="indCardForm"><label>Nome do cartão</label><input id="indCardName" required placeholder="Ex.: Cartão principal"><div class="formgrid"><div><label>Limite (R$)</label><input id="indCardLimit" type="number" min="0" step="0.01"></div><div><label>Fatura atual (R$)</label><input id="indCardInvoice" type="number" min="0" step="0.01" value="0"></div></div><button class="primary" style="margin-top:12px">Adicionar cartão</button></form><div id="indCardList"></div></div>
-  <div class="card span12"><div class="row"><h3>Movimentações recentes</h3><span class="pill" id="indTxCount">0 registros</span></div><div id="indTransactionList" class="empty">Nenhuma movimentação cadastrada.</div></div>
-  <div class="card span12"><div class="row"><h3>Minhas dívidas</h3><span class="pill" id="indDebtCount">0 dívidas</span></div><div id="indDebtList" class="empty">Nenhuma dívida cadastrada.</div></div>
-  <div class="card span12"><h3>Mentor · contexto financeiro</h3><p class="meta">Prepare um resumo dos seus indicadores para conversar com o Mentor. Ele não altera seus registros.</p><button type="button" id="indMentorBtn" class="primary">Levar meu resumo ao Mentor</button></div>
+ <header class="fin-header">
+  <div><p class="fin-eyebrow">Caverna / Gestão pessoal</p><h2>Finanças</h2><p class="sub">Organize seu dinheiro e acompanhe seus planos.</p></div>
+  <span class="pill">CAMBÉ · LONDRINA</span>
+ </header>
+ <section class="fin-projects">
+  <div class="fin-section-head"><div><h3>Projetos</h3><p class="meta" style="margin:4px 0 0">Objetivos que orientam suas decisões financeiras.</p></div><span class="pill">1 ativo</span></div>
+  <button type="button" class="fin-project-card" onclick="document.getElementById('indProjectMap').scrollIntoView({behavior:'smooth',block:'start'})"><div><span class="fin-project-tag">Projeto ativo · 2027</span><h3>Independência 2027</h3><p>Planejamento da primeira residência e construção patrimonial.</p></div><span class="pill">Abrir projeto&nbsp; ↗</span></button>
+ </section>
+ <div class="fin-stats">
+  <div class="fin-stat"><span>Saldo do mês</span><strong id="indBalance">R$ 0,00</strong></div>
+  <div class="fin-stat"><span>Dívidas cadastradas</span><strong id="indDebtTotal">R$ 0,00</strong></div>
+  <div class="fin-stat"><span>Reservas acumuladas</span><strong id="indSavings">R$ 0,00</strong></div>
+ </div>
+ <div class="fin-content">
+  <section class="fin-panel fin-project-map" id="indProjectMap">
+   <div class="fin-section-head"><h3>Independência 2027</h3><span class="pill">Em andamento</span></div>
+   <p class="meta">Um plano em quatro etapas. Avance no seu ritmo, com decisões sustentáveis.</p>
+   <div class="fin-stage-grid">
+    <div class="fin-stage"><b>01 · ORGANIZAR</b><strong>Recuperar o controle</strong><small>Cartões, empréstimos e pendências.</small></div>
+    <div class="fin-stage"><b>02 · PROTEGER</b><strong>Construir segurança</strong><small>Reserva e caixa para mudança.</small></div>
+    <div class="fin-stage"><b>03 · MORAR</b><strong>Conquistar meu espaço</strong><small>Moradia, mudança e custos da casa.</small></div>
+    <div class="fin-stage"><b>04 · CONSTRUIR</b><strong>Formar patrimônio</strong><small>Entrada, FGTS e financiamento.</small></div>
+   </div>
+   <div class="fin-progress-head"><strong>Progresso das metas</strong><span id="indGoalProgress" class="meta">0 metas</span></div><div id="indGoalList"></div>
+  </section>
+  <section class="fin-panel"><h3>Resumo do projeto</h3><div class="listitem"><span class="meta">Renda líquida de referência</span><br><strong id="indIncomeLabel">Não informada</strong></div><div class="listitem"><span class="meta">Objetivo de moradia</span><br><strong>Aluguel de até R$ 1.200</strong></div><div class="listitem"><span class="meta">Reserva atual</span><br><strong id="indReserveLabel">R$ 0,00</strong></div></section>
+  <section class="fin-panel"><h3>Registrar movimentação</h3><form id="indTransactionForm"><div class="formgrid"><div><label>Tipo</label><select id="indTxType"><option value="income">Receita</option><option value="expense">Despesa</option></select></div><div><label>Data</label><input id="indTxDate" type="date" required></div><div class="full"><label>Descrição</label><input id="indTxDescription" required placeholder="Ex.: salário, mercado, aluguel"></div><div><label>Categoria</label><select id="indTxCategory"><option>Salário</option><option>Moradia</option><option>Alimentação</option><option>Transporte</option><option>Saúde</option><option>Lazer</option><option>Cartão</option><option>Outros</option></select></div><div><label>Valor (R$)</label><input id="indTxAmount" type="number" min="0.01" step="0.01" required></div></div><button class="primary" style="margin-top:12px">Salvar movimentação</button></form></section>
+  <section class="fin-panel"><h3>Cadastrar dívida</h3><form id="indDebtForm"><label>Nome da dívida</label><input id="indDebtName" required placeholder="Ex.: cartão, empréstimo"><div class="formgrid"><div><label>Saldo total (R$)</label><input id="indDebtAmount" type="number" min="0.01" step="0.01" required></div><div><label>Vencimento (opcional)</label><input id="indDebtDue" type="date"></div></div><button class="primary" style="margin-top:12px">Adicionar dívida</button></form></section>
+  <section class="fin-panel"><h3>Criar meta financeira</h3><form id="indGoalForm"><label>Nome da meta</label><input id="indGoalName" required placeholder="Ex.: Reserva de emergência"><div class="formgrid"><div><label>Valor desejado (R$)</label><input id="indGoalTarget" type="number" min="1" step="0.01" required></div><div><label>Já acumulado (R$)</label><input id="indGoalCurrent" type="number" min="0" step="0.01" value="0"></div></div><button class="primary" style="margin-top:12px">Salvar meta</button></form></section>
+  <section class="fin-panel"><h3>Cartões de crédito</h3><form id="indCardForm"><label>Nome do cartão</label><input id="indCardName" required placeholder="Ex.: Cartão principal"><div class="formgrid"><div><label>Limite (R$)</label><input id="indCardLimit" type="number" min="0" step="0.01"></div><div><label>Fatura atual (R$)</label><input id="indCardInvoice" type="number" min="0" step="0.01" value="0"></div></div><button class="primary" style="margin-top:12px">Adicionar cartão</button></form><div id="indCardList"></div></section>
+  <section class="fin-panel fin-wide"><div class="fin-section-head"><h3>Movimentações recentes</h3><span class="pill" id="indTxCount">0 registros</span></div><div id="indTransactionList" class="empty">Nenhuma movimentação cadastrada.</div></section>
+  <section class="fin-panel fin-wide"><div class="fin-section-head"><h3>Minhas dívidas</h3><span class="pill" id="indDebtCount">0 dívidas</span></div><div id="indDebtList" class="empty">Nenhuma dívida cadastrada.</div></section>
+  <section class="fin-panel fin-wide fin-mentor"><div><h3 style="margin-bottom:3px">Mentor financeiro</h3><p class="meta">Leve seus indicadores ao Mentor para analisar prioridades e próximos passos.</p></div><button type="button" id="indMentorBtn" class="primary">Conversar com Mentor</button></section>
  </div>
 </section>
 
