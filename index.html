@@ -789,6 +789,47 @@ nav button[data-page="mentor"]{margin:0}
 #page-independencia .fin-accordion.fin-wide{grid-column:1/-1}
 #page-independencia .fin-accordion.fin-mentor .fin-accordion-body{padding-top:14px}
 
+
+/* Treinos: interface compacta e conteúdo sob demanda */
+#page-training .training-home-header{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:18px}
+#page-training .training-home-header .sub{margin:5px 0 0}
+#page-training .training-library-shell{margin-bottom:13px}
+#page-training .training-library-heading{margin-bottom:12px}
+#page-training .training-eyebrow{font-size:10px;letter-spacing:.16em;color:#b99add;font-weight:750}
+#page-training .training-library-heading h3{margin:4px 0}
+#page-training .training-action-card{margin:11px 0;background:linear-gradient(145deg,#191621,#111117);border:1px solid #302a3b;border-radius:15px;overflow:hidden}
+#page-training .training-action-card>summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 18px;min-height:72px}
+#page-training .training-action-card>summary::-webkit-details-marker{display:none}
+#page-training .training-action-card>summary>span{display:flex;align-items:center;gap:13px;min-width:0}
+#page-training .training-action-card>summary>span>b{width:34px;height:34px;flex:0 0 34px;display:grid;place-items:center;border:1px solid #514064;border-radius:11px;color:#d2b4f4;font-size:20px;font-weight:400}
+#page-training .training-action-card>summary strong,#page-training .training-action-card>summary small{display:block}
+#page-training .training-action-card>summary strong{font-size:14px;color:var(--text)}
+#page-training .training-action-card>summary small{font-size:11px;color:var(--muted);margin-top:3px}
+#page-training .training-action-card>summary>i{width:26px;height:26px;border:1px solid #40364d;border-radius:50%;display:grid;place-items:center;color:#c7a4ec;font-style:normal;font-size:18px;transition:transform .18s}
+#page-training .training-action-card[open]{border-color:#60477b}
+#page-training .training-action-card[open]>summary{border-bottom:1px solid #302a3b}
+#page-training .training-action-card[open]>summary>i{transform:rotate(45deg)}
+#page-training .training-action-body{padding:17px}
+#page-training .training-action-body form{margin-top:12px}
+#page-training .training-action-body .physical-template-card{padding:14px;border:1px solid #342b40;border-radius:12px;margin-bottom:14px}
+#page-training .training-action-body .physical-template-card h3{margin-bottom:5px}
+#page-training .program-card{margin:10px 0}
+#page-training .program-card-main{gap:12px}
+#page-training .program-card-info{flex:1;min-width:0}
+#page-training .program-card-actions{display:flex;gap:6px;flex-wrap:wrap}
+#page-training .program-card-actions button{font-size:11px;padding:6px 9px}
+#page-training .program-select-btn{width:100%;margin-top:10px}
+#page-training .program-detail{padding-top:12px}
+#page-training #workoutHistory .listitem{padding:12px 0;border-bottom:1px solid #302a38}
+#page-training #workoutHistory .listitem:last-child{border-bottom:0}
+@media(max-width:600px){
+ #page-training .training-home-header{align-items:flex-start}
+ #page-training .training-library-shell{padding:15px}
+ #page-training .program-card-main{flex-wrap:wrap}
+ #page-training .program-card-actions{width:100%;padding-left:46px}
+ #page-training .training-action-body{padding:13px}
+}
+
 </style>
 </head>
 <body>
@@ -892,12 +933,19 @@ nav button[data-page="mentor"]{margin:0}
 </section>
 <section id="page-training" class="hidden">
  <div id="trainingHome">
-  <h2>Treinos</h2><p class="sub">Monte fichas completas e, na academia, abra somente o dia que vai executar.</p>
-  <div class="grid">
-   <div class="card span4">
-    <h3 id="programFormHeading">Nova ficha completa</h3>
+  <header class="training-home-header">
+   <div><h2>Treinos</h2><p class="sub">Sua rotina de treino, organizada sem excesso de informação.</p></div>
+   <span class="pill" id="programCount">0 fichas</span>
+  </header>
+  <div class="training-library-shell card">
+   <div class="training-library-heading"><div><span class="training-eyebrow">MINHA ROTINA</span><h3>Biblioteca de treinos</h3><p class="meta">Abra uma ficha para ver os dias e iniciar seu treino.</p></div></div>
+   <div id="trainingProgramList"></div>
+  </div>
+  <details class="training-action-card">
+   <summary><span><b>＋</b><span><strong id="programFormHeading">Criar nova ficha</strong><small>Monte os dias, exercícios, séries e cargas.</small></span></span><i aria-hidden="true">+</i></summary>
+   <div class="training-action-body">
     <form id="trainingProgramForm">
-     <label>Nome da ficha</label><input id="programName" required placeholder="Ex.: Treino de fim de ano">
+     <label>Nome da ficha</label><input id="programName" required placeholder="Ex.: Treino de hipertrofia">
      <label>Dias desta ficha</label><div id="programDayTabs" class="actions day-tabs"></div>
      <div class="day-name-box"><label for="programDayName">Nome opcional deste dia</label><input id="programDayName" maxlength="40" placeholder="Ex.: Push (deixe vazio para usar só A)"><p class="meta">O nome é opcional. Você pode usar apenas A, B, C... ou nomes como Push e Pull.</p></div>
      <div class="training-form-grid"><div class="full"><label>Exercício</label><input id="programExerciseName" placeholder="Ex.: Supino reto"></div><div><label>Séries</label><input id="programSets" type="number" min="1" max="20" value="4"></div><div><label>Repetições mín.</label><input id="programRepsMin" type="number" min="1" value="8"></div><div><label>Repetições máx.</label><input id="programRepsMax" type="number" min="1" value="12"></div><div><label>Carga planejada (kg)</label><input id="programLoad" type="number" min="0" step="0.5" placeholder="Ex.: 40"></div><div class="full"><label>Descanso (segundos)</label><input id="programRest" type="number" min="0" max="900" step="5" value="90"></div></div>
@@ -906,15 +954,18 @@ nav button[data-page="mentor"]{margin:0}
      <div class="actions" style="margin-top:16px"><button type="button" id="resetProgramForm">Limpar ficha</button><button class="primary" type="submit">Salvar ficha completa</button></div>
     </form>
    </div>
-   <div class="card span8"><div class="row"><h3>Minha biblioteca</h3><span class="pill" id="programCount">0 fichas</span></div><div id="trainingProgramList"></div></div>
-   
-  </div>
-  <div class="physical-workout-section"><div class="physical-section-heading"><div><span class="physical-kicker">REGISTRO E HISTÓRICO</span><h3>Treinos realizados</h3><p class="sub">Registre sessões avulsas ou acompanhe automaticamente os treinos finalizados pelas suas fichas.</p></div></div>
-  <div class="grid"><div class="card span6">
-   <div class="card physical-template-card"><h3>Usar uma ficha da biblioteca</h3><p class="meta">Escolha a ficha e o dia realizado para preencher os exercícios automaticamente.</p><div class="formgrid"><div class="full"><label for="workoutTemplateProgram">Ficha cadastrada</label><select id="workoutTemplateProgram"><option value="">Selecionar ficha...</option></select></div><div class="full"><label for="workoutTemplateDay">Dia da ficha</label><select id="workoutTemplateDay" disabled><option value="">Selecione primeiro uma ficha</option></select></div></div><button type="button" id="loadWorkoutTemplate" class="small" style="margin-top:10px">Carregar exercícios deste dia</button><p id="workoutTemplateStatus" class="meta" role="status"></p></div>
-   <form id="workoutForm"><div class="formgrid"><div><label>Data</label><input id="workoutDate" type="date" required></div><div><label>Treino / grupo</label><input id="workoutName" required placeholder="Ex.: Treino de fim de ano — Dia A"></div></div><div style="margin-top:16px"><div class="row"><h3 style="margin:0">Exercícios</h3><button type="button" class="small" id="addExerciseBtn">+ Adicionar exercício</button></div><div id="workoutExercises"></div></div><button class="primary" style="margin-top:12px">Salvar treino</button></form>
-  </div><div class="card span6"><h3>Histórico de treinos</h3><div id="workoutHistory"></div></div></div>
- </div>
+  </details>
+  <details class="training-action-card">
+   <summary><span><b>＋</b><span><strong>Registrar treino avulso</strong><small>Registre uma sessão sem usar uma ficha cadastrada.</small></span></span><i aria-hidden="true">+</i></summary>
+   <div class="training-action-body">
+    <div class="physical-template-card"><h3>Usar uma ficha da biblioteca</h3><p class="meta">Escolha a ficha e o dia realizado para preencher os exercícios automaticamente.</p><div class="formgrid"><div class="full"><label for="workoutTemplateProgram">Ficha cadastrada</label><select id="workoutTemplateProgram"><option value="">Selecionar ficha...</option></select></div><div class="full"><label for="workoutTemplateDay">Dia da ficha</label><select id="workoutTemplateDay" disabled><option value="">Selecione primeiro uma ficha</option></select></div></div><button type="button" id="loadWorkoutTemplate" class="small" style="margin-top:10px">Carregar exercícios deste dia</button><p id="workoutTemplateStatus" class="meta" role="status"></p></div>
+    <form id="workoutForm"><div class="formgrid"><div><label>Data</label><input id="workoutDate" type="date" required></div><div><label>Treino / grupo</label><input id="workoutName" required placeholder="Ex.: Treino de superiores"></div></div><div style="margin-top:16px"><div class="row"><h3 style="margin:0">Exercícios</h3><button type="button" class="small" id="addExerciseBtn">+ Adicionar exercício</button></div><div id="workoutExercises"></div></div><button class="primary" style="margin-top:12px">Salvar treino</button></form>
+   </div>
+  </details>
+  <details class="training-action-card">
+   <summary><span><b>↗</b><span><strong>Histórico de treinos</strong><small>Consulte suas sessões concluídas.</small></span></span><i aria-hidden="true">+</i></summary>
+   <div class="training-action-body"><div id="workoutHistory"></div></div>
+  </details>
  </div>
  <div id="trainingDayView" class="hidden">
   <div class="actions" style="margin-bottom:14px"><button type="button" id="backToTrainingLibrary">← Voltar à biblioteca</button></div>
@@ -1015,7 +1066,8 @@ nav button[data-page="mentor"]{margin:0}
 </main>
 <footer>DESENVOLVIDO POR DIEGO NICOLATO</footer>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+</script>
 <script>
 const $=id=>document.getElementById(id);
 
