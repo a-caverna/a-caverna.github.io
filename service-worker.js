@@ -1,3 +1,4 @@
+// Caverna Neon Noir refresh · build 2026-11-18
 self.addEventListener('install', event => { self.skipWaiting(); });
 self.addEventListener('activate', event => { event.waitUntil(self.clients.claim()); });
 self.addEventListener('push', event => {

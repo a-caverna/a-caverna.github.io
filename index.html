@@ -831,6 +831,96 @@ nav button[data-page="mentor"]{margin:0}
 }
 
 </style>
+
+<style id="caverna-neon-noir-refresh">
+
+/* =========================================================
+   CAVERNA · NEON NOIR DASHBOARD REFRESH
+   Camada visual aditiva: preserva IDs, formulários e scripts legados.
+   ========================================================= */
+:root{
+  --bg:#09090d;--panel:#14131b;--panel2:#1b1823;--line:#302a3b;
+  --text:#f4f2fa;--muted:#9993a6;--accent:#a855f7;--accent2:#7c3aed;
+  --lavender:#c4b5fd;--cyan:#55d6e8;
+}
+html{background:#09090d;color-scheme:dark}
+body{
+  background:radial-gradient(ellipse at 78% 0%,rgba(124,58,237,.13),transparent 34%),
+             radial-gradient(ellipse at 5% 72%,rgba(85,214,232,.045),transparent 28%),#09090d;
+  color:#f4f2fa;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+#appShell{min-height:100vh}
+.shell{max-width:none;margin:0;padding:0 42px 40px 286px}
+.top{
+  min-height:82px;margin:0 -42px 34px -286px;padding:17px 42px 17px 286px;
+  background:rgba(12,11,17,.82);border-bottom:1px solid rgba(168,85,247,.15);
+  backdrop-filter:blur(18px);position:relative;z-index:5;
+}
+.brand{gap:13px}.brand .mark{
+  width:44px;height:44px;border-radius:14px;border:1px solid #7041a1;
+  background:linear-gradient(145deg,#251934,#111019);color:#d9c5ff;
+  box-shadow:0 0 26px rgba(168,85,247,.14);font-size:23px;
+}
+.brand h1{font-size:17px;letter-spacing:.22em;color:#f4efff;font-weight:800}
+.brand p{font-size:9px;letter-spacing:.2em;color:#9588a8}
+.top .actions{align-items:center}.top .actions button{border-radius:10px;border-color:#342b42;background:#17141f;color:#cfc5dc}
+#nav{width:250px;padding:116px 15px 24px;background:linear-gradient(180deg,#121019 0%,#0d0c12 72%,#0a090e 100%);border-right:1px solid #292333;box-shadow:16px 0 48px #0003}
+nav#nav::before{content:"CAVERNA";top:34px;left:22px;font-size:12px;letter-spacing:.3em;color:#f1e7ff}
+nav#nav::after{content:"LIFE MANAGEMENT SYSTEM";position:fixed;top:55px;left:22px;color:#766b83;font-size:8px;letter-spacing:.18em;font-weight:700}
+nav#nav button{min-height:45px;border-radius:11px;color:#aaa2b5;font-size:12px;transition:background .18s,border-color .18s,transform .18s}
+nav#nav button:hover{transform:translateX(2px);background:#211a2c;border-color:#382b4b}
+nav#nav button.active{background:linear-gradient(100deg,rgba(124,58,237,.28),rgba(168,85,247,.08));border-color:#65428a;box-shadow:inset 3px 0 #b879ff,0 8px 22px #0002;color:#f7f0ff}
+main{max-width:1480px;margin:0 auto;min-height:calc(100vh - 150px)}
+main section>h2{color:#f6f1ff}
+.dashboard-welcome{
+  min-height:188px;display:flex;align-items:center;justify-content:space-between;gap:20px;
+  padding:28px 34px;margin:0 0 22px;border:1px solid #352746;border-radius:22px;
+  overflow:hidden;position:relative;
+  background:radial-gradient(circle at 82% 50%,rgba(168,85,247,.22),transparent 24%),
+             linear-gradient(115deg,#1a1423 0%,#15121d 54%,#111019 100%);
+  box-shadow:0 18px 55px rgba(0,0,0,.24);
+}
+.dashboard-welcome:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 55%,rgba(168,85,247,.04));pointer-events:none}
+.dashboard-welcome-copy{position:relative;z-index:1}
+.dashboard-eyebrow{display:flex;align-items:center;gap:9px;color:#bd9be7;font-size:9px;font-weight:800;letter-spacing:.22em;margin-bottom:15px}
+.dashboard-eyebrow i{width:7px;height:7px;border-radius:50%;background:#a855f7;box-shadow:0 0 12px #a855f7}
+.dashboard-welcome h2{font-size:clamp(27px,3.5vw,40px);font-weight:780;letter-spacing:-.055em;margin:0 0 7px;color:#f8f4ff}
+.dashboard-welcome .sub{font-size:12px;margin:0 0 10px;color:#aaa1b7}
+.dashboard-mantra{font-size:12px;color:#c7b4dc;margin:0;letter-spacing:.015em}
+.dashboard-orb{width:132px;height:132px;flex:0 0 132px;border-radius:50%;display:grid;place-items:center;position:relative;
+  background:radial-gradient(circle at 35% 30%,#c4b5fd 0%,#9250d3 16%,#49246c 42%,#1a1425 70%);
+  border:1px solid rgba(196,181,253,.45);box-shadow:0 0 35px rgba(168,85,247,.28),inset 0 0 30px rgba(255,255,255,.08)}
+.dashboard-orb:before,.dashboard-orb:after{content:"";position:absolute;inset:-13px;border:1px solid rgba(168,85,247,.25);border-radius:50%;transform:rotate(-28deg) scaleY(.45)}
+.dashboard-orb:after{inset:-23px;transform:rotate(34deg) scaleY(.38);border-color:rgba(85,214,232,.18)}
+.dashboard-orb span{font-size:58px;color:#f3eaff;text-shadow:0 0 24px #d6b9ff;transform:translateY(-3px)}
+.stats{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:0 0 18px}
+.stat{min-height:105px;padding:19px 20px;border:1px solid #30263d;border-radius:17px;background:linear-gradient(145deg,#1c1725,#121118);box-shadow:0 12px 30px #0002}
+.stat strong{font-size:31px;color:#f5edff}.stat span{font-size:9px;letter-spacing:.12em;color:#a69ab4}
+.dashboard-shortcuts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px;margin:0 0 20px}
+.shortcut-card{display:flex;align-items:center;gap:11px;min-width:0;padding:13px 14px;text-align:left;border:1px solid #30283b;border-radius:14px;background:linear-gradient(135deg,#191622,#121118);color:#eee8f6;cursor:pointer;transition:.18s}
+.shortcut-card:hover{border-color:#8151ad;background:#21182c;transform:translateY(-2px)}
+.shortcut-icon{width:35px;height:35px;flex:0 0 35px;display:grid;place-items:center;border-radius:11px;background:#2a1d39;color:#d7b8ff;font-size:18px}
+.shortcut-card>span:nth-child(2){display:flex;flex-direction:column;gap:3px;min-width:0}.shortcut-card strong{font-size:12px}.shortcut-card small{font-size:9px;color:#92889d;white-space:nowrap}.shortcut-card>b{margin-left:auto;color:#9c7ac0;font-size:13px}
+.grid{gap:15px}.card{border:1px solid #302a3a;border-radius:17px;background:linear-gradient(145deg,rgba(25,22,32,.98),rgba(16,15,22,.98));box-shadow:0 12px 34px rgba(0,0,0,.2)}
+.card h3{font-size:14px;color:#eee7f7;letter-spacing:.015em}
+button,input,select,textarea{font-family:inherit}button{transition:filter .16s,border-color .16s,background .16s}button:hover{filter:brightness(1.12)}
+input,select,textarea{background:#100e16!important;border-color:#393044!important;color:#f4f2fa!important;border-radius:10px!important}
+input:focus,select:focus,textarea:focus{outline:2px solid rgba(168,85,247,.32)!important;border-color:#9b5de5!important}
+button.primary{background:linear-gradient(135deg,#9b55df,#6735a1)!important;border-color:#a56be0!important;color:white!important;box-shadow:0 7px 20px rgba(124,58,237,.2)}
+.pill{border-color:#49375e;background:#21192c;color:#d2b9ef}
+#page-today .card.span12{background:linear-gradient(100deg,#1d1728,#14111b);border-color:#463357}
+#page-today .card.span12 p{color:#c5b4d8}
+@media(max-width:1100px){.shell{padding-right:24px}.dashboard-shortcuts{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){
+  .shell{padding:0 13px 28px}.top{margin:0 -13px 20px;padding:12px 13px;min-height:68px}
+  .dashboard-welcome{min-height:160px;padding:22px 19px;border-radius:18px}.dashboard-orb{width:78px;height:78px;flex-basis:78px}.dashboard-orb span{font-size:38px}
+  .dashboard-welcome h2{font-size:26px}.dashboard-mantra{font-size:10px}.dashboard-eyebrow{font-size:8px}
+  .stats{gap:7px}.stat{min-height:88px;padding:13px 10px}.stat strong{font-size:25px}.stat span{font-size:8px;letter-spacing:.06em}
+  .dashboard-shortcuts{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.shortcut-card{padding:10px 9px;gap:8px}.shortcut-icon{width:30px;height:30px;flex-basis:30px}.shortcut-card strong{font-size:11px}.shortcut-card small{font-size:8px}
+}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+
+</style>
 </head>
 <body>
 <section id="authScreen" class="auth-wrap"><div class="auth-card">
@@ -862,8 +952,22 @@ nav button[data-page="mentor"]{margin:0}
 </nav>
 <main>
 <section id="page-today">
-  <h2>Entre na sua caverna.</h2><p class="sub" id="todayDate"></p>
+  <div class="dashboard-welcome">
+  <div class="dashboard-welcome-copy">
+    <span class="dashboard-eyebrow"><i></i> NEON NOIR · LIFE MANAGEMENT</span>
+    <h2>Seu espaço. Sua evolução.</h2>
+    <p class="sub" id="todayDate"></p>
+    <p class="dashboard-mantra">Pequenas decisões. Uma vida em construção.</p>
+  </div>
+  <div class="dashboard-orb" aria-hidden="true"><span>⌁</span></div>
+</div>
   <div class="stats"><div class="stat"><strong id="doneCount">0</strong><span>Rituais cumpridos</span></div><div class="stat"><strong id="totalCount">0</strong><span>Rituais programados</span></div><div class="stat"><strong id="percentCount">0%</strong><span>Execução do dia</span></div></div>
+  <div class="dashboard-shortcuts" aria-label="Acessos rápidos">
+    <button type="button" class="shortcut-card" onclick="showPage('habits')"><span class="shortcut-icon">✧</span><span><strong>Rotina</strong><small>Hábitos e compromissos</small></span><b>↗</b></button>
+    <button type="button" class="shortcut-card" onclick="showPage('training')"><span class="shortcut-icon">⌁</span><span><strong>Treino</strong><small>Fichas e evolução</small></span><b>↗</b></button>
+    <button type="button" class="shortcut-card" onclick="showPage('physical')"><span class="shortcut-icon">◉</span><span><strong>Corpo</strong><small>Medidas e progresso</small></span><b>↗</b></button>
+    <button type="button" class="shortcut-card" onclick="showPage('independencia')"><span class="shortcut-icon">◇</span><span><strong>Finanças</strong><small>Seu controle financeiro</small></span><b>↗</b></button>
+  </div>
   <div class="grid"><div class="card span8"><div class="row"><h3>Compromissos de hoje</h3><button class="small" onclick="showPage('habits')">Gerenciar hábitos</button></div><div id="todayHabits"></div></div>
   <div class="card span4"><h3>Registro rápido</h3><p class="meta">Uma coisa pela qual sou grato hoje</p><textarea id="quickGratitude" placeholder="Escreva aqui..."></textarea><button class="primary" id="saveQuickGratitude">Registrar gratidão</button><p class="meta" id="gratitudeStatus"></p></div>
   <div class="card span4 water-card"><div class="water-card-heading"><div><span class="water-eyebrow">HIDRATAÇÃO</span><h3>Água de hoje</h3></div><span class="water-glass" aria-hidden="true">💧</span></div><div class="water-total"><strong id="waterConsumed">0 ml</strong><span id="waterGoalLabel">de 3.000 ml</span></div><div class="water-track"><i id="waterProgressBar"></i></div><div class="water-progress-meta"><span id="waterPercent">0% da meta</span><span id="waterRemaining">Faltam 3.000 ml</span></div><div class="water-quick-add"><button type="button" onclick="addWater(250)">+250 ml</button><button type="button" onclick="addWater(500)">+500 ml</button><button type="button" onclick="addWater(1000)">+1 litro</button></div><form id="waterCustomForm" class="water-custom-form"><input id="waterCustomAmount" type="number" min="1" max="5000" step="50" inputmode="numeric" placeholder="Outra quantidade (ml)"><button type="submit" class="primary">Adicionar</button></form><details class="water-goal-settings"><summary>Alterar minha meta diária</summary><form id="waterGoalForm"><label for="waterGoalInput">Meta diária (litros)</label><div class="water-goal-edit"><input id="waterGoalInput" type="number" min="0.25" max="10" step="0.25" value="3"><button type="submit">Salvar meta</button></div></form></details><p class="meta" id="waterStatus" aria-live="polite">Cada copo conta. Bora hidratar!</p></div>
