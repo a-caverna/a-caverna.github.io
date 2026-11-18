@@ -649,6 +649,35 @@ nav button[data-page="mentor"]{margin:0}
 }
 
 
+
+/* Histórico de treinos em calendário — Neon Noir */
+#page-training .workout-calendar{margin-top:4px}
+#page-training .workout-calendar-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+#page-training .workout-calendar-month{font-size:15px;font-weight:800;letter-spacing:.02em;color:#f0e7fb;text-transform:capitalize}
+#page-training .workout-calendar-nav{display:flex;gap:7px}
+#page-training .workout-calendar-nav button{width:36px;height:36px;padding:0;border-radius:11px;border:1px solid #40334f;background:#17131f;color:#d9b9ff;font-size:18px}
+#page-training .workout-calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px}
+#page-training .workout-calendar-weekday{text-align:center;color:#887d95;font-size:9px;font-weight:800;letter-spacing:.08em;padding:4px 0}
+#page-training .workout-calendar-day{position:relative;min-width:0;min-height:56px;border:1px solid #292331;border-radius:12px;background:#111016;color:#625c69;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:6px 2px;font-size:12px;transition:background .18s,border-color .18s,box-shadow .18s,color .18s}
+#page-training .workout-calendar-day .day-number{font-weight:750;color:inherit}
+#page-training .workout-calendar-day .day-dot{width:5px;height:5px;border-radius:50%;background:#39323f}
+#page-training .workout-calendar-day.outside-month{opacity:.28}
+#page-training .workout-calendar-day.is-trained{background:linear-gradient(145deg,#38204e,#21152f);border-color:#9b55d0;color:#f5e8ff;box-shadow:inset 0 0 15px #a855f722,0 0 12px #a855f733}
+#page-training .workout-calendar-day.is-trained .day-dot{background:#d9a7ff;box-shadow:0 0 8px #c084fc,0 0 14px #a855f7}
+#page-training .workout-calendar-day.is-selected{outline:2px solid #d8b4fe;outline-offset:2px}
+#page-training .workout-calendar-day.is-today .day-number:after{content:"";display:inline-block;width:4px;height:4px;margin-left:4px;vertical-align:middle;border-radius:50%;background:#55d6e8}
+#page-training .workout-calendar-legend{display:flex;gap:14px;flex-wrap:wrap;margin:12px 0 4px;color:#95899f;font-size:10px}
+#page-training .workout-calendar-legend span{display:inline-flex;align-items:center;gap:6px}
+#page-training .workout-calendar-legend i{width:8px;height:8px;border-radius:50%;display:inline-block;background:#39323f}
+#page-training .workout-calendar-legend .trained{background:#bd7bf2;box-shadow:0 0 8px #a855f7}
+#page-training .workout-day-details{margin-top:17px;padding-top:15px;border-top:1px solid #30283a}
+#page-training .workout-day-details h4{margin:0;color:#eadcf7;font-size:14px}
+#page-training .workout-day-session{padding:13px 0;border-bottom:1px solid #2b2433}
+#page-training .workout-day-session:last-child{border-bottom:0}
+#page-training .workout-day-exercise{margin-top:8px;padding-left:10px;border-left:2px solid #70449a;color:#b8adbf;font-size:11px;line-height:1.55}
+#page-training .workout-day-session-meta{margin-top:5px;color:#93869e;font-size:10px}
+@media(max-width:480px){#page-training .workout-calendar-grid{gap:4px}#page-training .workout-calendar-day{min-height:47px;border-radius:9px;font-size:11px}#page-training .workout-calendar-weekday{font-size:8px}}
+
 /* Treinos: registro avulso e histórico no próprio módulo */
 #page-training .physical-workout-section{margin-top:20px}
 #page-training .physical-workout-section>.physical-section-heading{margin:0 0 12px}
@@ -1068,7 +1097,10 @@ button.primary{background:linear-gradient(135deg,#9b55df,#6735a1)!important;bord
   </details>
   <details class="training-action-card">
    <summary><span><b>↗</b><span><strong>Histórico de treinos</strong><small>Consulte suas sessões concluídas.</small></span></span><i aria-hidden="true">+</i></summary>
-   <div class="training-action-body"><div id="workoutHistory"></div></div>
+   <div class="training-action-body">
+    <div id="workoutCalendar" class="workout-calendar"></div>
+    <div id="workoutDayDetails" class="workout-day-details"><div class="empty">Selecione um dia no calendário para consultar o treino.</div></div>
+   </div>
   </details>
  </div>
  <div id="trainingDayView" class="hidden">
@@ -1468,9 +1500,20 @@ window.toggleTrainingProgram = id => {
   window.selectedTrainingProgramId = window.selectedTrainingProgramId === id ? null : id;
   renderTraining();
 };
-function renderWorkoutHistory(){
- const target=$("workoutHistory");if(!target)return;
- const records=(data.workouts||[]).slice();
+let workoutCalendarMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+let selectedWorkoutCalendarDate = null;
+function workoutDateKey(value){
+ if(!value)return "";
+ const raw=String(value).trim();
+ if(/^\d{4}-\d{2}-\d{2}$/.test(raw))return raw;
+ const br=raw.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+ if(br)return `${br[3]}-${br[2]}-${br[1]}`;
+ const parsed=new Date(raw);
+ if(Number.isNaN(parsed.getTime()))return "";
+ return `${parsed.getFullYear()}-${String(parsed.getMonth()+1).padStart(2,"0")}-${String(parsed.getDate()).padStart(2,"0")}`;
+}
+function workoutHistoryRecords(){
+ const records=(data.workouts||[]).map(x=>({...x}));
  const mirrored=new Set(records.map(x=>x.sessionId).filter(Boolean));
  (data.workoutSessions||[]).forEach(s=>{
   if(mirrored.has(s.id))return;
@@ -1487,14 +1530,58 @@ function renderWorkoutHistory(){
    }))
   });
  });
- records.sort((a,b)=>(b.date||"").localeCompare(a.date||""));
- target.innerHTML=records.length?records.map(x=>{
+ return records.map(x=>({...x,_dateKey:workoutDateKey(x.date)})).filter(x=>x._dateKey).sort((a,b)=>a._dateKey.localeCompare(b._dateKey));
+}
+function formatWorkoutCalendarDate(key){
+ const [y,m,d]=key.split("-").map(Number);
+ return new Date(y,m-1,d).toLocaleDateString("pt-BR",{weekday:"long",day:"2-digit",month:"long",year:"numeric"});
+}
+function renderWorkoutDayDetails(records){
+ const box=$("workoutDayDetails");if(!box)return;
+ if(!selectedWorkoutCalendarDate){box.innerHTML='<div class="empty">Selecione um dia no calendário para consultar o treino.</div>';return;}
+ const dayRecords=records.filter(x=>x._dateKey===selectedWorkoutCalendarDate);
+ if(!dayRecords.length){box.innerHTML=`<div class="row"><h4>${esc(formatWorkoutCalendarDate(selectedWorkoutCalendarDate))}</h4><span class="pill">Descanso</span></div><p class="meta" style="margin-top:8px">Nenhum treino foi registrado neste dia.</p>`;return;}
+ box.innerHTML=`<div class="row"><h4>${esc(formatWorkoutCalendarDate(selectedWorkoutCalendarDate))}</h4><span class="pill">${dayRecords.length} treino(s)</span></div>`+dayRecords.map(x=>{
   const exercises=Array.isArray(x.exercises)?x.exercises:(x.exercise?[{name:x.exercise,load:x.load,sets:x.sets,reps:x.reps}]:[]);
-  return `<div class="listitem"><div class="row"><strong>${esc(x.name||x.programName||"Treino")}</strong><span class="meta">${esc(x.date||"")}</span></div>${x.programName&&x.programDay?`<div class="meta">Ficha: ${esc(x.programName)} · Dia ${esc(x.programDay)}${x.programDayLabel?" — "+esc(x.programDayLabel):""}</div>`:""}${x.completedSets!=null?`<div class="meta">${x.completedSets}/${x.totalSets||0} séries concluídas${x.duration?" · "+x.duration+" min":""}</div>`:""}${exercises.map((ex,i)=>{
-   const loads=ex.actualLoads&&typeof ex.actualLoads==="object"?Object.keys(ex.actualLoads).sort((a,b)=>Number(a)-Number(b)).map(k=>ex.actualLoads[k]+" kg"):[];
-   return `<div class="meta" style="margin-top:6px">${i+1}. ${esc(ex.name||"Exercício")}${loads.length?" · cargas: "+loads.map(esc).join(", "):ex.load!==""&&ex.load!=null?" · "+esc(ex.load)+" kg":""}${ex.sets?" · "+esc(ex.sets)+" séries":""}${ex.reps?" × "+esc(ex.reps)+" reps":""}</div>`;
-  }).join("")}</div>`;
- }).join(""):'<div class="empty">Nenhum treino registrado ainda. Quando finalizar uma sessão, ela aparecerá aqui automaticamente.</div>';
+  const exerciseMarkup=exercises.length?exercises.map((ex,i)=>{
+   const loads=ex.actualLoads&&typeof ex.actualLoads==="object"?Object.keys(ex.actualLoads).sort((a,b)=>Number(a)-Number(b)).map(k=>`${ex.actualLoads[k]} kg`):[];
+   const fallback=ex.load!==""&&ex.load!=null?`${ex.load} kg`:"carga não informada";
+   return `<div class="workout-day-exercise">${i+1}. <strong>${esc(ex.name||"Exercício")}</strong><br>${loads.length?`Cargas: ${loads.map(esc).join(" · ")}`:esc(fallback)}${ex.sets?` · ${esc(ex.sets)} séries`:""}${ex.reps?` × ${esc(ex.reps)} reps`:""}</div>`;
+  }).join(""):'<div class="meta">Este registro não contém detalhes dos exercícios.</div>';
+  return `<div class="workout-day-session"><div class="row"><strong>${esc(x.name||x.programName||"Treino")}</strong>${x.duration?`<span class="meta">${esc(x.duration)} min</span>`:""}</div>${x.programName&&x.programDay?`<div class="workout-day-session-meta">Ficha: ${esc(x.programName)} · Dia ${esc(x.programDay)}${x.programDayLabel?" — "+esc(x.programDayLabel):""}</div>`:""}${x.completedSets!=null?`<div class="workout-day-session-meta">${esc(x.completedSets)}/${esc(x.totalSets||0)} séries concluídas</div>`:""}${exerciseMarkup}</div>`;
+ }).join("");
+}
+function renderWorkoutHistory(){
+ const target=$("workoutCalendar");if(!target)return;
+ const records=workoutHistoryRecords();
+ const year=workoutCalendarMonth.getFullYear(),month=workoutCalendarMonth.getMonth();
+ const firstDay=new Date(year,month,1),lastDay=new Date(year,month+1,0);
+ const mondayOffset=(firstDay.getDay()+6)%7;
+ const daysInMonth=lastDay.getDate();
+ const cells=Math.ceil((mondayOffset+daysInMonth)/7)*7;
+ const trainedCounts={};records.forEach(x=>{trainedCounts[x._dateKey]=(trainedCounts[x._dateKey]||0)+1});
+ const todayKey=workoutDateKey(today());
+ const monthLabel=firstDay.toLocaleDateString("pt-BR",{month:"long",year:"numeric"});
+ const weekdays=["SEG","TER","QUA","QUI","SEX","SÁB","DOM"];
+ let days="";
+ for(let i=0;i<cells;i++){
+  const dayNumber=i-mondayOffset+1;
+  const date=new Date(year,month,dayNumber);
+  const key=`${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,"0")}-${String(date.getDate()).padStart(2,"0")}`;
+  const inMonth=date.getMonth()===month;
+  const count=trainedCounts[key]||0;
+  const classes=["workout-calendar-day",!inMonth?"outside-month":"",count?"is-trained":"",key===selectedWorkoutCalendarDate?"is-selected":"",key===todayKey?"is-today":""].filter(Boolean).join(" ");
+  days+=`<button type="button" class="${classes}" data-workout-date="${key}" aria-label="${esc(formatWorkoutCalendarDate(key))}${count?`, ${count} treino(s)`:`, sem treino registrado`}" ${!inMonth?'tabindex="-1"':''}><span class="day-number">${date.getDate()}</span><i class="day-dot"></i></button>`;
+ }
+ target.innerHTML=`<div class="workout-calendar-head"><div><div class="meta">SEU RITMO, DIA APÓS DIA</div><div class="workout-calendar-month">${esc(monthLabel)}</div></div><div class="workout-calendar-nav"><button type="button" id="workoutCalendarPrev" aria-label="Mês anterior">‹</button><button type="button" id="workoutCalendarNext" aria-label="Próximo mês">›</button></div></div><div class="workout-calendar-grid">${weekdays.map(d=>`<div class="workout-calendar-weekday">${d}</div>`).join("")}${days}</div><div class="workout-calendar-legend"><span><i class="trained"></i> Treino realizado</span><span><i></i> Sem treino</span></div>`;
+ $("workoutCalendarPrev").onclick=()=>{workoutCalendarMonth=new Date(year,month-1,1);renderWorkoutHistory()};
+ $("workoutCalendarNext").onclick=()=>{workoutCalendarMonth=new Date(year,month+1,1);renderWorkoutHistory()};
+ target.querySelectorAll("[data-workout-date]").forEach(button=>button.onclick=()=>{
+  selectedWorkoutCalendarDate=button.dataset.workoutDate;
+  if(new Date(selectedWorkoutCalendarDate+"T12:00:00").getMonth()!==month){const [y,m]=selectedWorkoutCalendarDate.split("-").map(Number);workoutCalendarMonth=new Date(y,m-1,1)}
+  renderWorkoutHistory();
+ });
+ renderWorkoutDayDetails(records);
 }
 function renderTraining(){
  const list=$("trainingProgramList");if(!list)return;
