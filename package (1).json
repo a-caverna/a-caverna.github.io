@@ -1,0 +1,1 @@
+{"name":"@caverna/design-system","version":"2.0.0-alpha.1","private":true,"type":"module","scripts":{"typecheck":"echo 'Design tokens only'","lint":"echo 'Lint ainda não configurado'"}}
