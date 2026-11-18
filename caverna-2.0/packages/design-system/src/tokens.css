@@ -1,0 +1,12 @@
+:root {
+  --cv-color-void: #09090d;
+  --cv-color-graphite: #14131b;
+  --cv-color-violet: #a855f7;
+  --cv-color-electric: #7c3aed;
+  --cv-color-lavender: #c4b5fd;
+  --cv-color-ice: #f4f2fa;
+  --cv-color-muted: #92909f;
+  --cv-radius-card: 14px;
+  --cv-radius-control: 10px;
+  --cv-motion-fast: 160ms;
+}
