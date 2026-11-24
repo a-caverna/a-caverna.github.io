@@ -1294,6 +1294,7 @@ const defaultHabits=[
 {name:"Caderno de gratidão",category:"Espiritualidade",frequency:"daily",days:[],time:"",target:"1 registro"}
 ];
 let data=JSON.parse(localStorage.getItem("cavernaData")||"null")||freshData();
+restoreActiveTraining();
 function save(){localStorage.setItem("cavernaData",JSON.stringify(data));renderAll();if(currentUser){clearTimeout(saveTimer);saveTimer=setTimeout(()=>persistUserData(),500)}}
 function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function showPage(p){document.querySelectorAll("main > section[id^=\"page-\"]").forEach(s=>s.classList.add("hidden"));const page=$("page-"+p);if(!page){console.warn("Página não encontrada:",p);return}page.classList.remove("hidden");document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===p));renderAll();if(p==="mentor")loadMentorHistory()}
@@ -1449,6 +1450,28 @@ $("adminUsers").addEventListener("click",async event=>{const button=event.target
 
 // Biblioteca de fichas completas: um programa contém vários dias, cada um com nome opcional e exercícios.
 let programDraftDays={}, currentDraftDay="A", editingProgramId=null, selectedProgramDay=null, activeTraining=null, restInterval=null, restRemaining=0, restPaused=false, lastBeepSecond=null;
+const ACTIVE_TRAINING_KEY="cavernaActiveTrainingV1";
+let activeRestState=null;
+function persistActiveTraining(){
+ try{
+  if(activeTraining){
+   const restState=activeRestState?{...activeRestState}:null;
+   localStorage.setItem(ACTIVE_TRAINING_KEY,JSON.stringify({activeTraining,restState,savedAt:Date.now()}));
+  }else localStorage.removeItem(ACTIVE_TRAINING_KEY);
+ }catch(e){console.warn("Não foi possível salvar sessão ativa localmente",e)}
+}
+function restoreActiveTraining(){
+ try{
+  const raw=localStorage.getItem(ACTIVE_TRAINING_KEY);if(!raw)return;
+  const saved=JSON.parse(raw);if(!saved?.activeTraining)return;
+  activeTraining=saved.activeTraining;activeRestState=saved.restState||null;
+  if(activeRestState){
+   if(activeRestState.paused){restRemaining=Math.max(0,Number(activeRestState.remaining)||0);restPaused=true;}
+   else {restRemaining=Math.max(0,Math.ceil((Number(activeRestState.endsAt)-Date.now())/1000));restPaused=false;}
+  }
+ }catch(e){console.warn("Sessão ativa armazenada inválida",e);localStorage.removeItem(ACTIVE_TRAINING_KEY)}
+}
+
 const trainingDayKeys=["A","B","C","D","E","F"];
 function ensureDraftDay(key){if(!programDraftDays[key])programDraftDays[key]={label:"",exercises:[]};return programDraftDays[key]}
 function selectDraftDay(key){currentDraftDay=key;const d=ensureDraftDay(key);$("programDayName").value=d.label||"";document.querySelectorAll("#programDayTabs button").forEach(b=>b.classList.toggle("active",b.dataset.day===key));renderDraftExercises()}
@@ -1614,21 +1637,37 @@ function renderTraining(){
 window.editProgram=id=>{const raw=(data.workoutPrograms||[]).find(p=>p.id===id);if(!raw)return;const p=normalizeProgram(raw);resetProgramForm();editingProgramId=id;$("programName").value=p.name;programDraftDays={};trainingDayKeys.forEach(ensureDraftDay);p.days.forEach(d=>{if(!trainingDayKeys.includes(d.key))return;programDraftDays[d.key]={label:d.label||"",exercises:d.exercises.map(x=>({...x,id:x.id||uid()}))}});$("programFormHeading").textContent="Editar ficha completa";$("trainingProgramForm").querySelector('button[type="submit"]').textContent="Salvar alterações";selectDraftDay("A");renderDayTabs();showTrainingHome();window.scrollTo({top:0,behavior:"smooth"})};
 window.deleteProgram=id=>{if(confirm("Excluir esta ficha completa? O histórico de sessões será preservado.")){data.workoutPrograms=(data.workoutPrograms||[]).filter(p=>p.id!==id);save()}};
 function showTrainingHome(){$("trainingHome").classList.remove("hidden");$("trainingDayView").classList.add("hidden");selectedProgramDay=null;}
-function openProgramDay(id,key){const raw=(data.workoutPrograms||[]).find(p=>p.id===id);if(!raw)return;const p=normalizeProgram(raw),d=p.days.find(x=>x.key===key);if(!d)return;selectedProgramDay={programId:p.id,programName:p.name,day:d.key,dayLabel:d.label||"",exercises:d.exercises.map(x=>({...x}))};if(activeTraining&&activeTraining.programId!==p.id&&!confirm("Há um treino em andamento. Abrir outro dia vai descartar o progresso ainda não salvo. Continuar?"))return;if(activeTraining&&activeTraining.programId!==p.id){activeTraining=null;stopRestTimer()}$("trainingHome").classList.add("hidden");$("trainingDayView").classList.remove("hidden");$("selectedDayTitle").textContent=p.name+" · Dia "+d.key+(d.label?" — "+d.label:"");$("selectedDaySubtitle").textContent=d.exercises.length+" exercício(s). Esta tela mostra somente o dia selecionado.";$("selectedDayExercises").innerHTML=d.exercises.map((x,i)=>`<div class="training-day"><strong>${i+1}. ${esc(x.name)}</strong><div class="meta">${x.sets} séries · ${x.repsMin}–${x.repsMax} repetições · ${x.load!==""&&x.load!=null?esc(x.load)+" kg planejados":"carga não definida"} · descanso ${x.rest||0}s</div>${exerciseProgressionMarkup(p.id,p.name,x.name)}</div>`).join("");$("startSelectedDay").classList.toggle("hidden",!d.exercises.length);$("activeTrainingPanel").classList.add("hidden");renderActiveTraining();showPage("training")}
+function openProgramDay(id,key){const raw=(data.workoutPrograms||[]).find(p=>p.id===id);if(!raw)return;const p=normalizeProgram(raw),d=p.days.find(x=>x.key===key);if(!d)return;selectedProgramDay={programId:p.id,programName:p.name,day:d.key,dayLabel:d.label||"",exercises:d.exercises.map(x=>({...x}))};if(activeTraining&&activeTraining.programId!==p.id&&!confirm("Há um treino em andamento. Abrir outro dia sem descartar a sessão atual?"))return;$("trainingHome").classList.add("hidden");$("trainingDayView").classList.remove("hidden");$("selectedDayTitle").textContent=p.name+" · Dia "+d.key+(d.label?" — "+d.label:"");$("selectedDaySubtitle").textContent=d.exercises.length+" exercício(s). Esta tela mostra somente o dia selecionado.";$("selectedDayExercises").innerHTML=d.exercises.map((x,i)=>`<div class="training-day"><strong>${i+1}. ${esc(x.name)}</strong><div class="meta">${x.sets} séries · ${x.repsMin}–${x.repsMax} repetições · ${x.load!==""&&x.load!=null?esc(x.load)+" kg planejados":"carga não definida"} · descanso ${x.rest||0}s</div>${exerciseProgressionMarkup(p.id,p.name,x.name)}</div>`).join("");$("startSelectedDay").classList.toggle("hidden",!d.exercises.length);$("activeTrainingPanel").classList.add("hidden");renderActiveTraining();showPage("training")}
 function startProgramDay(id,key){openProgramDay(id,key);if(selectedProgramDay&&selectedProgramDay.programId===id&&selectedProgramDay.day===key){$("startSelectedDay").click()}}
-$("backToTrainingLibrary").onclick=()=>{if(activeTraining&&!confirm("Voltar à biblioteca? O progresso desta sessão será descartado."))return;if(activeTraining){activeTraining=null;stopRestTimer();restRemaining=0}showTrainingHome();renderTraining()};
-$("startSelectedDay").onclick=()=>{if(!selectedProgramDay)return;if(activeTraining&&!confirm("Substituir o treino em andamento? O progresso não salvo será perdido."))return;stopRestTimer();const d=selectedProgramDay;activeTraining={programId:d.programId,programName:d.programName,day:d.day,dayLabel:d.dayLabel,date:today(),startedAt:Date.now(),exercises:d.exercises.map(x=>({...x,currentLoad:x.load??"",doneSets:[],actualLoads:{}}))};$("activeTrainingPanel").classList.remove("hidden");renderActiveTraining();$("activeTrainingPanel").scrollIntoView({behavior:"smooth",block:"start"})};
+$("backToTrainingLibrary").onclick=()=>{if(activeTraining){if(!confirm("Voltar à biblioteca mantendo a sessão salva para retomar depois?"))return;persistActiveTraining()}showTrainingHome();renderTraining()};
+$("startSelectedDay").onclick=()=>{if(!selectedProgramDay)return;if(activeTraining&&!confirm("Substituir o treino em andamento? O progresso não salvo será perdido."))return;stopRestTimer();const d=selectedProgramDay;activeTraining={programId:d.programId,programName:d.programName,day:d.day,dayLabel:d.dayLabel,date:today(),startedAt:Date.now(),exercises:d.exercises.map(x=>({...x,currentLoad:x.load??"",doneSets:[],actualLoads:{}}))};activeRestState=null;persistActiveTraining();$("activeTrainingPanel").classList.remove("hidden");renderActiveTraining();$("activeTrainingPanel").scrollIntoView({behavior:"smooth",block:"start"})};
 function renderActiveTraining(){const box=$("activeTraining"),finish=$("finishTrainingBtn"),timer=$("trainingTimer");if(!box)return;if(!activeTraining){box.innerHTML='<div class="empty">Inicie a sessão quando estiver pronto.</div>';finish.classList.add("hidden");if(!restInterval)timer.classList.add("hidden");return}finish.classList.remove("hidden");box.innerHTML=`<div class="row"><div><h3 style="margin-bottom:3px">${esc(activeTraining.programName)} · Dia ${esc(activeTraining.day)}${activeTraining.dayLabel?" — "+esc(activeTraining.dayLabel):""}</h3><div class="meta">Iniciado em ${esc(activeTraining.date)} · ajuste a carga a qualquer momento</div></div><span class="pill">${activeTraining.exercises.reduce((n,x)=>n+x.doneSets.length,0)} / ${activeTraining.exercises.reduce((n,x)=>n+(Number(x.sets)||0),0)} séries</span></div>`+activeTraining.exercises.map((x,ei)=>`<div class="training-day"><strong>${ei+1}. ${esc(x.name)}</strong><div class="meta">Meta: ${x.repsMin}–${x.repsMax} repetições · carga planejada: ${x.load!==""&&x.load!=null?esc(x.load)+" kg":"não definida"}</div>${exerciseProgressionMarkup(activeTraining.programId,activeTraining.programName,x.name)}<div style="margin:10px 0"><label for="activeLoad${ei}">Carga atual (kg)</label><input id="activeLoad${ei}" type="number" min="0" step="0.5" inputmode="decimal" value="${esc(x.currentLoad??x.load??"")}" placeholder="Informe a carga" onchange="updateTrainingLoad(${ei},this.value)" oninput="updateTrainingLoad(${ei},this.value)"></div>${Array.from({length:Number(x.sets)||1},(_,si)=>{const done=x.doneSets.includes(si);return `<div class="set-row"><div><strong>Série ${si+1}</strong><div class="meta">${x.repsMin}–${x.repsMax} reps${x.actualLoads[si]!=null?" · carga usada: "+esc(x.actualLoads[si])+" kg":""}</div></div><button type="button" class="small ${done?"":"primary"}" ${done?"disabled":""} onclick="completeTrainingSet(${ei},${si})">${done?"Concluída":"Concluir série"}</button></div>`}).join("")}</div>`).join("");if(restInterval||restRemaining>0)timer.classList.remove("hidden")}
 function playRestBeep(freq=880){try{const C=window.AudioContext||window.webkitAudioContext;if(!C)return;const ctx=new C(),osc=ctx.createOscillator(),gain=ctx.createGain();osc.type="sine";osc.frequency.value=freq;gain.gain.value=.08;osc.connect(gain);gain.connect(ctx.destination);osc.start();osc.stop(ctx.currentTime+.16);osc.onended=()=>ctx.close()}catch(e){console.warn("Áudio indisponível",e)}}
 function playRestFinishedSignal(){[0,220,440].forEach(delay=>setTimeout(()=>playRestBeep(1320),delay))}
 window.updateTrainingLoad=(ei,value)=>{if(!activeTraining)return;const ex=activeTraining.exercises[ei];if(!ex)return;ex.currentLoad=value;};
-window.completeTrainingSet=(ei,si)=>{if(!activeTraining)return;const ex=activeTraining.exercises[ei];if(!ex||ex.doneSets.includes(si))return;ex.actualLoads[si]=ex.currentLoad!==undefined&&ex.currentLoad!==""?ex.currentLoad:(ex.load??"");ex.doneSets.push(si);save();const rest=Number(ex.rest)||0;if(rest>0){startRestTimer(rest,ex.name,si+1);playRestBeep(660)}};
-function startRestTimer(seconds,exerciseName,setNumber){stopRestTimer();restRemaining=seconds;restPaused=false;lastBeepSecond=null;$("timerCaption").textContent="Descanso · "+exerciseName;$("timerMessage").textContent="Série "+setNumber+" concluída. Respire e prepare-se para a próxima.";$("timerPauseBtn").textContent="Pausar";$("trainingTimer").classList.remove("hidden");updateTimerDisplay();restInterval=setInterval(()=>{if(restPaused)return;restRemaining=Math.max(0,restRemaining-1);if(restRemaining<=3&&restRemaining>0&&lastBeepSecond!==restRemaining){lastBeepSecond=restRemaining;playRestBeep(restRemaining===1?1100:restRemaining===2?950:820)}updateTimerDisplay();if(restRemaining<=0){stopRestTimer();$("timerMessage").textContent="Descanso encerrado. Vamos para a próxima série.";$("trainingTimer").classList.remove("hidden");playRestFinishedSignal()}},1000)}
+window.completeTrainingSet=(ei,si)=>{if(!activeTraining)return;const ex=activeTraining.exercises[ei];if(!ex||ex.doneSets.includes(si))return;ex.actualLoads[si]=ex.currentLoad!==undefined&&ex.currentLoad!==""?ex.currentLoad:(ex.load??"");ex.doneSets.push(si);persistActiveTraining();save();const rest=Number(ex.rest)||0;if(rest>0){startRestTimer(rest,ex.name,si+1);playRestBeep(660)}};
+function startRestTimer(seconds,exerciseName,setNumber){
+ stopRestTimer();restRemaining=Math.max(0,Number(seconds)||0);restPaused=false;lastBeepSecond=null;
+ activeRestState={exerciseName,setNumber,remaining:restRemaining,paused:false,endsAt:Date.now()+restRemaining*1000};
+ $("timerCaption").textContent="Descanso · "+exerciseName;$("timerMessage").textContent="Série "+setNumber+" concluída. Respire e prepare-se para a próxima.";$("timerPauseBtn").textContent="Pausar";$("trainingTimer").classList.remove("hidden");updateTimerDisplay();persistActiveTraining();
+ restInterval=setInterval(()=>{
+  if(restPaused)return;
+  restRemaining=Math.max(0,Math.ceil((activeRestState.endsAt-Date.now())/1000));
+  if(restRemaining<=3&&restRemaining>0&&lastBeepSecond!==restRemaining){lastBeepSecond=restRemaining;playRestBeep(restRemaining===1?1100:restRemaining===2?950:820)}
+  updateTimerDisplay();
+  if(restRemaining<=0){stopRestTimer();activeRestState=null;persistActiveTraining();$("timerMessage").textContent="Descanso encerrado. Vamos para a próxima série.";$("trainingTimer").classList.remove("hidden");playRestFinishedSignal()}
+ },250);
+}
 function updateTimerDisplay(){const n=$("timerNumber");if(!n)return;const m=Math.floor(restRemaining/60),s=restRemaining%60;n.textContent=String(m).padStart(2,"0")+":"+String(s).padStart(2,"0")}
-function stopRestTimer(){if(restInterval){clearInterval(restInterval);restInterval=null}restPaused=false;if($("trainingTimer")&&restRemaining<=0)$("trainingTimer").classList.add("hidden")}
-$("timerPauseBtn").onclick=()=>{if(!restInterval)return;restPaused=!restPaused;$("timerPauseBtn").textContent=restPaused?"Continuar":"Pausar";$("timerMessage").textContent=restPaused?"Descanso pausado.":"Descanso em andamento."};
-$("timerSkipBtn").onclick=()=>{stopRestTimer();restRemaining=0;$("timerMessage").textContent="Descanso pulado. Pode continuar.";$("trainingTimer").classList.add("hidden");playRestBeep(1100)};
-$("finishTrainingBtn").onclick=()=>{if(!activeTraining)return;const total=activeTraining.exercises.reduce((n,x)=>n+(Number(x.sets)||0),0),done=activeTraining.exercises.reduce((n,x)=>n+x.doneSets.length,0);if(done===0&&!confirm("Você ainda não concluiu nenhuma série. Finalizar mesmo assim?"))return;const session={id:uid(),programId:activeTraining.programId,programName:activeTraining.programName,day:activeTraining.day,dayLabel:activeTraining.dayLabel||"",date:activeTraining.date||today(),completedSets:done,totalSets:total,duration:Math.max(1,Math.round((Date.now()-activeTraining.startedAt)/60000)),exercises:activeTraining.exercises.map(x=>({...x,doneSets:[...x.doneSets],actualLoads:{...(x.actualLoads||{})}}))};data.workoutSessions=data.workoutSessions||[];data.workouts=data.workouts||[];if(!data.workoutSessions.some(s=>s.id===session.id))data.workoutSessions.push(session);if(!data.workouts.some(w=>w.sessionId===session.id)){data.workouts.push({id:session.id,sessionId:session.id,date:session.date,name:`${session.programName} — Dia ${session.day}${session.dayLabel?" · "+session.dayLabel:""}`,programId:session.programId,programName:session.programName,programDay:session.day,programDayLabel:session.dayLabel,completedSets:done,totalSets:total,duration:session.duration,exercises:session.exercises.map(ex=>({name:ex.name,load:ex.currentLoad??ex.load??"",sets:ex.doneSets.length,reps:ex.repsMin!=null&&ex.repsMax!=null?(ex.repsMin===ex.repsMax?String(ex.repsMin):`${ex.repsMin}–${ex.repsMax}`):"",actualLoads:{...(ex.actualLoads||{})},doneSets:[...ex.doneSets]}))})}activeTraining=null;stopRestTimer();restRemaining=0;save();renderActiveTraining();alert(`Treino registrado no histórico do dia ${session.date}: ${done} de ${total} séries concluídas.`)};
+function stopRestTimer(){if(restInterval){clearInterval(restInterval);restInterval=null}if($("trainingTimer")&&restRemaining<=0)$("trainingTimer").classList.add("hidden")}
+$("timerPauseBtn").onclick=()=>{
+ if(!activeRestState)return;
+ if(!restPaused){restRemaining=Math.max(0,Math.ceil((activeRestState.endsAt-Date.now())/1000));activeRestState.paused=true;activeRestState.remaining=restRemaining;restPaused=true}
+ else{restPaused=false;activeRestState.paused=false;activeRestState.endsAt=Date.now()+restRemaining*1000}
+ $("timerPauseBtn").textContent=restPaused?"Continuar":"Pausar";$("timerMessage").textContent=restPaused?"Descanso pausado.":"Descanso em andamento.";persistActiveTraining();
+};
+$("timerSkipBtn").onclick=()=>{stopRestTimer();restRemaining=0;restPaused=false;activeRestState=null;persistActiveTraining();$("timerMessage").textContent="Descanso pulado. Pode continuar.";$("trainingTimer").classList.add("hidden");playRestBeep(1100)};
+$("finishTrainingBtn").onclick=()=>{if(!activeTraining)return;const total=activeTraining.exercises.reduce((n,x)=>n+(Number(x.sets)||0),0),done=activeTraining.exercises.reduce((n,x)=>n+x.doneSets.length,0);if(done===0&&!confirm("Você ainda não concluiu nenhuma série. Finalizar mesmo assim?"))return;const session={id:uid(),programId:activeTraining.programId,programName:activeTraining.programName,day:activeTraining.day,dayLabel:activeTraining.dayLabel||"",date:activeTraining.date||today(),completedSets:done,totalSets:total,duration:Math.max(1,Math.round((Date.now()-activeTraining.startedAt)/60000)),exercises:activeTraining.exercises.map(x=>({...x,doneSets:[...x.doneSets],actualLoads:{...(x.actualLoads||{})}}))};data.workoutSessions=data.workoutSessions||[];data.workouts=data.workouts||[];if(!data.workoutSessions.some(s=>s.id===session.id))data.workoutSessions.push(session);if(!data.workouts.some(w=>w.sessionId===session.id)){data.workouts.push({id:session.id,sessionId:session.id,date:session.date,name:`${session.programName} — Dia ${session.day}${session.dayLabel?" · "+session.dayLabel:""}`,programId:session.programId,programName:session.programName,programDay:session.day,programDayLabel:session.dayLabel,completedSets:done,totalSets:total,duration:session.duration,exercises:session.exercises.map(ex=>({name:ex.name,load:ex.currentLoad??ex.load??"",sets:ex.doneSets.length,reps:ex.repsMin!=null&&ex.repsMax!=null?(ex.repsMin===ex.repsMax?String(ex.repsMin):`${ex.repsMin}–${ex.repsMax}`):"",actualLoads:{...(ex.actualLoads||{})},doneSets:[...ex.doneSets]}))})}activeTraining=null;activeRestState=null;stopRestTimer();restRemaining=0;persistActiveTraining();save();renderActiveTraining();alert(`Treino registrado no histórico do dia ${session.date}: ${done} de ${total} séries concluídas.`)};
 trainingDayKeys.forEach(ensureDraftDay);renderDayTabs();selectDraftDay("A");
 let mentorBusy=false;
 function mentorStatus(message){const el=$("mentorStatus");if(el)el.textContent=message||""}
@@ -1662,7 +1701,27 @@ $("importBtn").onclick=()=>$("importFile").click();
 $("importFile").onchange=async e=>{let f=e.target.files[0];if(!f)return;try{let d=JSON.parse(await f.text());if(!d.habits||!d.checks)throw 0;if(confirm("Substituir os dados atuais pelos dados do arquivo?")){data=d;save()}}catch{alert("Arquivo inválido.")}e.target.value=""};
 $("notifyPermission").onclick=async()=>{if(!("Notification"in window)){$("notifyStatus").textContent="Este navegador não oferece notificações.";return}let p=await Notification.requestPermission();$("notifyStatus").textContent="Permissão: "+p};
 $("clearData").onclick=()=>{if(confirm("Apagar todos os registros? Exporte um backup antes, se quiser guardá-los.")){localStorage.removeItem("cavernaData");data=freshData();save()}};
+
+// Persistência e recuperação da sessão de treino em interrupções/recarregamentos.
+document.addEventListener("visibilitychange",()=>{if(activeTraining){persistActiveTraining();if(document.visibilityState==="visible")resumeRestAfterRestore()}});
+window.addEventListener("pagehide",()=>{if(activeTraining)persistActiveTraining()});
+function resumeRestAfterRestore(){
+ if(!activeTraining)return;
+ $("trainingHome").classList.add("hidden");$("trainingDayView").classList.remove("hidden");$("activeTrainingPanel").classList.remove("hidden");
+ $("selectedDayTitle").textContent=activeTraining.programName+" · Dia "+activeTraining.day+(activeTraining.dayLabel?" — "+activeTraining.dayLabel:"");
+ $("selectedDaySubtitle").textContent="Sessão recuperada automaticamente. Seu progresso foi preservado.";renderActiveTraining();
+ if(activeRestState){
+  if(activeRestState.paused){restRemaining=Number(activeRestState.remaining)||0;restPaused=true;}
+  else{restRemaining=Math.max(0,Math.ceil((activeRestState.endsAt-Date.now())/1000));restPaused=false;}
+  if(restRemaining<=0){activeRestState=null;restRemaining=0;$("timerMessage").textContent="Descanso encerrado. Vamos para a próxima série.";$("trainingTimer").classList.remove("hidden");}
+  else{$("timerCaption").textContent="Descanso · "+(activeRestState.exerciseName||"Treino");$("timerPauseBtn").textContent=restPaused?"Continuar":"Pausar";updateTimerDisplay();$("trainingTimer").classList.remove("hidden");
+   if(!restPaused&&!restInterval){restInterval=setInterval(()=>{restRemaining=Math.max(0,Math.ceil((activeRestState.endsAt-Date.now())/1000));updateTimerDisplay();if(restRemaining<=0){stopRestTimer();activeRestState=null;persistActiveTraining();$("timerMessage").textContent="Descanso encerrado. Vamos para a próxima série.";$("trainingTimer").classList.remove("hidden");playRestFinishedSignal()}},250)}
+  }
+ }
+ persistActiveTraining();
+}
 renderAll();
+if(activeTraining){resumeRestAfterRestore();}
 registerCavernaSW();
 bootAuth();
 </script>
