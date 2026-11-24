@@ -1294,7 +1294,6 @@ const defaultHabits=[
 {name:"Caderno de gratidão",category:"Espiritualidade",frequency:"daily",days:[],time:"",target:"1 registro"}
 ];
 let data=JSON.parse(localStorage.getItem("cavernaData")||"null")||freshData();
-restoreActiveTraining();
 function save(){localStorage.setItem("cavernaData",JSON.stringify(data));renderAll();if(currentUser){clearTimeout(saveTimer);saveTimer=setTimeout(()=>persistUserData(),500)}}
 function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function showPage(p){document.querySelectorAll("main > section[id^=\"page-\"]").forEach(s=>s.classList.add("hidden"));const page=$("page-"+p);if(!page){console.warn("Página não encontrada:",p);return}page.classList.remove("hidden");document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===p));renderAll();if(p==="mentor")loadMentorHistory()}
@@ -1720,6 +1719,7 @@ function resumeRestAfterRestore(){
  }
  persistActiveTraining();
 }
+restoreActiveTraining();
 renderAll();
 if(activeTraining){resumeRestAfterRestore();}
 registerCavernaSW();
